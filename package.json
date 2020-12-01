@@ -1,0 +1,14 @@
+{
+  "name": "mamsitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Lucia Ligliani, Martina Delsere",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
