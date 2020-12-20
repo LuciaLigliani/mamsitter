@@ -5,7 +5,14 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(announcementController.getAllAnnouncement)
-  .post(announcementController.createAnnouncement);
+  .get(announcementController.getAllAnnouncements)
+  .post(announcementController.createAnnouncement)
+  .delete(announcementController.deleteAllAnnouncements);
+
+router
+  .route('/:id')
+  .get(announcementController.getAnnouncement)
+  .patch(announcementController.updateAnnouncement)
+  .delete(announcementController.deleteAnnouncement);
 
   module.exports = router;
