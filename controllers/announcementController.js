@@ -5,7 +5,7 @@ exports.getAllAnnouncement = async (req, res) => {
     // EXECUTE QUERY
     const announcements = await Announcement.find();
 
-console.log(announcements);
+//console.log(announcements);
 
 
     // SEND RESPONSE
