@@ -1,0 +1,168 @@
+.App {
+  text-align: center;
+  position: relative;
+  background-color: rgb(74, 208, 159);
+}
+
+.Navbar{
+  position: relative;
+  background-color:  rgb(70, 208, 157);
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+.linksNav{
+  position: absolute ;
+  right: 5%;
+  font-size: 100%;  
+  display:flex;
+  justify-content: space-between;
+  list-style: none;
+  width: 70%;
+  top: 25px;
+  text-decoration: none;
+}
+
+.Login{
+    align-items: center;
+    width: 490px;
+    padding-top: 10px;
+    padding-bottom: 18px;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-left: 60vh;
+    margin-top: 40px;
+    font-size: 15px;  
+    background-color: rgb(70, 208, 157);
+    border-radius: 10%;
+
+  box-shadow: 5px 5px 10px 5px rgb(80, 80, 80); 
+  
+  
+    
+} 
+
+.pagLogin{
+  padding-top: 10px;
+  height: 87vh;
+  width: 79rem;
+  background-image:url("sf.jpg");
+  background-color: rgb(74, 208, 159);
+  
+}
+
+
+.Navbar img{
+  position: absolute;
+  left: 5%;
+  height: 70px;
+  width: 150px;
+  bottom: 2px;
+  border-radius: 50%;
+
+}
+
+.Carousel{
+    max-width: 10000px;
+  position: relative;
+  margin: auto;
+  
+    
+}
+
+.Signin{
+  width:600px;
+  padding-top: 15px;
+  padding-bottom: 18px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-left: 50vh;
+  margin-top: 5vh;
+  font-size: 15px;  
+  border-radius: 10%;
+  box-shadow: 5px 5px 10px 5px rgb(80, 80, 80); 
+  background-color: rgb(70, 208, 157);
+  border-radius: 10%;
+  
+}
+.home{
+  background-color: rgb(190, 255, 231);
+  height: 300vh;
+  width: 80rem;
+}
+.pagSignin{
+
+  background-color:rgb(70, 208, 157);
+  height: 200vh;
+  width: 80rem; 
+}
+
+
+.img{
+ height:300px;
+ width: 390px;
+ position: absolute;
+ top:150px;
+ left:150px;
+
+}
+
+.d-block{
+  height: 85vh;
+  width: 80rem;
+}
+
+.mx-auto{
+  height: 85vh;
+  width: 80rem;
+
+}
+.linkSignin{
+  width: 31rem;
+}
+
+.formSignin{
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.dropdown{
+  color: black;
+
+}
+
+.buttonNav{
+  
+  font-size: 100%;
+  bottom: 5px;
+}
+
+
+a:-webkit-any-link{
+  text-decoration: none;
+}
+
+.dialog{
+
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.buttonSign{
+  left:23px;
+  width: 25rem;
+  bottom: 15px;
+}
+
+.esciSign{
+  left:180px;
+  width: 5rem;
+  bottom: 20px;
+}

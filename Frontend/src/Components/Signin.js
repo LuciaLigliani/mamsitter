@@ -1,0 +1,180 @@
+import React from 'react';
+import '..//App.css';
+import Form from 'react-bootstrap/Form'
+import { Col, Row } from 'react-bootstrap';
+/*import Accordion from 'react-bootstrap/Accordion'
+import Card from 'react-bootstrap/Card'
+import DatePicker from 'react-datepicker'*/
+import 'react-datepicker/dist/react-datepicker.css'
+import Button from '@material-ui/core/Button';  
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Link from '@material-ui/core/Link';
+
+function Signin(){
+  const [open, setOpen] = React.useState(false);
+
+  const [ciao, setCiao] = React.useState(false);
+  const [apri, setApri] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const ClickOpen = () => {
+    setCiao(true);
+  };
+
+  const ClickClose = () => {
+    setCiao(false);
+  };
+
+  const clickOpen = () => {
+    setApri(true);
+  };
+
+  const clickClose = () => {
+    setApri(false);
+  };
+
+  return (
+    <div>
+       
+      <Link className="dialog" variant="outlined" color="primary" onClick={handleClickOpen}>
+        qui
+      </Link>
+      <Dialog  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Form  className="dialog">
+                  <font face='Georgia'><h4>Compila il modulo per la registrazione</h4></font><br/>
+                    <Row>
+                      <Col>
+                        <Form.Control placeholder="Email" /><br/>
+                      </Col>
+                      <Col>
+                        <Form.Control placeholder="Conferma Email" />
+                      </Col>
+                    </Row>
+                      <Row>
+                      <Col>
+                        <Form.Control placeholder="Password" />
+                      </Col>
+                      <Col>
+                        <Col>
+                          <Form.Control placeholder="Conferma Password" /><br/>
+                        </Col>
+                      </Col>
+                      </Row>
+                </Form>  
+
+       <Button className="buttonSign" variant="outlined" color="primary" onClick={clickOpen}>
+        Famiglia
+        </Button><br/> 
+          <Dialog open={apri} onClose={clickClose} aria-labelledby="form-dialog-title">
+          
+
+       
+      <DialogContent  className="dialog">
+        
+          <Row>
+                          <Col>
+                            Nome
+                            <Form.Control placeholder="" size="sm"/><br/>
+                          </Col>
+                          <Col>
+                            Cognome
+                            <Form.Control placeholder="" size="sm" />
+                          </Col>
+                          <Col>
+                            Indirizzo
+                            <Form.Control placeholder="" size="sm" />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                        <Form>
+                              <Form.Group> Numero figli
+                                <Form.Control as="select" size="sm">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                </Form.Control>
+                              </Form.Group>
+                      </Form>
+                            </Col>
+
+                                <Col>
+                                Disponibilità
+                                    <Form.Control placeholder="" size="sm" /><br/>
+                                </Col>
+            </Row>
+            <DialogActions>
+          <Button  onClick={clickClose} color="primary">
+            Cancella
+          </Button>
+          <Button  onClick={clickClose} color="primary">
+            Registrati
+          </Button>
+        </DialogActions>
+        </DialogContent>
+        </Dialog>
+      <Button className="buttonSign" variant="outlined" color="primary" onClick={ClickOpen}>
+        Lavoratore
+      </Button><br/>
+      <Dialog open={ciao} onClose={ClickClose} aria-labelledby="form-dialog-title">
+        
+      <DialogContent>
+          
+          <Row>
+                          <Col>
+                            Nome
+                            <Form.Control placeholder="" size="sm"/><br/>
+                          </Col>
+                          <Col>
+                            Cognome
+                            <Form.Control placeholder="" size="sm" />
+                          </Col>
+                          <Col>
+                            Indirizzo
+                            <Form.Control placeholder="" size="sm" />
+                          </Col>
+            </Row>
+          <Row>
+               <Col>
+                        <Form>
+                          <Form.Group> Lavoro
+                            <Form.Control as="select" size="sm">
+                              <option>colf</option>
+                              <option>babysitter</option>
+                              <option>giardiniere</option>
+                            </Form.Control>
+                          </Form.Group>
+                        </Form>
+              </Col>
+        </Row>
+    
+      
+        <DialogActions>
+          <Button onClick={ClickClose} color="primary">
+            Cancella
+          </Button>
+          <Button onClick={ClickClose} color="primary">
+            Registrati
+          </Button>
+        </DialogActions>
+        </DialogContent>
+
+    </Dialog>
+
+<Button className="esciSign" variant="outlined" color="primary" onClick={handleClose}>
+        Esci
+      </Button>
+</Dialog>
+    </div>
+  );
+}
+export default Signin;
