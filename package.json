@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "set NODE_ENV=production& nodemon server.js",
-    "git": "git add . && git commit -m 'autenticazione' && git push --all"
+    "git": "git add . && git commit -m 'collegamento frontend' && git push --all"
   },
   "author": "Lucia Ligliani, Martina Delsere",
   "license": "ISC",
