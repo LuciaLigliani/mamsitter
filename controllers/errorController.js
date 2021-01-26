@@ -19,6 +19,7 @@ const sendErrorProd = (err, res) => {
   } else {
     // eslint-disable-next-line no-console
     console.error('ERROR!', err);
+
     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong!'
@@ -39,6 +40,18 @@ const handleValidationErrorDB = err => {
   return new AppError(`Invalid input data. ${errors.join('.')}`, 400);
 };
 
+const handleValidatorErrorDB = err => {
+  console.log('okay');
+  const errors = Object.values(err.errors).map(el => el.message);
+  return new AppError(`Invalid input data. ${errors.join('.')}`, 400);
+};
+
+const handleJWTError = () =>
+  new AppError('Invalid token. Please log in again!', 401);
+
+const handleJWTExpiredError = () =>
+  new AppError('Your token has expired! Please log in again.', 401);
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
@@ -51,7 +64,9 @@ module.exports = (err, req, res, next) => {
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
-    // gestire il require 
+    if (error.name === 'ValidatorError') error = handleValidatorErrorDB(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
     
     sendErrorProd(error, res);
   }

@@ -1,180 +1,82 @@
 const mongoose = require('mongoose');
 
-function isOccasional() {
-  return this.typeWork === 'occasional';
+function isForBabysitter() {
+  return this.typeAnnouncement === 'babysitter';
 };
 
-function isRegular() {
-  return this.typeWork === 'regular';
+function isForBadante() {
+  return this.typeWork === 'badante';
 };
 
-//user_id, figli, occasionale/regolare, compiti, notte, cucinare, auto, lingue
+function isForColf() {
+  return this.typeAnnouncement === 'colf';
+};
+
+//id, user_id, titolo, tipo annuncio
 const announcementSchema = new mongoose.Schema(
   {
-    // user_id
+    user_id: {
+      type: String,
+      // type: mongoose.Schema.ObjectId,
+      // ref: 'User',
+      required: [true, 'This announcement must refer to a user']
+    },
     title: {
       type: String,
       unique: true,
       required: [true, 'An announcement must have a title'],
       trim: true
     },
-    children: {
-      type: [
-        {
-          // user_id
-          name: {
-            type: String,
-            trim: true,
-            required: true
-          },
-          sex: {
-            type: String,
-            enum: {
-              values: ['M', 'F'],
-              message: 'Sex must be M or F'
-            }
-          },
-          age: {
-            type: Number,
-            required: true,
-            //min
-            max: [15, 'Age must be less or equals to 15']
-          },
-          description: {
-            type: String,
-            trim: true
-          }
-          // type: mongoose.Schema.ObjectId,
-          // ref: 'Children'
-        }
-      ],
-      required: true
-    },
-    // childrenNumber: {
-    //   type: Number,
-    //   default: function() {
-    //     return this.children.length;
-    //   }
-    // },
-    typeWork: {
+    typeAnnouncement: {
       type: String,
       enum: {
-        values: ['occasional', 'regular'],
-        message: 'Type of work must be occasional or regular'
+        values: ['babysitter', 'badante', 'colf'],
+        message: 'An announcement must be for a babysitter, badante or colf'
       },
       required: true
     },
-    date: {
-      type: Date,
-      min: [Date.now(), 'Date must be after today'],
-      required: isOccasional,
-      // select: isOccasional('occasional')
+    babysitterAnn_id: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'BabysitterAnn',
+      required: isForBabysitter
     },
-    when: {
-      startDate: {
-        type: Date,
-        min: [Date.now(), 'Start date must be after today'],
-        required: isRegular
-      },
-      endDate: {
-        type: Date,
-        min: [function() {
-          return this.when.startDate;
-        }, 'End date must be after start date'],
-        required: isRegular,
-      },
-      neededDays: {
-        type: [{
-          weekDay: {
-            type: String,
-            enum: {
-              values: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
-              message: 'Week day must be: monday, tuesday, wednesday, thursday, friday, saturday or sunday'
-            },
-          },
-          partOfDay: {
-            type: String,
-            enum: {
-              values: ['morning', 'afternoon', 'evening'],
-              message: 'Part of the day must be: morning, afternoon or evening'
-            }
-          }
-        }],
-        required: isRegular
-      }
+    badanteAnn_id: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'BabysitterAnn',
+      required: isForBadante
     },
-    homework: {
-      type: Boolean,
-      default: false
-    },
-    night: {
-      type: Boolean,
-      default: false
-    },
-    cook: {
-      type: Boolean,
-      default: false
-    },
-    car: {
-      type: Boolean,
-      default: false
-    },
-    languages: {
-      type: [String],
-      required: true
+    colfAnn_id: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'colfAnn',
+      required: isForColf
     }
-  },
-
-  // {
-  //   toJSON: { virtuals: true },
-  //   toObject: { virtuals: true }
-  // }
+  }
 );
 
-// announcementSchema.virtual('childrenNumber').get(function() {
-//   return this.children.lenght;
-// });
-
 announcementSchema.pre('save', function(next) {
-  // salva solo le info necessarie a seconda che sia un lavoro regolare o occasionale
-  if(this.typeWork === 'regular'){
-    this.date = undefined;
-  } else {
-    this.when = undefined;
+  // salva solo le info necessarie
+  if(this.typeAnnouncement === 'babysitter'){
+    this.badanteAnn_id = undefined;
+    this.colfAnn_id = undefined;
+  } 
+  else if (this.typeAnnouncement === 'badante') {
+    this.colfAnn_id = undefined;
+    this.babysitterAnn_id = undefined;
+  }
+  else{
+    this.badanteAnn_id = undefined;
+    this.babysitterAnn_id = undefined;
   }
   
   next();
 });
 
-announcementSchema.pre('validate', function(next) {
-  // trasformo gli array vuoti in undefined per far funzionare il required
-  if (this.children.length === 0){
-    this.children = undefined;
-  }
-  if (this.languages.length === 0){
-    this.languages = undefined;
-  }
-  if (this.when.neededDays.length === 0){
-    this.when.neededDays = undefined;
-  }
-
+announcementSchema.pre('findOneAndUpdate', function(next) {
+  this.options.runValidators = true;
+  this.options.new = true;
+  // this.options.context = 'query';
   next();
 });
-
-// announcementSchema.pre('', function (next) {
-//   // trasformo gli array vuoti in undefined per far funzionare il required
-//   if (this.children.length === 0){
-//     this.children = undefined;
-//   }
-//   if (this.languages.length === 0){
-//     this.languages = undefined;
-//   }
-//   if (this.when.neededDays.length === 0){
-//     this.when.neededDays = undefined;
-//   }
-
-//   next();
-// });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
 module.exports = Announcement;

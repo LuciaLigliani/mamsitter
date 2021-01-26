@@ -1,3 +1,4 @@
+const util = require("./util");
 
 class APIFeatures {
   constructor (query, queryString) {
@@ -6,10 +7,7 @@ class APIFeatures {
   }
 
   filter() {
-    const queryObj = { ...this.queryString };
-
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el]);
+    const queryObj = util.excludeFields({ ...this.queryString }, 'page', 'sort', 'limit', 'fields');
     
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
@@ -36,6 +34,7 @@ class APIFeatures {
       const fields = this.queryString.fields.replace(',',' ');
       this.query = this.query.select(fields);
     } else {
+      // FIXME: togliere il __v sull'annuncio specifico
       this.query = this.query.select('-__v');
     }
 
