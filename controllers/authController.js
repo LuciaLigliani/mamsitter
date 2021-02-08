@@ -1,37 +1,17 @@
 const crypto = require('crypto');
 const { promisify } = require('util');
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
-const AppError = require("../utils/appError");
+const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const util = require('../utils/util');
 const sendEmail = require('../utils/email');
-
-const signToken = id => {
-  return jwt.sign({id}, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  });
-}
-
-const createSendToken = (user, statusCode, res) => {
-  const token = signToken (user._id);
-
-  res.status(statusCode).json({
-    status: 'success',
-    token,
-    data: user
-  });
-};
+const userService = require('../services/userService');
 
 exports.signup = catchAsync(async (req, res, next) => {
-  // FIXME: se metto una password minore di 8 mi da l'errore ValidatorError da gestire in prod
-  // per non consentire di creare un profilo admin
-  const newUser = await User.create( req.body// {
-  //   email: req.body.email,
-  //   password: req.body.password,
-  //   passwordConfirm: req.body.passwordConfirm}
-  );
+  const newUser = await userService.createUser(req.body);
 
-  createSendToken(newUser, 201, res);
+  util.createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -47,12 +27,12 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  createSendToken(user, 200, res);
+  util.createSendToken(user, 200, res);
 });
 
-// you have to log in
+// means that you have to authenticate
 exports.protect = catchAsync(async (req, res, next) => {
-  // getting token and check of it's there
+  // getting token and check if it's there
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
@@ -103,7 +83,7 @@ exports.forgotPassword = catchAsync (async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: 'Your password reset token (valid for 10 min)',
+      subject: 'Your password reset token (valid for an hour)',
       message
     });
   
@@ -136,22 +116,13 @@ exports.resetPassword = catchAsync (async (req, res, next) => {
 
   // passwordChangedAt is modified thanks to a pre save hook in user model
 
-  createSendToken(user, 200, res);
+  util.createSendToken(user, 200, res);
 });
 
-exports.updateMyPassword = catchAsync (async (req, res, next) => {
-  // get user
-  const user = await User.findById(req.user.id).select('+password');
-
-  // check if old password is correct
-  if(!(await user.correctPassword(req.body.passwordCurrent, user.password))) return next(new AppError('Your current password is wrong.', 401));
-
-  // update password
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
-  await user.save();
-
-  // passwordChangedAt is modified thanks to a pre save hook in user model
-
-  createSendToken(user, 200, res);
-});
+// exports.logout = (req, res) => {
+//   res.cookie('jwt', 'loggedout', {
+//     expires: new Date(Date.now() + 10 * 1000),
+//     httpOnly: true
+//   });
+//   res.status(200).json({ status: 'success' });
+// };

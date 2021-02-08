@@ -4,10 +4,12 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
+router.use(authController.protect);
+
 router
   .route('/')
-  .get(authController.protect, announcementController.getAllAnnouncements)
-  .post(authController.protect, authController.restrictTo('famiglia'), announcementController.createAnnouncement)
+  .get(announcementController.getAllAnnouncements)
+  .post(authController.restrictTo('famiglia'), announcementController.createAnnouncement)
   .delete(announcementController.deleteAllAnnouncements);
 
 router

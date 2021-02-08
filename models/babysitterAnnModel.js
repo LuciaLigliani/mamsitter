@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 function isOccasional() {
-  return this.typeWork === 'occasionale';
+  const result = this.typeWork === 'occasionale' || this.typeWork === undefined;
+  return result;
 };
 
 function isRegular() {
-  return this.typeWork === 'regolare';
+  const result = this.typeWork === 'regolare' || this.typeWork === undefined;
+  return result;
 };
 
 // titolo, figli, occasionale/regolare, compiti, cucinare, auto, lingue
@@ -18,7 +20,7 @@ const babysitterAnnSchema = new mongoose.Schema(
           name: {
             type: String,
             trim: true,
-            required: true
+            required: [true, 'You have to provide the children\'s name']
           },
           sex: {
             type: String,
@@ -29,8 +31,8 @@ const babysitterAnnSchema = new mongoose.Schema(
           },
           age: {
             type: Number,
-            required: true,
-            //min
+            required: [true, 'You have to provide the children\'s age'],
+            min: [0, 'Age can\'t be less then 0'],
             max: [15, 'Age must be less or equals to 15']
           },
           description: {
@@ -41,7 +43,7 @@ const babysitterAnnSchema = new mongoose.Schema(
           // ref: 'Children'
         }
       ],
-      required: true
+      required: [true, 'You have to provide the children\'s informations']
     },
     typeWork: {
       type: String,
@@ -49,12 +51,12 @@ const babysitterAnnSchema = new mongoose.Schema(
         values: ['occasionale', 'regolare'],
         message: 'Type of work must be occasionale or regolare'
       },
-      required: true
+      required: [true, 'You have to provide the type work']
     },
     date: {
       type: Date,
       min: [Date.now(), 'Date must be after today'],
-      required: isOccasional
+      required: [isOccasional, 'You have to provide the date']
     },
     when: {
       type: String,
@@ -62,19 +64,19 @@ const babysitterAnnSchema = new mongoose.Schema(
         values: ['morning', 'afternoon', 'evening', 'night', 'allDay'],
         message: 'Part of the day must be: morning, afternoon, evening, night or allDay'
       },
-      required: isOccasional
+      required: [isOccasional, 'You have to provide when you need']
     },
     startDate: {
       type: Date,
       min: [Date.now(), 'Start date must be after today'],
-      required: isRegular
+      required: [isRegular, 'You have to provide the start date']
     },
     endDate: {
       type: Date,
       min: [function() {
         return this.startDate;
       }, 'End date must be after start date'],
-      required: isRegular,
+      required: [isRegular, 'You have to provide the end date']
     },
     neededDays: {
       type: [{
@@ -84,16 +86,18 @@ const babysitterAnnSchema = new mongoose.Schema(
             values: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
             message: 'Week day must be: monday, tuesday, wednesday, thursday, friday, saturday or sunday'
           },
+          required: [isRegular, 'You have to provide the days of the week when you need']
         },
         partOfDay: {
           type: String,
           enum: {
             values: ['morning', 'afternoon', 'evening', 'night'],
             message: 'Part of the day must be: morning, afternoon, evening or night'
-          }
+          },
+          required: [isRegular, 'You have to provide the part of the day when you need']
         }
       }],
-      required: isRegular
+      required: [isRegular, 'You have to provide when you need']
     },
     homework: {
       type: Boolean,
@@ -109,7 +113,7 @@ const babysitterAnnSchema = new mongoose.Schema(
     },
     languages: {
       type: [String],
-      required: true
+      required: [true, 'You have to provide the languages']
     }
   },
 

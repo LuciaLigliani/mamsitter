@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 function isOccasional() {
-  return this.typeWork === 'occasionale';
+  const result = this.typeWork === 'occasionale' || this.typeWork === undefined;
+  return result;
 };
 
 function isRegular() {
-  return this.typeWork !== 'occasionale';
+  const result = this.typeWork !== 'occasionale' || this.typeWork === undefined;
+  return result;
 };
 
 // titolo, anziano, occasionale/regolare, cucinare, auto
@@ -18,7 +20,7 @@ const badanteAnnSchema = new mongoose.Schema(
           name: {
             type: String,
             trim: true,
-            required: true
+            required: [true, 'You have to provide the senior\'s name']
           },
           sex: {
             type: String,
@@ -29,8 +31,8 @@ const badanteAnnSchema = new mongoose.Schema(
           },
           age: {
             type: Number,
-            required: true,
-            //min
+            required: [true, 'You have to provide the senior\'s age'],
+            max: [120, 'Age can\'t be more to 120'],
             min: [50, 'Age must be more or equals to 50']
           },
           description: {
@@ -45,7 +47,7 @@ const badanteAnnSchema = new mongoose.Schema(
           // ref: 'Senior'
         }
       ],
-      required: true
+      required: [true, 'You have to provide the senior\'s informations']
     },
     typeWork: {
       type: String,
@@ -53,12 +55,12 @@ const badanteAnnSchema = new mongoose.Schema(
         values: ['occasionale', 'diurno', 'notturno', '24h', 'aOre'],
         message: 'Type of work must be occasionale, diurno, notturno, 24h or aOre'
       },
-      required: true
+      required: [true, 'You have to provide the type work']
     },
     date: {
       type: Date,
       min: [Date.now(), 'Date must be after today'],
-      required: isOccasional
+      required: [isOccasional, 'You have to provide the date']
     },
     when: {
       type: String,
@@ -66,19 +68,19 @@ const badanteAnnSchema = new mongoose.Schema(
         values: ['morning', 'afternoon', 'evening', 'night', 'allDay'],
         message: 'Part of the day must be: morning, afternoon, evening, night or allDay'
       },
-      required: isOccasional
+      required: [isOccasional, 'You have to provide when you need']
     },
     startDate: {
       type: Date,
       min: [Date.now(), 'Start date must be after today'],
-      required: isRegular
+      required: [isRegular, 'You have to provide the start date']
     },
     endDate: {
       type: Date,
       min: [function() {
         return this.startDate;
       }, 'End date must be after start date'],
-      required: isRegular
+      required: [isRegular, 'You have to provide the end date']
     },
     neededDays: {
       type: [{
@@ -88,16 +90,18 @@ const badanteAnnSchema = new mongoose.Schema(
             values: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
             message: 'Week day must be: monday, tuesday, wednesday, thursday, friday, saturday or sunday'
           },
+          required: [isRegular, 'You have to provide the days of the week  when you need']
         },
         partOfDay: {
           type: String,
           enum: {
             values: ['morning', 'afternoon', 'evening', 'night'],
             message: 'Part of the day must be: morning, afternoon, evening or night'
-          }
+          },
+          required: [isRegular, 'You have to provide the part of the day when you need']
         }
       }],
-      required: isRegular
+      required: [isRegular, 'You have to provide when you need']
     },
     cook: {
       type: Boolean,
@@ -155,6 +159,7 @@ badanteAnnSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
   this.options.new = true;
   this.options.context = 'query';
+  
   next();
 });
 

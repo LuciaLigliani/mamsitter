@@ -6,12 +6,25 @@ class APIFeatures {
     this.queryString = queryString;
   }
 
-  filter() {
-    const queryObj = util.excludeFields({ ...this.queryString }, 'page', 'sort', 'limit', 'fields');
-    
-    let queryStr = JSON.stringify(queryObj);
+  filter(type) {
+    // elimino tutti i campi che non riguardano il filter
+    let toExclude = ['page', 'sort', 'limit', 'fields'];
+    const queryObj = util.excludeFields({ ...this.queryString }, toExclude);
+
+    // campi riguardanti l'annuncio specifico
+    toExclude = ['user_id', 'title', 'typeAnnouncement'];
+    let specificFields = util.excludeFields(queryObj, toExclude);
+
+    // campi riguardanti l'annuncio generico
+    toExclude = Object.keys(specificFields);
+    const genericFields = util.excludeFields(queryObj, toExclude);
+
+    let queryStr;
+    if(type === 'generic') queryStr = JSON.stringify(genericFields);
+    else queryStr = JSON.stringify(specificFields); 
+
+    // applico il filtro
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-  
     this.query = this.query.find(JSON.parse(queryStr));
   
     return this;

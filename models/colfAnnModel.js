@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 function isOccasional() {
-  return this.typeWork === 'occasionale';
+  const result = this.typeWork === 'occasionale' || this.typeWork === undefined;
+  return result;
 };
 
 function isRegular() {
-  return this.typeWork === 'regolare';
+  const result = this.typeWork === 'regolare' || this.typeWork === undefined;
+  return result;
 };
 
 // titolo, occasionale/regolare
@@ -17,12 +19,12 @@ const colfAnnSchema = new mongoose.Schema(
         values: ['occasionale', 'regolare'],
         message: 'Type of work must be occasionale or regolare'
       },
-      required: true
+      required: [true, 'You have to provide the type work']
     },
     date: {
       type: Date,
       min: [Date.now(), 'Date must be after today'],
-      required: isOccasional
+      required: [isOccasional, 'You have to provide the date']
     },
     when: {
       type: String,
@@ -30,19 +32,19 @@ const colfAnnSchema = new mongoose.Schema(
         values: ['morning', 'afternoon'],
         message: 'Part of the day must be: morning or afternoon'
       },
-      required: isOccasional
+      required: [isOccasional, 'You have to provide when you need']
     },
     startDate: {
       type: Date,
       min: [Date.now(), 'Start date must be after today'],
-      required: isRegular
+      required: [isRegular, 'You have to provide the start date']
     },
     endDate: {
       type: Date,
       min: [function() {
         return this.startDate;
       }, 'End date must be after start date'],
-      required: isRegular,
+      required: [isRegular, 'You have to provide the end date']
     },
     neededDays: {
       type: [{
@@ -52,16 +54,18 @@ const colfAnnSchema = new mongoose.Schema(
             values: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
             message: 'Week day must be: monday, tuesday, wednesday, thursday, friday, saturday or sunday'
           },
+          required: [isRegular, 'You have to provide the days of th eweek when you need']
         },
         partOfDay: {
           type: String,
           enum: {
             values: ['morning', 'afternoon'],
             message: 'Part of the day must be: morning or afternoon'
-          }
+          },
+          required: [isRegular, 'You have to provide the part of the day when you need']
         }
       }],
-      required: isRegular
+      required: [isRegular, 'You have to provide when you need']
     }
   },
 

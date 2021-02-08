@@ -5,7 +5,7 @@ function isForBabysitter() {
 };
 
 function isForBadante() {
-  return this.typeWork === 'badante';
+  return this.typeAnnouncement === 'badante';
 };
 
 function isForColf() {
@@ -16,10 +16,10 @@ function isForColf() {
 const announcementSchema = new mongoose.Schema(
   {
     user_id: {
-      type: String,
-      // type: mongoose.Schema.ObjectId,
-      // ref: 'User',
-      required: [true, 'This announcement must refer to a user']
+      // type: String,
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true
     },
     title: {
       type: String,
@@ -38,17 +38,17 @@ const announcementSchema = new mongoose.Schema(
     babysitterAnn_id: {
       type: mongoose.Schema.ObjectId,
       ref: 'BabysitterAnn',
-      required: isForBabysitter
+      required: [isForBabysitter, 'babysitterAnn_id is required']
     },
     badanteAnn_id: {
       type: mongoose.Schema.ObjectId,
-      ref: 'BabysitterAnn',
-      required: isForBadante
+      ref: 'BadanteAnn',
+      required: [isForBadante, 'badanteAnn_id is required']
     },
     colfAnn_id: {
       type: mongoose.Schema.ObjectId,
       ref: 'colfAnn',
-      required: isForColf
+      required: [isForColf, 'colfAnn_id is required']
     }
   }
 );
@@ -74,7 +74,7 @@ announcementSchema.pre('save', function(next) {
 announcementSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
   this.options.new = true;
-  // this.options.context = 'query';
+  this.options.context = 'query';
   next();
 });
 
