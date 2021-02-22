@@ -1,12 +1,12 @@
 .App {
   text-align: center;
   position: relative;
-  background-color: rgb(74, 208, 159);
+  background-color: rgb(255, 101, 195);
 }
 
 .Navbar{
   position: relative;
-  background-color:  rgb(70, 208, 157);
+  background-color:   rgb(255, 101, 195);
   height: 10vh;
   display: flex;
   justify-content: space-around;
@@ -16,7 +16,7 @@
 .linksNav{
   position: absolute ;
   right: 5%;
-  font-size: 100%;  
+  font-size: 110%;  
   display:flex;
   justify-content: space-between;
   list-style: none;
@@ -26,30 +26,46 @@
 }
 
 .Login{
-    align-items: center;
-    width: 490px;
-    padding-top: 10px;
-    padding-bottom: 18px;
-    padding-left: 40px;
-    padding-right: 40px;
-    margin-left: 60vh;
+  align-content: center;
+    height: 430px;
+    margin-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     margin-top: 40px;
-    font-size: 15px;  
-    background-color: rgb(70, 208, 157);
-    border-radius: 10%;
-
-  box-shadow: 5px 5px 10px 5px rgb(80, 80, 80); 
-  
-  
-    
+    font-size: 10px;  
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 40px 5px rgb(17, 10, 16);
+    left: 500px;
 } 
+.form{
+  margin-left: 40px;
+  margin-right: 50px;
+}
+ 
+.formS{
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
 
 .pagLogin{
+  margin-top: 20px;
+  margin-left: 7px;
+  width: 50px;
   padding-top: 10px;
-  height: 87vh;
+  height: 90vh;
   width: 79rem;
-  background-image:url("sf.jpg");
-  background-color: rgb(74, 208, 159);
+  background-color: rgb(255, 101, 195);
+  
+}
+.pagSignin{
+  margin-top: 1px;
+  margin-left: 7px;
+  width: 50px;
+  padding-top: 10px;
+  height: 90vh;
+  width: 79rem;
+  background-color: rgb(255, 101, 195);
   
 }
 
@@ -59,44 +75,55 @@
   left: 5%;
   height: 70px;
   width: 150px;
-  bottom: 2px;
-  border-radius: 50%;
-
+  bottom:   -6px;
+  box-shadow:  2px 5px 5px rgb(85, 80, 80);
 }
 
-.Carousel{
-    max-width: 10000px;
-  position: relative;
-  margin: auto;
-  
-    
-}
 
 .Signin{
-  width:600px;
-  padding-top: 15px;
-  padding-bottom: 18px;
-  padding-left: 50px;
-  padding-right: 50px;
-  margin-left: 50vh;
-  margin-top: 5vh;
-  font-size: 15px;  
-  border-radius: 10%;
-  box-shadow: 5px 5px 10px 5px rgb(80, 80, 80); 
-  background-color: rgb(70, 208, 157);
-  border-radius: 10%;
-  
+  align-content: center;
+  height: 560px;
+  margin-right: 70px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 40px;
+  font-size: 10px;  
+  background-color: rgb(255, 255, 255);
+  box-shadow: 3px 3px 40px 5px rgb(17, 10, 16);
+  left: 500px;
 }
-.home{
-  background-color: rgb(190, 255, 231);
-  height: 300vh;
-  width: 80rem;
+.button {
+  border:white;
+  color: white;
+  padding: 10px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
 }
-.pagSignin{
 
-  background-color:rgb(70, 208, 157);
-  height: 200vh;
-  width: 80rem; 
+.button1 {background-color: #000000;} /* Green */
+
+
+.button1 {
+  border:white;
+  color: white;
+  padding: -1px 70px 9px ;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button2 {background-color: #000000;}
+.cerca{
+  background-color: rgb(255, 101, 195);
+  height: 100vh;
+  width: 80rem;
+  margin-top:30px;
+  margin-left:-300px;
 }
 
 
@@ -109,16 +136,6 @@
 
 }
 
-.d-block{
-  height: 85vh;
-  width: 80rem;
-}
-
-.mx-auto{
-  height: 85vh;
-  width: 80rem;
-
-}
 .linkSignin{
   width: 31rem;
 }
@@ -126,18 +143,16 @@
 .formSignin{
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 10px;
+  margin-top: -10px;
   margin-bottom: 10px;
 }
 
 
 .dropdown{
   color: black;
-
 }
 
 .buttonNav{
-  
   font-size: 100%;
   bottom: 5px;
 }
@@ -149,20 +164,52 @@ a:-webkit-any-link{
 
 .dialog{
 
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: -5px;
+  margin-bottom: 0px;
 }
 
-.buttonSign{
-  left:23px;
-  width: 25rem;
-  bottom: 15px;
+.formFamiglia{
+  width: 600px;
+  padding-top: 15px;
+  padding-bottom: 18px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-left: 30vh;
+  margin-top: 5vh;
+  font-size: 15px;  
+  
+  
+
 }
 
-.esciSign{
-  left:180px;
-  width: 5rem;
-  bottom: 20px;
+.imgg{
+  width: 30%;
+  height: 30%;
+  margin-left:80%;
+  margin-top:-15%;
+}
+
+.aboutUs{
+  background-color:  rgb(255, 101, 195);
+  height: 100vh;
+  width: 80rem;
+}
+
+.profile{
+  background-color:  rgb(255, 101, 195);
+  height: 100vh;
+  width: 80rem;
+}
+
+input:invalid{
+  border: 2px dashed black;
+}
+input:valid{
+  border: 2px solid black;
+}
+
+.im{
+  height: 400px;
 }

@@ -1,32 +1,38 @@
 import React from 'react';
 import './App.css';
-import Home from './Components/Home';
 import AboutUs from'./Components/AboutUs';
 import Signin from './Components/Signin';
 import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
+//import Footer from './Components/Footer';
 import Cerca from './Components/Cerca';
+import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Profilo from './Components/Profilo';
 
 function App() {
   return (
     <Router> 
       <div className="App"> 
+    
       <Navbar/>
       <Switch>
-        <Route path="/registrazione" component={Signin}/>
+        <Route path="/signup" component={Signin}/>
         
+        <Route path="/myProfile" component={Profilo}/>
         <Route path="/cerca" component={Cerca}/>
         
         <Route path="/aboutUs" component={AboutUs}/>
         
         
-        <Route path="/" component={Home}/>
+        <Route path="/login" component={Login}/>
+        <Route path="/" component={Cerca}/>
         
       </Switch>
-  <Footer/>
+
+  
     </div>
     </Router>
+    
   );
 }
 export default App;

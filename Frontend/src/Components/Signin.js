@@ -1,180 +1,138 @@
 import React from 'react';
 import '..//App.css';
-import Form from 'react-bootstrap/Form'
+
+import {Link} from 'react-router-dom';
+import { Component } from 'react';
+import mamsitter from '..//mamsitter.png';
 import { Col, Row } from 'react-bootstrap';
-/*import Accordion from 'react-bootstrap/Accordion'
-import Card from 'react-bootstrap/Card'
-import DatePicker from 'react-datepicker'*/
-import 'react-datepicker/dist/react-datepicker.css'
-import Button from '@material-ui/core/Button';  
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Link from '@material-ui/core/Link';
+import { FormLabel } from '@material-ui/core';
 
-function Signin(){
-  const [open, setOpen] = React.useState(false);
+import Form from 'react-bootstrap/Form'
 
-  const [ciao, setCiao] = React.useState(false);
-  const [apri, setApri] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const ClickOpen = () => {
-    setCiao(true);
-  };
-
-  const ClickClose = () => {
-    setCiao(false);
-  };
-
-  const clickOpen = () => {
-    setApri(true);
-  };
-
-  const clickClose = () => {
-    setApri(false);
-  };
-
-  return (
-    <div>
-       
-      <Link className="dialog" variant="outlined" color="primary" onClick={handleClickOpen}>
-        qui
-      </Link>
-      <Dialog  open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <Form  className="dialog">
-                  <font face='Georgia'><h4>Compila il modulo per la registrazione</h4></font><br/>
-                    <Row>
-                      <Col>
-                        <Form.Control placeholder="Email" /><br/>
-                      </Col>
-                      <Col>
-                        <Form.Control placeholder="Conferma Email" />
-                      </Col>
-                    </Row>
-                      <Row>
-                      <Col>
-                        <Form.Control placeholder="Password" />
-                      </Col>
-                      <Col>
-                        <Col>
-                          <Form.Control placeholder="Conferma Password" /><br/>
-                        </Col>
-                      </Col>
-                      </Row>
-                </Form>  
-
-       <Button className="buttonSign" variant="outlined" color="primary" onClick={clickOpen}>
-        Famiglia
-        </Button><br/> 
-          <Dialog open={apri} onClose={clickClose} aria-labelledby="form-dialog-title">
-          
-
-       
-      <DialogContent  className="dialog">
-        
-          <Row>
-                          <Col>
-                            Nome
-                            <Form.Control placeholder="" size="sm"/><br/>
-                          </Col>
-                          <Col>
-                            Cognome
-                            <Form.Control placeholder="" size="sm" />
-                          </Col>
-                          <Col>
-                            Indirizzo
-                            <Form.Control placeholder="" size="sm" />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                        <Form>
-                              <Form.Group> Numero figli
-                                <Form.Control as="select" size="sm">
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                </Form.Control>
-                              </Form.Group>
-                      </Form>
-                            </Col>
-
-                                <Col>
-                                Disponibilità
-                                    <Form.Control placeholder="" size="sm" /><br/>
-                                </Col>
-            </Row>
-            <DialogActions>
-          <Button  onClick={clickClose} color="primary">
-            Cancella
-          </Button>
-          <Button  onClick={clickClose} color="primary">
-            Registrati
-          </Button>
-        </DialogActions>
-        </DialogContent>
-        </Dialog>
-      <Button className="buttonSign" variant="outlined" color="primary" onClick={ClickOpen}>
-        Lavoratore
-      </Button><br/>
-      <Dialog open={ciao} onClose={ClickClose} aria-labelledby="form-dialog-title">
-        
-      <DialogContent>
-          
-          <Row>
-                          <Col>
-                            Nome
-                            <Form.Control placeholder="" size="sm"/><br/>
-                          </Col>
-                          <Col>
-                            Cognome
-                            <Form.Control placeholder="" size="sm" />
-                          </Col>
-                          <Col>
-                            Indirizzo
-                            <Form.Control placeholder="" size="sm" />
-                          </Col>
-            </Row>
-          <Row>
-               <Col>
-                        <Form>
-                          <Form.Group> Lavoro
-                            <Form.Control as="select" size="sm">
-                              <option>colf</option>
-                              <option>babysitter</option>
-                              <option>giardiniere</option>
-                            </Form.Control>
-                          </Form.Group>
-                        </Form>
-              </Col>
-        </Row>
+import Container from 'react-bootstrap/Container'
+import axios from 'axios'
+class Signin extends Component{
+  constructor(props){
+    super(props)
+    this.state={
+      email:'',
+      password:'',
+      role:'',
+      passwordConfirm:'',
+      name:'',
+      surname:'',
+      sex:'',
+      birthDate:'',
+      city:'',
+      district:'',
+      description:'',
+      phoneNumber:''
+    }
+  }
+  changeHandler = (e) => {
+    this.setState({[e.target.name]:e.target.value})
+  }
+submitHandler = (e) => {
+  e.preventDefault()
+  console.log(this.state)
+  axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
+    console.log(response)
     
+  })
+  .catch(error=>{
+    console.log(error.response)
+  })
+}
+  render(){
+  return (
+    <div className="pagSignin">
+      <Container className="Signin">
+        <Form onSubmit={this.submitHandler}  className="formS">
+        <Row> 
+          <FormLabel>
+          <font face='Georgia' color='black'><h4>Compila il modulo per la registrazione</h4></font><br/>
+          </FormLabel> 
+          <Col>
+          <img src={mamsitter} className="im" alt="mamsitter" />
+          </Col>
+          <Col>
+          <Form.Group controlId="formBasicEmail"> 
+            <br/> <Form.Control required name='email'  type="email" placeholder="Email" onChange={this.changeHandler} /><br/>
+          </Form.Group>
+          <Form.Group controlId="formBasicPassword">
+          <Form.Control required name='password'  type="password" placeholder="Password" onChange={this.changeHandler} />
+          </Form.Group>
+         <br/><br/> <Form.Control required placeholder="Nome" name='name' onChange={this.changeHandler}  />
+        <br/><br/> <Form.Control required name='sex' as="select">
+         <option value  hidden="hidden" onChange={this.changeHandler} >Sesso</option>
+         <option value="m">M</option>
+         <option value="f">F</option> 
+          </Form.Control>
+          <br/> <br/><Form.Control required as="select" name='city'onChange={this.changeHandler}  >
+           <option value hidden="hidden">Città</option>
+           <option>Milano</option>
+           </Form.Control>
+           <br/> <br/> <Form.Control required placeholder="Descrizione" name='description 'onChange={this.changeHandler}   />
+
+          </Col> 
+          <Col>
+        <br/> <Form.Control required name='role' as="select" defaultValue="Scegli ruolo" onChange={this.changeHandler} > 
+        <option>Scegli ruolo</option>
+        <option value="famiglia">Famiglia</option>
+        <option value="babysitter">Babysitter</option>
+        <option>Badante</option>
+        <option>Colf</option>
+      </Form.Control>
+      <Form.Group controlId="formPassword">
+         <br/> <Form.Control required name='passwordConfirm'  type="password" placeholder="Conferma Password"onChange={this.changeHandler}  />
+          </Form.Group>
+          <br/><br/> <Form.Control required placeholder="Cognome" name='surname'  />
+        <br/> Data di nascita <Form.Control required type="date" name='birthDate' date-format="YYYY/MM/DD" onChange={this.changeHandler} ></Form.Control>
+        <br/><br/><Form.Control  as="select">
+         <option value disabled="disabled"name='district' onChange={this.changeHandler} hidden="hidden">Distretto</option>
+         <option>district1</option>
+        <option>district2</option>
+        <option>district3</option>
+        </Form.Control>
+        <br/><br/> <Form.Control required placeholder="Numero di telefono" name='phoneNumber' onChange={this.changeHandler}  />
+        </Col>
+       
+          
+<br/><br/> <button type="submit" class="button button1"  >Registrati</button><br/>
+          
+       
+        </Row>
+  </Form>
+          
+          
+<br/><h6>Clicca <Link to ="/login"> <font face='Georgia' color='black'><u>qui</u> </font></Link>per accedere</h6> 
+
+
+
+
+
+       
+
+
+
+
+
+
+
+
+      </Container>
+    
+            
+          
+          
       
-        <DialogActions>
-          <Button onClick={ClickClose} color="primary">
-            Cancella
-          </Button>
-          <Button onClick={ClickClose} color="primary">
-            Registrati
-          </Button>
-        </DialogActions>
-        </DialogContent>
-
-    </Dialog>
-
-<Button className="esciSign" variant="outlined" color="primary" onClick={handleClose}>
-        Esci
-      </Button>
-</Dialog>
-    </div>
+      
+      
+    
+    
+    
+ </div>
   );
+}
 }
 export default Signin;
