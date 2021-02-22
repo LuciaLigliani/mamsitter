@@ -8,12 +8,12 @@ class APIFeatures {
 
   filter(type) {
     // elimino tutti i campi che non riguardano il filter
-    let toExclude = ['page', 'sort', 'limit', 'fields'];
+    let toExclude = ['page', 'sort', 'limit', 'fields', 'neededDays', 'availableDays', 'numberChildren', 'numberSeniors'];
     const queryObj = util.excludeFields({ ...this.queryString }, toExclude);
 
     // campi riguardanti l'annuncio specifico
-    toExclude = ['user_id', 'title', 'typeAnnouncement'];
-    let specificFields = util.excludeFields(queryObj, toExclude);
+    toExclude = ['user_id', 'title', 'typeAnnouncement', 'role'];
+    const specificFields = util.excludeFields(queryObj, toExclude);
 
     // campi riguardanti l'annuncio generico
     toExclude = Object.keys(specificFields);
@@ -25,8 +25,40 @@ class APIFeatures {
 
     // applico il filtro
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-    this.query = this.query.find(JSON.parse(queryStr));
+    queryStr = JSON.parse(queryStr);
+
+    this.query = this.query.find(queryStr);
   
+    return this;
+  }
+
+  moreFilters() {
+    if(this.queryString.neededDays) {
+      const queryStr = this.queryString.neededDays.split(',');
+      let day;
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < queryStr.length; i++){
+        day = queryStr[i].split('-');
+        this.query = this.query.find({'neededDays.weekDay': day[0], 'neededDays.partOfDay': day[1]});
+      }
+    }
+    else if(this.queryString.availableDays) {
+      const queryStr = this.queryString.availableDays.split(',');
+      let day;
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < queryStr.length; i++){
+        day = queryStr[i].split('-');
+        this.query = this.query.find({'availableDays.weekDay': day[0], 'availableDays.partOfDay': day[1]});
+      }
+    }
+    else if(this.queryString.numberChildren) {
+      const number = Number(this.queryString.numberChildren);
+      this.query = this.query.find({'children': {$size: number}});
+    }
+    else if(this.queryString.numberSeniors) {
+      const number = Number(this.queryString.numberSeniors);
+      this.query = this.query.find({'seniors': {$size: number}});
+    }
     return this;
   }
 

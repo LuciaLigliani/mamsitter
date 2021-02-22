@@ -44,20 +44,16 @@ const babysitterSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      validate: [validator.isMobilePhone, 'Please provide a valid phone number.']
+      validate: [validator.isMobilePhone, 'Please provide a valid phone number.'],
+      required: [true, 'Please provide a phone number.']
     },
     description: {
       type: String,
       trim: true
     },
-    occasional: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work occasionally.']
-    },
-    regular: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work regularly.']
-    },
+    occasional: Boolean,
+    regular: Boolean,
+    // TODO: togliere l'id
     availableDays: {
       type: [{
         weekDay: {
@@ -76,34 +72,18 @@ const babysitterSchema = new mongoose.Schema(
           },
           required: [true, 'Please provide the part of the day when you are available']
         }
-      }],
-      required: [true, 'Please provide when you are available.']
+      }]
     },
-    homework: {
-      type: Boolean,
-      default: false
-    },
-    cook: {
-      type: Boolean,
-      default: false
-    },
-    car: {
-      type: Boolean,
-      default: false
-    },
-    languages: {
-      type: [String],
-      required: true
-    },
-    moreChildren: {
-      type: Boolean,
-      default: true
-    },
+    homework: Boolean,
+    cook: Boolean,
+    car: Boolean,
+    languages: [String],
+    moreChildren: Boolean,
     ageRange: {
       type: [Number],
-      required: [true, 'Please provide a range of children\'s age'],
-      validate: [validationFields.validateRange, 'You have to provide the right children\'s age range: children can be 15 or less.']
-    }
+      validate: [validationFields.validateRange, 'You have to provide the right children\'s age range: children can be 18 or less.']
+    },
+    alsoColf: Boolean
   },
   
   {

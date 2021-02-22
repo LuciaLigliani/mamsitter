@@ -1,22 +1,15 @@
 const mongoose = require('mongoose');
 
-function isOccasional() {
-  const result = this.typeWork === 'occasionale' || this.typeWork === undefined;
-  return result;
-};
-
 function isRegular() {
   const result = this.typeWork !== 'occasionale' || this.typeWork === undefined;
   return result;
 };
 
-// titolo, anziano, occasionale/regolare, cucinare, auto
 const badanteAnnSchema = new mongoose.Schema(
   {
     senior: {
       type: [
         {
-          // user_id
           name: {
             type: String,
             trim: true,
@@ -43,8 +36,6 @@ const badanteAnnSchema = new mongoose.Schema(
             type: Boolean,
             default: true
           }
-          // type: mongoose.Schema.ObjectId,
-          // ref: 'Senior'
         }
       ],
       required: [true, 'You have to provide the senior\'s informations']
@@ -57,23 +48,10 @@ const badanteAnnSchema = new mongoose.Schema(
       },
       required: [true, 'You have to provide the type work']
     },
-    date: {
-      type: Date,
-      min: [Date.now(), 'Date must be after today'],
-      required: [isOccasional, 'You have to provide the date']
-    },
-    when: {
-      type: String,
-      enum: {
-        values: ['morning', 'afternoon', 'evening', 'night', 'allDay'],
-        message: 'Part of the day must be: morning, afternoon, evening, night or allDay'
-      },
-      required: [isOccasional, 'You have to provide when you need']
-    },
     startDate: {
       type: Date,
       min: [Date.now(), 'Start date must be after today'],
-      required: [isRegular, 'You have to provide the start date']
+      required: [true, 'You have to provide the start date']
     },
     endDate: {
       type: Date,
@@ -82,6 +60,7 @@ const badanteAnnSchema = new mongoose.Schema(
       }, 'End date must be after start date'],
       required: [isRegular, 'You have to provide the end date']
     },
+    // TODO: togliere l'id
     neededDays: {
       type: [{
         weekDay: {
@@ -90,7 +69,7 @@ const badanteAnnSchema = new mongoose.Schema(
             values: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
             message: 'Week day must be: monday, tuesday, wednesday, thursday, friday, saturday or sunday'
           },
-          required: [isRegular, 'You have to provide the days of the week  when you need']
+          required: [true, 'You have to provide the days of the week  when you need']
         },
         partOfDay: {
           type: String,
@@ -98,16 +77,20 @@ const badanteAnnSchema = new mongoose.Schema(
             values: ['morning', 'afternoon', 'evening', 'night'],
             message: 'Part of the day must be: morning, afternoon, evening or night'
           },
-          required: [isRegular, 'You have to provide the part of the day when you need']
+          required: [true, 'You have to provide the part of the day when you need']
         }
       }],
-      required: [isRegular, 'You have to provide when you need']
+      required: [true, 'You have to provide when you need']
     },
     cook: {
       type: Boolean,
       default: false
     },
     car: {
+      type: Boolean,
+      default: false
+    },
+    alsoColf: {
       type: Boolean,
       default: false
     }
@@ -132,12 +115,7 @@ badanteAnnSchema.virtual('announcementType').get(function() {
 badanteAnnSchema.pre('validate', function(next) {
   // salva solo le info necessarie a seconda che sia un lavoro regolare o occasionale
   if(this.typeWork === 'occasionale'){
-    this.startDate = undefined;
     this.endDate = undefined;
-    this.neededDays = undefined;
-  } else {
-    this.date = undefined;
-    this.when = undefined;
   }
   
   next();
@@ -148,7 +126,7 @@ badanteAnnSchema.pre('validate', function(next) {
   if (this.senior.length === 0){
     this.senior = undefined;
   }
-  if (this.typeWork === 'regolare' && this.neededDays.length === 0){
+  if (this.neededDays.length === 0){
     this.neededDays = undefined;
   }
 

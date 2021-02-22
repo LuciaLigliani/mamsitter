@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 const validationFields = require('../utils/validationFields');
 
+// TODO: mettere la lista di children e senior e creare due route a parte (add childre..)
 const famigliaSchema = new mongoose.Schema(
   {
     name: {
@@ -41,12 +43,16 @@ const famigliaSchema = new mongoose.Schema(
         message: 'District can be district1, district2 or district3'
       }
     },
+    phoneNumber: {
+      type: String,
+      validate: [validator.isMobilePhone, 'Please provide a valid phone number.'],
+      required: [true, 'Please provide a phone number.']
+    },
     description: {
       type: String,
       trim: true
     }
   },
-  
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
@@ -64,21 +70,6 @@ famigliaSchema.pre('findOneAndUpdate', function(next) {
   this.options.context = 'query';
   next();
 });
-
-// famigliaSchema.pre('validate', function(next) {
-//   // trasformo gli array vuoti in undefined per far funzionare il required
-//   if (this.availableDays.length === 0){
-//     this.availableDays = undefined;
-//   }
-//   if (this.languages.length === 0){
-//     this.languages = undefined;
-//   }
-//   if (this.ageRange.length === 0){
-//     this.ageRange = undefined;
-//   }
-
-//   next();
-// });
 
 const famiglia = mongoose.model('Famiglia', famigliaSchema);
 module.exports = famiglia;

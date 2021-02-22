@@ -44,20 +44,16 @@ const colfSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      validate: [validator.isMobilePhone, 'Please provide a valid phone number.']
+      validate: [validator.isMobilePhone, 'Please provide a valid phone number.'],
+      required: [true, 'Please provide a phone number.']
     },
     description: {
       type: String,
       trim: true
     },
-    occasional: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work occasionally.']
-    },
-    regular: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work regularly.']
-    },
+    occasional: Boolean,
+    regular: Boolean,
+    // TODO: togliere l'id
     availableDays: {
       type: [{
         weekDay: {
@@ -76,8 +72,7 @@ const colfSchema = new mongoose.Schema(
           },
           required: [true, 'Please provide the part of the day when you are available']
         }
-      }],
-      required: [true, 'Plese provide when you are available.']
+      }]
     }
   },
   

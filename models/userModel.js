@@ -66,12 +66,12 @@ const userSchema = new mongoose.Schema(
     },
     colf_id: {
       type: mongoose.Schema.ObjectId,
-      ref: 'colf',
+      ref: 'Colf',
       required: [isColf, 'colf_id is required'] 
     },
     famiglia_id: {
       type: mongoose.Schema.ObjectId,
-      ref: 'famiglia',
+      ref: 'Famiglia',
       required: [isFamiglia, 'famiglia_id is required'] 
     },
     passwordChangedAt: {
@@ -86,19 +86,32 @@ const userSchema = new mongoose.Schema(
       type: String,
       select: false
     },
-    // active: {
-    //   type: Boolean,
-    //   default: true,
-    //   select: false
-    // }
-  });
-
-// userSchema.pre('validate', function(next){
-//   if(!validator.isEmail(this.email)) next(new AppError('Incorrect email or password', 400));
-//   else if(this.password[7] === undefined) next(new AppError('Password must be at least 8 character', 400));
-//   else if(this.password !== this.passwordConfirm) next(new AppError('Passwords are not the same', 400));
-//   next();
-// });
+    profile: {
+      type: String,
+      required: true,
+      enum: ['semplice', 'base', 'premium', 'topClas'],
+      // controllare
+      default: function() {
+          return this.role === 'famiglia' ? 'semplice' : 'base';
+        },
+    },
+    highlighted: {
+      type: Boolean,
+      default: false,
+      required: true
+    },
+    can:{
+      type: Boolean,
+      default: false,
+      required: true
+    }
+  },
+  
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
+);
 
 userSchema.pre('save', function(next) {
   // salva solo le info necessarie
@@ -106,25 +119,22 @@ userSchema.pre('save', function(next) {
     this.famiglia_id = undefined;
     this.colf_id = undefined;
     this.badante_id = undefined;
-    // if(this.babysitter_id === undefined) next(new AppError('babysitter_id is required', 400));
   } 
   else if (this.role === 'badante') {
     this.famiglia_id = undefined;
     this.babysitter_id = undefined;
     this.colf_id = undefined;
-    // if(this.badante_id === undefined) next(new AppError('badante_id is required', 400));
   }
   else if (this.role === 'colf') {
     this.famiglia_id = undefined;
     this.babysitter_id = undefined;
     this.badante_id = undefined;
-    // if(this.colf_id === undefined) next(new AppError('colf_id is required', 400));
   }
   else{
     this.babysitter_id = undefined;
     this.colf_id = undefined;
     this.badante_id = undefined;
-    // if(this.famiglia_id === undefined) next(new AppError('famiglia_id is required', 400));
+    this.highlighted = undefined;
   }
   
   next();
@@ -144,7 +154,16 @@ userSchema.pre('save', function (next) {
 });
 
 // userSchema.pre(/^find/, function(next) {
-//   this.find({ active: { $ne: false } });
+//   this.populate({
+//     path: 'babysitter_id'
+//   }).populate({
+//     path: 'badante_id'
+//   }).populate({
+//     path: 'colf_id'
+//   }).populate({
+//     path: 'famiglia_id'
+//   });
+  
 //   next();
 // });
 

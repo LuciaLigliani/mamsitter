@@ -9,6 +9,10 @@ const sendEmail = require('../utils/email');
 const userService = require('../services/userService');
 
 exports.signup = catchAsync(async (req, res, next) => {
+  if(req.body.role === 'admin') {
+    return next(new AppError('You can\'t sign up as admin!', 400));
+  }
+
   const newUser = await userService.createUser(req.body);
 
   util.createSendToken(newUser, 201, res);

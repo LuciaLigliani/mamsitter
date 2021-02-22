@@ -3,7 +3,6 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllAnnouncements = catchAsync (async (req, res, next) => {
-  // FIXME: la ricerca funziona solo per l'annuncio generico, non quello specifico
   const announcements = await announcementService.getAllAnnouncement(req);
 
   res.status(200).json({
@@ -73,3 +72,4 @@ exports.deleteAllAnnouncements = catchAsync (async (req, res, next) => {
     data: null
   });
 });
+

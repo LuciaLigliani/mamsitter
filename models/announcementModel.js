@@ -12,11 +12,9 @@ function isForColf() {
   return this.typeAnnouncement === 'colf';
 };
 
-//id, user_id, titolo, tipo annuncio
 const announcementSchema = new mongoose.Schema(
   {
     user_id: {
-      // type: String,
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true
@@ -33,7 +31,7 @@ const announcementSchema = new mongoose.Schema(
         values: ['babysitter', 'badante', 'colf'],
         message: 'An announcement must be for a babysitter, badante or colf'
       },
-      required: true
+      required: [true, 'Please provide the worker you need']
     },
     babysitterAnn_id: {
       type: mongoose.Schema.ObjectId,
@@ -47,9 +45,14 @@ const announcementSchema = new mongoose.Schema(
     },
     colfAnn_id: {
       type: mongoose.Schema.ObjectId,
-      ref: 'colfAnn',
+      ref: 'ColfAnn',
       required: [isForColf, 'colfAnn_id is required']
     }
+  },
+  
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
 
@@ -71,11 +74,33 @@ announcementSchema.pre('save', function(next) {
   next();
 });
 
+// announcementSchema.pre(/^find/, function(next) {
+//   this.populate({
+//     path: 'user_id'
+//   }).populate({
+//     path: 'babysitterAnn_id'
+//   }).populate({
+//     path: 'badanteAnn_id'
+//   }).populate({
+//     path: 'colfAnn_id'
+//   }).populate({
+//     path: 'candidates'
+//   });
+  
+//   next();
+// });
+
 announcementSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
   this.options.new = true;
   this.options.context = 'query';
   next();
+});
+
+announcementSchema.virtual('candidates', {
+  ref: 'Application',
+  foreignField: 'announcement_id',
+  localField: '_id'
 });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
