@@ -67,3 +67,80 @@ exports.deleteAllUsers = catchAsync (async (req, res, next) => {
     data: null
   });
 });
+
+exports.beHighlighted = catchAsync (async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: { highlighted: true } });
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.can = catchAsync (async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: { can: true } });
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.bePremium = catchAsync (async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: { profile: "premium" } });
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.beTopClass = catchAsync (async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: { profile: "topClass" } });
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.beBase = catchAsync (async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { $set: { profile: "base" } });
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.getAllUsers = catchAsync (async (req, res, next) => {
+  // if(req.user.role !== 'admin' && req.query.role === 'famiglia') req.query.role = undefined
+
+  const users = await userService.getAllUsers(req);
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: users
+  });
+});

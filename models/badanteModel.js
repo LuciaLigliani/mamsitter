@@ -44,32 +44,19 @@ const badanteSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      validate: [validator.isMobilePhone, 'Please provide a valid phone number.']
+      validate: [validator.isMobilePhone, 'Please provide a valid phone number.'],
+      required: [true, 'Please provide a phone number.']
     },
     description: {
       type: String,
       trim: true
     },
-    occasional: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work occasionally.']
-    },
-    diurnal: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work diurnal.']
-    },
-    nocturnal: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work nocturnal.']
-    },
-    allDay: {
-      type: Boolean,
-      required: [true, 'Please provide if you are available to work the all day.']
-    },
-    atHour: {
-      type: Boolean,
-      required: [true, 'Please provide is you are available to work at hour.']
-    },
+    occasional: Boolean,
+    diurnal: Boolean,
+    nocturnal: Boolean,
+    allDay: Boolean,
+    atHour: Boolean,
+    // TODO: togliere l'id
     availableDays: {
       type: [{
         weekDay: {
@@ -88,25 +75,13 @@ const badanteSchema = new mongoose.Schema(
           },
           required: [true, 'Please provide the part of the day when you are available']
         }
-      }],
-      required: [true, 'Plese provide when you are available.']
+      }]
     },
-    cook: {
-      type: Boolean,
-      default: false
-    },
-    car: {
-      type: Boolean,
-      default: false
-    },
-    moreSeniors: {
-      type: Boolean,
-      default: true
-    },
-    beSelfSufficient: {
-      type: Boolean,
-      default: true
-    }
+    cook: Boolean,
+    car: Boolean,
+    moreSeniors: Boolean,
+    beSelfSufficient: Boolean,
+    alsoColf: Boolean
   },
   
   {

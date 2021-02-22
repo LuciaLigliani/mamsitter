@@ -6,18 +6,11 @@ const util = require("../utils/util");
 const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllAnnouncement = async (req) => {
-  // let allAnnouncements = await Announcement.find();
-  // allAnnouncements = await Promise.all(allAnnouncements.map(util.showAnnData));
-  // const features = new APIFeatures (allAnnouncements, req.query).filter().sort().limitFields().paginate();
-  // return features;
-
-  // TODO: 
-  // 1) faccio il find su ogni tipo di ann sia generico che specifico e applico il filter per ognuno
-  // 2) confronto la lista degli ann generico con ogni tipo di ann specifico e se sta in entrambi gli array allora è da prendere
+  // TODO: gestire sort, limitFields e paginate
   let generalAnns = new APIFeatures (Announcement.find(), req.query).filter('generic');
-  let babysitterAnns = new APIFeatures (BabysitterAnn.find(), req.query).filter('specific');
-  let badanteAnns = new APIFeatures (BadanteAnn.find(), req.query).filter('specific');
-  let colfAnns = new APIFeatures (ColfAnn.find(), req.query).filter('specific');
+  let babysitterAnns = new APIFeatures (BabysitterAnn.find(), req.query).filter('specific').moreFilters();
+  let badanteAnns = new APIFeatures (BadanteAnn.find(), req.query).filter('specific').moreFilters();
+  let colfAnns = new APIFeatures (ColfAnn.find(), req.query).filter('specific').moreFilters();
   generalAnns = await generalAnns.query;
   babysitterAnns = await babysitterAnns.query;
   badanteAnns = await badanteAnns.query;
@@ -25,45 +18,37 @@ exports.getAllAnnouncement = async (req) => {
 
   const result = [];
   // eslint-disable-next-line no-plusplus
-  // for(let i = 0; i < generalAnns.length; i++){
-  //   if(babysitterAnns.some(el => el._id.toString() === generalAnns[i].babysitterAnn_id.toString()) ||
-  //       badanteAnns.some(el => el._id.toString() === generalAnns[i].badanteAnn_id.toString()) ||
-  //       colfAnns.some(el => el._id.toString() === generalAnns[i].colfAnn_id.toString())) {
-  //     result.push(generalAnns[i]);
-  //   }    
-  // }
-
-  if()
+  for(let i = 0; i < generalAnns.length; i++){
+    if(generalAnns[i].typeAnnouncement === 'babysitter' && babysitterAnns.some(el => el._id.toString() === generalAnns[i].babysitterAnn_id.toString())) result.push(generalAnns[i]);
+    else if (generalAnns[i].typeAnnouncement === 'badante' && badanteAnns.some(el => el._id.toString() === generalAnns[i].badanteAnn_id.toString())) result.push(generalAnns[i]);
+    else if (generalAnns[i].typeAnnouncement === 'colf' && colfAnns.some(el => el._id.toString() === generalAnns[i].colfAnn_id.toString())) result.push(generalAnns[i]);
+  }  
 
   return await Promise.all(result.map(util.showAnnData));
-
-  // const features = new APIFeatures (Announcement.find(), req.query).filter().sort().limitFields().paginate();
-  // const anns = await features.query;
-  // return await Promise.all(anns.map(util.showAnnData));
 }
 
 exports.createAnnouncement = async (announcement) => {
   let generalAnnouncement;
   let specificAnnouncement;
   try {
-  if (announcement.typeAnnouncement === 'babysitter') {
-    specificAnnouncement = await BabysitterAnn.create(announcement);
-    announcement.babysitterAnn_id = specificAnnouncement._id;
-  }
-  else if (announcement.typeAnnouncement === 'badante') {
-    specificAnnouncement = await BadanteAnn.create(announcement);
-    announcement.badanteAnn_id = specificAnnouncement._id;
-  }
-  else if (announcement.typeAnnouncement === 'colf') {
-    specificAnnouncement = await ColfAnn.create(announcement);
-    announcement.colfAnn_id = specificAnnouncement._id;
-  }
-  generalAnnouncement = await Announcement.create(announcement);
-  return {
-    generalAnnouncement,
-    specificAnnouncement
-  };}
-  finally {
+    if (announcement.typeAnnouncement === 'babysitter') {
+      specificAnnouncement = await BabysitterAnn.create(announcement);
+      announcement.babysitterAnn_id = specificAnnouncement._id;
+    }
+    else if (announcement.typeAnnouncement === 'badante') {
+      specificAnnouncement = await BadanteAnn.create(announcement);
+      announcement.badanteAnn_id = specificAnnouncement._id;
+    }
+    else if (announcement.typeAnnouncement === 'colf') {
+      specificAnnouncement = await ColfAnn.create(announcement);
+      announcement.colfAnn_id = specificAnnouncement._id;
+    }
+    generalAnnouncement = await Announcement.create(announcement);
+    return {
+      generalAnnouncement,
+      specificAnnouncement
+    };
+  } finally {
     if (!generalAnnouncement && specificAnnouncement) {
       if(specificAnnouncement.announcementType === 'babysitter') await BabysitterAnn.findByIdAndDelete(specificAnnouncement._id);
       if(specificAnnouncement.announcementType === 'badante') await BadanteAnn.findByIdAndDelete(specificAnnouncement._id);
@@ -76,13 +61,22 @@ exports.createAnnouncement = async (announcement) => {
 }
 
 exports.getAnnouncement = async (id) => {
-  const ann = await Announcement.findById(id);
+  const ann = await Announcement.findById(id).populate({
+    path: 'user_id'
+  }).populate({
+    path: 'babysitterAnn_id'
+  }).populate({
+    path: 'badanteAnn_id'
+  }).populate({
+    path: 'colfAnn_id'
+  });
 
   if (!ann) {
     return undefined;
   }
 
-  return util.showAnnData(ann);
+  // return util.showAnnData(ann);
+  return ann;
 }
 
 exports.deleteAnnouncement = async (id) => {
@@ -98,7 +92,7 @@ exports.deleteAnnouncement = async (id) => {
   if (type === 'colf') await ColfAnn.findByIdAndDelete(ann.colfAnn_id);
   
   await Announcement.findByIdAndDelete(id);
-  return true;
+  return ann;
 }
 
 exports.deleteAllAnnouncements = async () => {
@@ -132,21 +126,23 @@ exports.updateAnnouncement = async (id, body) => {
   // escludo i campi che non possono essere modificati
   let validFields = { ...body };
 
-  validFields = util.excludeFields(validFields, 'user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'date');
+  validFields = util.excludeFields(validFields, 'user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate');
 
   const type = generalAnnouncement.typeAnnouncement;
   const {title} = generalAnnouncement;
   generalAnnouncement = await Announcement.findByIdAndUpdate(id, validFields);
   let specificAnnouncement;
-  try {if (type === 'babysitter') {
-    specificAnnouncement = await BabysitterAnn.findByIdAndUpdate(generalAnnouncement.babysitterAnn_id, validFields);
+  try {
+    if (type === 'babysitter') {
+      specificAnnouncement = await BabysitterAnn.findByIdAndUpdate(generalAnnouncement.babysitterAnn_id, validFields);
+    }
+    if (type === 'badante') {
+      specificAnnouncement = await BadanteAnn.findByIdAndUpdate(generalAnnouncement.badanteAnn_id, validFields);
+    }
+    if (type === 'colf') {
+      specificAnnouncement = await ColfAnn.findByIdAndUpdate(generalAnnouncement.colfAnn_id, validFields);
+    }
   }
-  if (type === 'badante') {
-    specificAnnouncement = await BadanteAnn.findByIdAndUpdate(generalAnnouncement.badanteAnn_id, validFields);
-  }
-  if (type === 'colf') {
-    specificAnnouncement = await ColfAnn.findByIdAndUpdate(generalAnnouncement.colfAnn_id, validFields);
-  }}
   finally {
     if(!specificAnnouncement && generalAnnouncement) {
       generalAnnouncement.set({title});

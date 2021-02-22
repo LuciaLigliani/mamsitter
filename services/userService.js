@@ -5,53 +5,63 @@ const Colf = require("../models/colfModel");
 const Famiglia = require("../models/famigliaModel");
 const util = require('../utils/util');
 const validationFields = require('../utils/validationFields');
+const APIFeatures = require("../utils/apiFeatures");
 
 exports.createUser = async(user) => {
   let specificUser;
   let generalUser;
-  try {if (user.role === 'babysitter') {
-    specificUser = await Babysitter.create(user);
-    user.babysitter_id = specificUser._id;
-  }
-  else if (user.role === 'badante') {
-    specificUser = await Badante.create(user);
-    user.badante_id = specificUser._id;
-  }
-  else if (user.role === 'colf') {
-    specificUser = await Colf.create(user);
-    user.colf_id = specificUser._id;
-  }
-  else if (user.role === 'famiglia') {
-    specificUser = await Famiglia.create(user);
-    user.famiglia_id = specificUser._id;
-  }
-  generalUser = await User.create(user);
-  
-  return {
-    generalUser,
-    specificUser
-  };}
-  finally{
+  try {
+    if (user.role === 'babysitter') {
+      specificUser = await Babysitter.create(user);
+      user.babysitter_id = specificUser._id;
+    }
+    else if (user.role === 'badante') {
+      specificUser = await Badante.create(user);
+      user.badante_id = specificUser._id;
+    }
+    else if (user.role === 'colf') {
+      specificUser = await Colf.create(user);
+      user.colf_id = specificUser._id;
+    }
+    else if (user.role === 'famiglia') {
+      specificUser = await Famiglia.create(user);
+      user.famiglia_id = specificUser._id;
+    }
+    generalUser = await User.create(user);
+    
+    return {
+      generalUser,
+      specificUser
+    };
+  } finally {
     if (!generalUser && specificUser) {
       if(specificUser.role === 'babysitter') await Babysitter.findByIdAndDelete(specificUser._id);
       if(specificUser.role === 'badante') await Badante.findByIdAndDelete(specificUser._id);
       if(specificUser.role === 'colf') await Colf.findByIdAndDelete(specificUser._id);
       if(specificUser.role === 'famiglia') await Famiglia.findByIdAndDelete(specificUser._id);
     }
-    if (!specificUser && generalUser) {
-      await User.findByIdAndDelete(generalUser._id);
-    }
+    // if (!specificUser && generalUser) {
+    //   await User.findByIdAndDelete(generalUser._id);
+    // }
   }
 }
 
 exports.getUser = async(id) => {
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate({
+    path: 'babysitter_id'
+  }).populate({
+    path: 'badante_id'
+  }).populate({
+    path: 'colf_id'
+  }).populate({
+    path: 'famiglia_id'
+  });
 
   if (!user) {
     return undefined;
   }
 
-  return util.showUserData(user);
+  return user;
 }
 
 exports.updateUser = async (id, body) => {
@@ -79,26 +89,28 @@ exports.updateUser = async (id, body) => {
 
   // escludo i campi che non possono essere modificati (non posso modificare lo specificUser)
   let validFields = { ...body };
-  validFields = util.excludeFields(validFields, 'city', 'district');
+  validFields = util.excludeFields(validFields, 'name', 'surname');
 
   const type = user.role;
-  let modified;
+  let specificUser;
+
   if (type === 'babysitter') {
-    modified = await Babysitter.findByIdAndUpdate(user.babysitter_id, validFields);
+    specificUser = await Babysitter.findByIdAndUpdate(user.babysitter_id, validFields);
   }
   if (type === 'badante') {
-    modified = await Badante.findByIdAndUpdate(user.badante_id, validFields);
+    specificUser = await Badante.findByIdAndUpdate(user.badante_id, validFields);
   }
   if (type === 'colf') {
-    modified = await Colf.findByIdAndUpdate(user.colf_id, validFields);
+    specificUser = await Colf.findByIdAndUpdate(user.colf_id, validFields);
   }
   if (type === 'famiglia') {
-    modified = await Famiglia.findByIdAndUpdate(user.famiglia_id, validFields);
+    validFields = util.excludeFields(validFields, 'city', 'district');
+    specificUser = await Famiglia.findByIdAndUpdate(user.famiglia_id, validFields);
   }
 
   return {
     generalUser: user,
-    specificUser: modified
+    specificUser
   };
 }
 
@@ -126,4 +138,29 @@ exports.deleteAllUsers = async () => {
   await Badante.deleteMany({});
   await Colf.deleteMany({});
   await Famiglia.deleteMany({});
+}
+
+exports.getAllUsers = async (req) => {
+   // TODO: gestire sort, limitFields e paginate
+   let generalUsers = new APIFeatures (User.find(), req.query).filter('generic');
+   let babysitters = new APIFeatures (Babysitter.find(), req.query).filter('specific').moreFilters();
+   let badantes = new APIFeatures (Badante.find(), req.query).filter('specific').moreFilters();
+   let colfs = new APIFeatures (Colf.find(), req.query).filter('specific').moreFilters();
+   let famiglias = new APIFeatures (Famiglia.find(), req.query).filter('specific').moreFilters();
+   generalUsers = await generalUsers.query;
+   babysitters = await babysitters.query;
+   badantes = await badantes.query;
+   colfs = await colfs.query;
+   famiglias = await famiglias.query;
+
+   const result = [];
+  // eslint-disable-next-line no-plusplus
+  for(let i = 0; i < generalUsers.length; i++){
+    if(generalUsers[i].role === 'babysitter' && babysitters.some(el => el._id.toString() === generalUsers[i].babysitter_id.toString())) result.push(generalUsers[i]);
+    else if (generalUsers[i].role === 'badante' && badantes.some(el => el._id.toString() === generalUsers[i].badante_id.toString())) result.push(generalUsers[i]);
+    else if (generalUsers[i].role === 'colf' && colfs.some(el => el._id.toString() === generalUsers[i].colf_id.toString())) result.push(generalUsers[i]);
+    else if (generalUsers[i].role === 'famiglia' && famiglias.some(el => el._id.toString() === generalUsers[i].famiglia_id.toString())) result.push(generalUsers[i]);
+  }  
+
+  return await Promise.all(result.map(util.showUserData));
 }
