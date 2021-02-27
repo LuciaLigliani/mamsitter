@@ -49,8 +49,12 @@ exports.updateMyProfile = catchAsync (async (req, res, next) => {
 exports.deleteAccount = catchAsync (async (req, res, next) => {
   const user = await userService.deleteUser(req.user.id);
 
-  if (!user) {
+  if (user === undefined) {
     return next(new AppError('No user found', 404));
+  }
+
+  if (user === false) {
+    return next(new AppError('You can\'t delete your account', 403));
   }
 
   res.status(204).json({
@@ -135,6 +139,7 @@ exports.beBase = catchAsync (async (req, res, next) => {
 
 exports.getAllUsers = catchAsync (async (req, res, next) => {
   // if(req.user.role !== 'admin' && req.query.role === 'famiglia') req.query.role = undefined
+  // if(req.user.role === 'famiglia') req.query.role = ''
 
   const users = await userService.getAllUsers(req);
 

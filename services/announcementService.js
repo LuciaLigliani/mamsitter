@@ -75,40 +75,27 @@ exports.getAnnouncement = async (id) => {
     return undefined;
   }
 
-  // return util.showAnnData(ann);
   return ann;
 }
 
-exports.deleteAnnouncement = async (id) => {
-  const ann = await Announcement.findById(id);
-
-  if (!ann) {
-    return undefined;
-  }
-
+exports.deleteAnnouncement = async (ann) => {
   const type = ann.typeAnnouncement;
   if (type === 'babysitter') await BabysitterAnn.findByIdAndDelete(ann.babysitterAnn_id);
   if (type === 'badante') await BadanteAnn.findByIdAndDelete(ann.badanteAnn_id);
   if (type === 'colf') await ColfAnn.findByIdAndDelete(ann.colfAnn_id);
   
-  await Announcement.findByIdAndDelete(id);
+  await Announcement.findByIdAndDelete(ann._id);
   return ann;
 }
 
 exports.deleteAllAnnouncements = async () => {
-  await Announcement.deleteMany({});
-  await BabysitterAnn.deleteMany({});
-  await BadanteAnn.deleteMany({});
-  await ColfAnn.deleteMany({});
+  await Announcement.deleteMany();
+  await BabysitterAnn.deleteMany();
+  await BadanteAnn.deleteMany();
+  await ColfAnn.deleteMany();
 }
 
-exports.updateAnnouncement = async (id, body) => {
-  let generalAnnouncement = await Announcement.findById(id);
-
-  if (!generalAnnouncement) {
-    return undefined;
-  }
-
+exports.updateAnnouncement = async (ann, body) => {
   // validate arrays
   if(body.languages && body.languages[0] === undefined){
     body.languages = undefined;
@@ -126,27 +113,27 @@ exports.updateAnnouncement = async (id, body) => {
   // escludo i campi che non possono essere modificati
   let validFields = { ...body };
 
-  validFields = util.excludeFields(validFields, 'user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate');
+  validFields = util.excludeFields(validFields, 'user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'city', 'district');
 
-  const type = generalAnnouncement.typeAnnouncement;
-  const {title} = generalAnnouncement;
-  generalAnnouncement = await Announcement.findByIdAndUpdate(id, validFields);
+  const type = ann.typeAnnouncement;
+  const {title} = ann;
+  ann = await Announcement.findByIdAndUpdate(ann._id, validFields);
   let specificAnnouncement;
   try {
     if (type === 'babysitter') {
-      specificAnnouncement = await BabysitterAnn.findByIdAndUpdate(generalAnnouncement.babysitterAnn_id, validFields);
+      specificAnnouncement = await BabysitterAnn.findByIdAndUpdate(ann.babysitterAnn_id, validFields);
     }
     if (type === 'badante') {
-      specificAnnouncement = await BadanteAnn.findByIdAndUpdate(generalAnnouncement.badanteAnn_id, validFields);
+      specificAnnouncement = await BadanteAnn.findByIdAndUpdate(ann.badanteAnn_id, validFields);
     }
     if (type === 'colf') {
-      specificAnnouncement = await ColfAnn.findByIdAndUpdate(generalAnnouncement.colfAnn_id, validFields);
+      specificAnnouncement = await ColfAnn.findByIdAndUpdate(ann.colfAnn_id, validFields);
     }
   }
   finally {
-    if(!specificAnnouncement && generalAnnouncement) {
-      generalAnnouncement.set({title});
-      generalAnnouncement.save();
+    if(!specificAnnouncement && ann) {
+      ann.set({title});
+      ann.save();
     }
   }
 
@@ -161,7 +148,7 @@ exports.updateAnnouncement = async (id, body) => {
   }
 
   return {
-    generalAnnouncement,
+    ann,
     specificAnnouncement
   };
 }

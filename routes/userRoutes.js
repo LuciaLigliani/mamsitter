@@ -22,11 +22,12 @@ router.patch('/payment/can', userController.can);//DONE
 router.patch('/payment/premium', userController.bePremium);//DONE
 router.patch('/payment/topClass', userController.beTopClass);//DONE
 
+router.get('/', authController.restrictTo('admin', 'famiglia'), userController.getAllUsers);
+
 // TODO: you need to be an admin
-// router.get('/', authController.restrictTo('admin'), userController.getAllUsers);
-// router.delete('/', authController.restrictTo('admin'), userController.deleteAllUsers);
-router.get('/', userController.getAllUsers);
-router.delete('/', userController.deleteAllUsers);
+router.delete('/', authController.restrictTo('admin'), userController.deleteAllUsers);
+// router.get('/', userController.getAllUsers);
+// router.delete('/', userController.deleteAllUsers);
 
 // you need to be a family
 router.patch('/payment/base', authController.restrictTo('famiglia'), userController.beBase);//DONE

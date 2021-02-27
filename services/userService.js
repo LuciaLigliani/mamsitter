@@ -89,7 +89,8 @@ exports.updateUser = async (id, body) => {
 
   // escludo i campi che non possono essere modificati (non posso modificare lo specificUser)
   let validFields = { ...body };
-  validFields = util.excludeFields(validFields, 'name', 'surname');
+  let toExclude = ['name', 'surname'];
+  validFields = util.excludeFields(validFields, toExclude);
 
   const type = user.role;
   let specificUser;
@@ -104,7 +105,8 @@ exports.updateUser = async (id, body) => {
     specificUser = await Colf.findByIdAndUpdate(user.colf_id, validFields);
   }
   if (type === 'famiglia') {
-    validFields = util.excludeFields(validFields, 'city', 'district');
+    toExclude = ['city', 'district'];
+    validFields = util.excludeFields(validFields, toExclude);
     specificUser = await Famiglia.findByIdAndUpdate(user.famiglia_id, validFields);
   }
 
@@ -122,6 +124,7 @@ exports.deleteUser = async (id) => {
   }
 
   const type = user.role;
+  if (type === 'admin') return false;
   if (type === 'babysitter') await Babysitter.findByIdAndDelete(user.babysitter_id);
   if (type === 'badante') await Badante.findByIdAndDelete(user.badante_id);
   if (type === 'colf') await Colf.findByIdAndDelete(user.colf_id);
@@ -133,11 +136,11 @@ exports.deleteUser = async (id) => {
 }
 
 exports.deleteAllUsers = async () => {
-  await User.deleteMany({});
-  await Babysitter.deleteMany({});
-  await Badante.deleteMany({});
-  await Colf.deleteMany({});
-  await Famiglia.deleteMany({});
+  await User.deleteMany({role: {$ne: 'admin'}});
+  await Babysitter.deleteMany();
+  await Badante.deleteMany();
+  await Colf.deleteMany();
+  await Famiglia.deleteMany();
 }
 
 exports.getAllUsers = async (req) => {
