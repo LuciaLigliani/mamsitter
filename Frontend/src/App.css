@@ -49,21 +49,19 @@
 
 
 .pagLogin{
-  margin-top: 20px;
   margin-left: 7px;
   width: 50px;
   padding-top: 10px;
-  height: 90vh;
+  height: 100vh;
   width: 79rem;
   background-color: rgb(255, 101, 195);
   
 }
 .pagSignin{
-  margin-top: 1px;
   margin-left: 7px;
   width: 50px;
   padding-top: 10px;
-  height: 90vh;
+  height: 100vh;
   width: 79rem;
   background-color: rgb(255, 101, 195);
   
@@ -117,11 +115,26 @@
   cursor: pointer;
 }
 
+
 .button2 {background-color: #000000;}
+
+.buttonp {
+  border:white;
+  color: white;
+  margin-top: 3%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.buttonpp {background-color: #000000;}
+
 .cerca{
   background-color: rgb(255, 101, 195);
   height: 100vh;
-  width: 80rem;
+  width: 89rem;
   margin-top:30px;
   margin-left:-300px;
 }
@@ -206,10 +219,38 @@ a:-webkit-any-link{
 input:invalid{
   border: 2px dashed black;
 }
-input:valid{
-  border: 2px solid black;
-}
 
 .im{
   height: 400px;
+}
+
+.mprofile{
+ /* align-content: center;
+    height: 430px;
+    width: 100%;
+    margin-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 40px;
+    font-size: 10px;  
+    background-color: rgb(255, 255, 255);
+    box-shadow: 3px 3px 40px 5px rgb(17, 10, 16);
+    left: 500px;
+*/
+padding-top: 2%;
+padding-bottom: 3%;
+margin-left: 15rem;
+width: 50rem;
+background-color: rgb(255, 255, 255);
+
+box-shadow: 3px 3px 40px 5px rgb(17, 10, 16);
+} 
+.ciao{
+margin-top: 3rem;
+margin-left: 1rem;
+width: 10rem;
+background-color: rgb(0, 0, 0);
+}
+.box{
+  width: 30rem;
 }

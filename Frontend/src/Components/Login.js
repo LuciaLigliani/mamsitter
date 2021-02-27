@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import Container from 'react-bootstrap/Container'
 import mamsitter from '..//mamsitter.png';
+import Navbar from '..//Components/Navbar'
 
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
@@ -38,7 +39,7 @@ submitHandler = (e) => {
 render(){
   return (
     <div className="pagLogin">  
-
+  <Navbar/>
     <Container className="Login">
       <Row>
         <Col>
