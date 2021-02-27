@@ -33,6 +33,19 @@ const announcementSchema = new mongoose.Schema(
       },
       required: [true, 'Please provide the worker you need']
     },
+    city: {
+      type: String,
+      trim: true,
+      required: [true, 'Please provide a city.']
+    },
+    district: {
+      type: String,
+      required: [true, 'Please provide a correct district.'],
+      enum: {
+        values: ['district1', 'district2', 'district3'],
+        message: 'District can be district1, district2 or district3'
+      }
+    },
     babysitterAnn_id: {
       type: mongoose.Schema.ObjectId,
       ref: 'BabysitterAnn',
@@ -97,11 +110,11 @@ announcementSchema.pre('findOneAndUpdate', function(next) {
   next();
 });
 
-announcementSchema.virtual('candidates', {
-  ref: 'Application',
-  foreignField: 'announcement_id',
-  localField: '_id'
-});
+// announcementSchema.virtual('candidates', {
+//   ref: 'Application',
+//   foreignField: 'announcement_id',
+//   localField: '_id'
+// });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
 module.exports = Announcement;

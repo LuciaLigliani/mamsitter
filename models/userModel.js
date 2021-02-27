@@ -154,6 +154,12 @@ userSchema.pre('save', function (next) {
 });
 
 // userSchema.pre(/^find/, function(next) {
+//   // this points to the current query
+//   this.find({ role: { $ne: 'admin' } });
+//   next();
+// });
+
+// userSchema.pre(/^find/, function(next) {
 //   this.populate({
 //     path: 'babysitter_id'
 //   }).populate({

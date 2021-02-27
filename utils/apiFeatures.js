@@ -24,7 +24,7 @@ class APIFeatures {
     else queryStr = JSON.stringify(specificFields); 
 
     // applico il filtro
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt|ne)\b/g, match => `$${match}`);
     queryStr = JSON.parse(queryStr);
 
     this.query = this.query.find(queryStr);
