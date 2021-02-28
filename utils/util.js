@@ -18,16 +18,21 @@ const signToken = id => {
   });
 }
 
-exports.createSendToken = (user, statusCode, res) => {
+exports.createSendToken = (user, statusCode, res, req) => {
   const token = signToken (user._id);
 
   const cookieOptions = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true
   };
-  if(process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  //if(process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
+  //console.log(res);
+ // console.log(token);
+ // console.log(req.cookies);
   res.cookie('jwt', token, cookieOptions);
+ // console.log(res.cookie);
+ // console.log(req.cookies);
 
   // to not show password when create a user
   user.password = undefined;

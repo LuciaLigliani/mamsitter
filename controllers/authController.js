@@ -31,16 +31,21 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  util.createSendToken(user, 200, res);
+  util.createSendToken(user, 200, res, req);
 });
 
 // means that you have to authenticate
 exports.protect = catchAsync(async (req, res, next) => {
   // getting token and check if it's there
   let token;
+  console.log('ciao');
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
+  console.log('hola');
+  
 
   if (!token) {
     return next(new AppError('You are not logged in! Please log in to get access.', 401));

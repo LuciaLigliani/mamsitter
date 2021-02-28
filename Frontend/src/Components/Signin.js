@@ -113,6 +113,7 @@ submitHandler = (e) => {
         <br/> Data di nascita <Form.Control required type="date" name='birthDate' date-format="YYYY/MM/DD" onChange={this.changeHandler} ></Form.Control>
         <br/><br/><Form.Control  as="select" name='district' onChange={this.changeHandler} >
          <option value disabled="disabled"  hidden="hidden">Distretto</option>
+         <option value='district'>distretto</option>
          <option value='district1'>district1</option>
         <option value='district2'>district2</option>
         <option valure='district3'>district3</option>
@@ -123,8 +124,7 @@ submitHandler = (e) => {
 
           
 <br/><br/>
-<Link to="/myProfile"><button  type="submit" class="button button1"  >Registrati</button><br/></Link>
- 
+<button  type="submit" class="button button1"  >Registrati</button><br/>
        
         </Row>
   </Form>
