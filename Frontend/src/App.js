@@ -2,8 +2,6 @@ import React from 'react';
 import './App.css';
 import AboutUs from'./Components/AboutUs';
 import Signin from './Components/Signin';
-import Navbar from './Components/Navbar';
-//import Footer from './Components/Footer';
 import Cerca from './Components/Cerca';
 import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -14,7 +12,7 @@ function App() {
     <Router> 
       <div className="App"> 
     
-      <Navbar/>
+     
       <Switch>
         <Route path="/signup" component={Signin}/>
         

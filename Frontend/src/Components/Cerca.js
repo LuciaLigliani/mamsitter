@@ -1,5 +1,5 @@
 import React from 'react';
-//import Navbar from '..//Components/Navbar';
+import Navbar from '..//Components/Navbar';
 import '..//App.css';
 import Grid from '..//Components/Grid';
 import milano from '..//milano.jpeg';
@@ -38,7 +38,7 @@ function Cerca(){
 
   return(
     <div >
-      
+      <Navbar/>
       <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>

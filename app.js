@@ -6,6 +6,8 @@ const xss = require('xss-clean');
 const cors = require('cors');
 const morgan = require('morgan');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const announcementRouter = require('./routes/announcementRoutes');
 const userRouter = require('./routes/userRoutes');
 const authRouter = require('./routes/authRoutes');
@@ -14,6 +16,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
 const app = express();
+app.enable('trust proxy');
 
 // Implement CORS
 app.use(cors());
@@ -38,6 +41,8 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+//app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -46,7 +51,7 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Prevent parameter pollution
-app.use(
+/*app.use(
   hpp({
     whitelist: [
       'duration',
@@ -58,6 +63,15 @@ app.use(
     ]
   })
 );
+*/
+app.use(compression());
+
+/**app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  req.cookies.title='GeeksforGeeks';
+  console.log(req.cookies);
+  next();
+});*/
 
 app.use('/api/v1/announcements', announcementRouter);
 app.use('/api/v1/users', userRouter);

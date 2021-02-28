@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import Container from 'react-bootstrap/Container'
 import mamsitter from '..//mamsitter.png';
+import Navbar from '..//Components/Navbar'
 
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
@@ -19,6 +20,7 @@ class Home extends Component {
       password:''
     }
   }
+
   
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
@@ -27,18 +29,23 @@ submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
   axios.post('http://localhost:3000/api/v1/auth/login', this.state).then(response=>{
-    console.log(response)
-    
+   
+ /* if(response.data.status === 'success') {
+    alert('ok');
+    window.setTimeout(()=> {
+      location.assign('/myProfile');
+    }, 1500);
+  }*/
   })
   .catch(error=>{
-    console.log(error.response)
+    alert(error.response.data.message)
   })
 }
 
 render(){
   return (
     <div className="pagLogin">  
-
+  <Navbar/>
     <Container className="Login">
       <Row>
         <Col>
@@ -59,7 +66,8 @@ render(){
           <Form.Control required name='password'  type="password" placeholder="Password" onChange={this.changeHandler} />
         </Form.Group>
         <br/><br/>
-        <Link to ="/cerca"> <button type="submit" class="button1 button2"  >Login</button></Link><br/> 
+         <button type="submit" class="button1 button2"  >Login</button><br/> 
+        <Link to="/myProfile"> <button>Profilo</button></Link>
         <br/><FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
         <br/> <br/><h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>
