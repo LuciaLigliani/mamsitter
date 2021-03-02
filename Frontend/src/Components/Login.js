@@ -13,6 +13,8 @@ import util from '..//util/util'
 
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
+
+
 class Home extends Component {
   constructor(props){
     super(props)
@@ -22,7 +24,6 @@ class Home extends Component {
     }
   }
 
-  
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
   }
@@ -33,19 +34,20 @@ submitHandler = (e) => {
   if(response.data.status === 'success') {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
-    // alert('ok');
-    // window.setTimeout(()=> {
-    //   location.assign('/myProfile');
-    // }, 1500);
+    alert('ok');
+    setTimeout(()=> {
+    window.location.assign('/myProfile');
+     }, 100);
   }
   })
   .catch(error=>{
-    alert(error.response.data.message)
+    alert(error.response.data.message);
   })
 }
 
+
 render(){
-  return (
+  return ( 
     <div className="pagLogin">  
   <Navbar/>
     <Container className="Login">
@@ -69,7 +71,6 @@ render(){
         </Form.Group>
         <br/><br/>
          <button type="submit" class="button1 button2"  >Login</button><br/> 
-        <Link to="/myProfile"> <button>Profilo</button></Link>
         <br/><FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
         <br/> <br/><h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>
@@ -82,27 +83,4 @@ render(){
 }
 }
 export default Home;
-
-  /*<Form className="Login">
-        <Row>
-
-    <figure>
-     <img src={mamsitter} className="im" alt="mamsitter" />
-    </figure>
-    
-          <Col>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label><font face='Georgia'><h3>ACCEDI A MAMSITTER<br/> </h3></font></Form.Label>
-            <font face='Georgia'><h5> Inserisci la tua e-mail</h5></font>
-             <Form.Control name="email"  type="email" placeholder="Email" /><br/>
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-            <font face='Georgia'><h5>Inserisci la tua password </h5></font>
-          <Form.Control name="password"  type="password" placeholder="Password" />
-        </Form.Group></Col>
-        </Row>
-          <button type="button" class="btn btn-outline-white" onClick={login} >Login</button><br/> 
-          <FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
-          <br/><h6>Clicca <Link to ="/registrazione"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6>
-      </Form>*/
 

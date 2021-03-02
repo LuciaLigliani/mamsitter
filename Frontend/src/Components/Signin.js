@@ -37,11 +37,15 @@ submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
   axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
-    console.log(response)
-    
+    if(response.data.status === 'success') {
+      alert('ok');
+     setTimeout(()=> {
+        window.location.assign('/myProfile');
+      }, 100);
+    }
   })
   .catch(error=>{
-    console.log(error.response)
+    alert(error.response.data.message)
   })
 }
  /*check = (e) => {
