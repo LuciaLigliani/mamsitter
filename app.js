@@ -5,7 +5,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const cors = require('cors');
 const morgan = require('morgan');
-const hpp = require('hpp');
+// const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const announcementRouter = require('./routes/announcementRoutes');
@@ -42,7 +42,7 @@ app.use('/api', limiter);
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-//app.use(cookieParser());
+app.use(cookieParser());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -65,13 +65,6 @@ app.use(xss());
 );
 */
 app.use(compression());
-
-/**app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  req.cookies.title='GeeksforGeeks';
-  console.log(req.cookies);
-  next();
-});*/
 
 app.use('/api/v1/announcements', announcementRouter);
 app.use('/api/v1/users', userRouter);

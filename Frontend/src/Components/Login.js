@@ -9,6 +9,7 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container'
 import mamsitter from '..//mamsitter.png';
 import Navbar from '..//Components/Navbar'
+import util from '..//util/util'
 
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
@@ -28,13 +29,15 @@ class Home extends Component {
   }
 submitHandler = (e) => {
   e.preventDefault()
-  console.log(this.state)
+  console.log(this.state);
   axios.post('http://localhost:3000/api/v1/auth/login', this.state).then(response=>{
   if(response.data.status === 'success') {
-    alert('ok');
-   setTimeout(()=> {
-      window.location.assign('/myProfile');
-    }, 100);
+    let jwt =  response.data.token;
+    util.setCookie("user_jwt",jwt,7);
+    // alert('ok');
+    // window.setTimeout(()=> {
+    //   location.assign('/myProfile');
+    // }, 1500);
   }
   })
   .catch(error=>{
@@ -103,3 +106,4 @@ export default Home;
           <FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
           <br/><h6>Clicca <Link to ="/registrazione"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6>
       </Form>*/
+

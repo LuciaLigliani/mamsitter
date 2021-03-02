@@ -94,7 +94,7 @@ exports.updateUser = async (id, body) => {
 
   const type = user.role;
   let specificUser;
-
+  
   if (type === 'babysitter') {
     specificUser = await Babysitter.findByIdAndUpdate(user.babysitter_id, validFields);
   }
@@ -124,7 +124,6 @@ exports.deleteUser = async (id) => {
   }
 
   const type = user.role;
-  if (type === 'admin') return false;
   if (type === 'babysitter') await Babysitter.findByIdAndDelete(user.babysitter_id);
   if (type === 'badante') await Badante.findByIdAndDelete(user.badante_id);
   if (type === 'colf') await Colf.findByIdAndDelete(user.colf_id);
@@ -149,12 +148,16 @@ exports.getAllUsers = async (req) => {
    let babysitters = new APIFeatures (Babysitter.find(), req.query).filter('specific').moreFilters();
    let badantes = new APIFeatures (Badante.find(), req.query).filter('specific').moreFilters();
    let colfs = new APIFeatures (Colf.find(), req.query).filter('specific').moreFilters();
-   let famiglias = new APIFeatures (Famiglia.find(), req.query).filter('specific').moreFilters();
+   let famiglias;
+   if(req.user.role === 'famiglia') famiglias = [];
+   else {
+    famiglias = new APIFeatures (Famiglia.find(), req.query).filter('specific').moreFilters();
+    famiglias = await famiglias.query;
+   }
    generalUsers = await generalUsers.query;
    babysitters = await babysitters.query;
    badantes = await badantes.query;
    colfs = await colfs.query;
-   famiglias = await famiglias.query;
 
    const result = [];
   // eslint-disable-next-line no-plusplus

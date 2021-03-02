@@ -36,7 +36,7 @@ exports.myProfile = catchAsync (async (req, res, next) => {
 exports.updateMyProfile = catchAsync (async (req, res, next) => {
   const user = await userService.updateUser(req.user.id, req.body);
 
-  if (!user) {
+  if (user === undefined) {
     return next(new AppError('No user found!', 404));
   }
   
@@ -53,8 +53,35 @@ exports.deleteAccount = catchAsync (async (req, res, next) => {
     return next(new AppError('No user found', 404));
   }
 
-  if (user === false) {
-    return next(new AppError('You can\'t delete your account', 403));
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+});
+
+exports.getUser = catchAsync (async (req, res, next) => {
+  const user = await userService.getUser(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  if(req.user.role === 'famiglia' && user.role === 'famiglia') {
+    return next(new AppError('You can\'t get this user!', 403));
+
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.deleteUser = catchAsync (async (req, res, next) => {
+  const user = await userService.deleteUser(req.params.id);
+
+  if (user === undefined) {
+    return next(new AppError('No user found', 404));
   }
 
   res.status(204).json({
@@ -71,6 +98,21 @@ exports.deleteAllUsers = catchAsync (async (req, res, next) => {
     data: null
   });
 });
+
+exports.getAllUsers = catchAsync (async (req, res, next) => {
+  // if(req.user.role !== 'admin' && req.query.role === 'famiglia') req.query.role = undefined
+  // if(req.user.role === 'famiglia') req.query.role = ''
+  // TODO: controllare se funziona per la famiglia
+  const users = await userService.getAllUsers(req);
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: users
+  });
+});
+
+// TODO: PAYMENT
 
 exports.beHighlighted = catchAsync (async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user.id, { $set: { highlighted: true } });
@@ -134,18 +176,5 @@ exports.beBase = catchAsync (async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: user
-  });
-});
-
-exports.getAllUsers = catchAsync (async (req, res, next) => {
-  // if(req.user.role !== 'admin' && req.query.role === 'famiglia') req.query.role = undefined
-  // if(req.user.role === 'famiglia') req.query.role = ''
-
-  const users = await userService.getAllUsers(req);
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: users
   });
 });

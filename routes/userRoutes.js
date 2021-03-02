@@ -9,6 +9,7 @@ router.use(authController.protect);
 
 router
   .route('/myProfile') //DONE
+  // .use(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf')) // controllare se funziona
   .get(userController.myProfile)
   .patch(userController.updateMyProfile)
   .delete(userController.deleteAccount)
@@ -16,25 +17,19 @@ router
 router.patch('/updateMyPassword', userController.updateMyPassword);//DONE
 // router.get('/logout', authController.logout);
 
-// qualsiasi user
-// /payment/worker/can... /payment/family/can...
-router.patch('/payment/can', userController.can);//DONE
-router.patch('/payment/premium', userController.bePremium);//DONE
-router.patch('/payment/topClass', userController.beTopClass);//DONE
 
 router.get('/', authController.restrictTo('admin', 'famiglia'), userController.getAllUsers);
-
-// TODO: you need to be an admin
 router.delete('/', authController.restrictTo('admin'), userController.deleteAllUsers);
-// router.get('/', userController.getAllUsers);
-// router.delete('/', userController.deleteAllUsers);
+router.get('/:id', authController.restrictTo('admin', 'famiglia'), userController.getUser);
+router.delete('/:id', authController.restrictTo('admin'), userController.getUser);
 
-// you need to be a family
+// TODO: PAYMENT
+
+router.patch('/payment/can', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.can);//DONE
+router.patch('/payment/highlight', authController.restrictTo('babysitter', 'badante', 'colf'), userController.beHighlighted);//DONE
 router.patch('/payment/base', authController.restrictTo('famiglia'), userController.beBase);//DONE
-
-// you need to be a worker
-router.use(authController.restrictTo('babysitter', 'badante', 'colf'));
-
-router.patch('/payment/highlight', userController.beHighlighted);//DONE
+// /payment/worker/can... /payment/family/can...
+router.patch('/payment/premium', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.bePremium);//DONE
+router.patch('/payment/topClass', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.beTopClass);//DONE
 
 module.exports = router;

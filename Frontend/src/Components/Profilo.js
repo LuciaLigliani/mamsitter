@@ -21,6 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import avatar from '..//avatar.png';
 import axios from 'axios';
+import util from '..//util/util'
 
 const Profilo = () => {
 
@@ -34,6 +35,7 @@ const Profilo = () => {
 
   const getProfile = () => {
     const url = 'http://localhost:3000/api/v1/users/myProfile';
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get(url)
     .then((profile)=>{
       console.log(profile)
