@@ -34,10 +34,10 @@ submitHandler = (e) => {
   if(response.data.status === 'success') {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
-    // alert('ok');
-    // window.setTimeout(()=> {
-    //   location.assign('/myProfile');
-    // }, 1500);
+    alert('ok');
+    setTimeout(()=> {
+    window.location.assign('/myProfile');
+     }, 100);
   }
   })
   .catch(error=>{
@@ -83,27 +83,4 @@ render(){
 }
 }
 export default Home;
-
-  /*<Form className="Login">
-        <Row>
-
-    <figure>
-     <img src={mamsitter} className="im" alt="mamsitter" />
-    </figure>
-    
-          <Col>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label><font face='Georgia'><h3>ACCEDI A MAMSITTER<br/> </h3></font></Form.Label>
-            <font face='Georgia'><h5> Inserisci la tua e-mail</h5></font>
-             <Form.Control name="email"  type="email" placeholder="Email" /><br/>
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-            <font face='Georgia'><h5>Inserisci la tua password </h5></font>
-          <Form.Control name="password"  type="password" placeholder="Password" />
-        </Form.Group></Col>
-        </Row>
-          <button type="button" class="btn btn-outline-white" onClick={login} >Login</button><br/> 
-          <FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
-          <br/><h6>Clicca <Link to ="/registrazione"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6>
-      </Form>*/
 
