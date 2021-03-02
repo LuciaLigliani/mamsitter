@@ -10,7 +10,7 @@ const userService = require('../services/userService');
 
 exports.signup = catchAsync(async (req, res, next) => {
   if(req.body.role === 'admin') {
-    return next(new AppError('You can\'t sign up as admin!', 400));
+    return next(new AppError('You can\'t sign up as admin!', 403));
   }
 
   const newUser = await userService.createUser(req.body);
