@@ -12,6 +12,8 @@ import Navbar from '..//Components/Navbar'
 
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
+
+
 class Home extends Component {
   constructor(props){
     super(props)
@@ -21,7 +23,6 @@ class Home extends Component {
     }
   }
 
-  
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
   }
@@ -29,21 +30,21 @@ submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
   axios.post('http://localhost:3000/api/v1/auth/login', this.state).then(response=>{
-   
- /* if(response.data.status === 'success') {
+  if(response.data.status === 'success') {
     alert('ok');
-    window.setTimeout(()=> {
-      location.assign('/myProfile');
-    }, 1500);
-  }*/
+   setTimeout(()=> {
+      window.location.assign('/myProfile');
+    }, 100);
+  }
   })
   .catch(error=>{
-    alert(error.response.data.message)
+    alert(error.response.data.message);
   })
 }
 
+
 render(){
-  return (
+  return ( 
     <div className="pagLogin">  
   <Navbar/>
     <Container className="Login">
@@ -67,7 +68,6 @@ render(){
         </Form.Group>
         <br/><br/>
          <button type="submit" class="button1 button2"  >Login</button><br/> 
-        <Link to="/myProfile"> <button>Profilo</button></Link>
         <br/><FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
         <br/> <br/><h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>

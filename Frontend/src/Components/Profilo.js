@@ -11,7 +11,6 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import PersonOutlineSharpIcon from '@material-ui/icons/PersonOutlineSharp';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Container } from 'react-bootstrap';
 import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
@@ -23,7 +22,7 @@ import Avatar from '@material-ui/core/Avatar';
 import avatar from '..//avatar.png';
 import axios from 'axios';
 
-const Profilo = (props) => {
+const Profilo = () => {
 
   const [ciao] = React.useState({
     email:'',
@@ -40,19 +39,22 @@ const Profilo = (props) => {
       console.log(profile)
       ciao(profile.profile);
     })
-    .catch((err)=> console.log(err));
+    .catch((err)=> alert(err));
 
 
   }
 
-  const useStyles = makeStyles((theme) => ({
+  const styles = makeStyles((theme) => ({
     avatar: {
       bottom:40,
       margin: -50,
       top:-15, 
       width:200,
       height:200
-    },
+    }
+  }))
+
+  const useStyles = makeStyles((theme) => ({
     icon: {
 
       width:20,
@@ -74,6 +76,7 @@ const Profilo = (props) => {
   };
 
   const classes = useStyles();
+  const classe= styles();
   return(
     
     <div className="profile">
@@ -117,53 +120,53 @@ const Profilo = (props) => {
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
 <Avatar  alt="Remy Sharp" src={avatar}
-className={classes.large} className={classes.avatar}/>
+className={classes.large} className={classe.avatar}/>
 </Box>
          </Col>
          <Col sm={7}>
-         <TextField id="standard-full-width"
+         <TextField id="email"
  label="Email"
  style={{  margin: 1, width: 300, left:80}}
  fullWidth
  margin="normal"/>
-  <TextField id="standard-full-width"
+  <TextField id="role"
  label="Ruolo"
  style={{  margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
- <TextField id="standard-full-width"
+ <TextField id="name"
  label="Nome"
  style={{ margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
-<TextField id="standard-full-width"
+<TextField id="surname"
  label="Cognome"
  style={{  margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
          </Col>
          <Col sm={3}><font face='Georgia' color="white">
-   <br/><br/><br/><br/> &nbsp;&nbsp;<button onClick={()=>getProfile()} type="submit" class="buttonp buttonpp" >Elimina Profilo</button></font>
+   <br/><br/><br/><br/> &nbsp;&nbsp;<button onClick={()=>getProfile()} type="submit" className="buttonp buttonpp" >Elimina Profilo</button></font>
     <font  face='Georgia' color="white">
-    <br/><br/> &nbsp;&nbsp; <button type="submit" class="buttonp buttonpp"  >Aggiorna Profilo</button></font>
+    <br/><br/> &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
          </Col>
  </Row>
 <Row>
   <Col>
   <PersonOutlineSharpIcon fontSize="large" />&nbsp;
- <TextField id="standard-full-width"
+ <TextField id="sex"
  label="Sesso"
  style={{ margin: -5, width: 70, left:-2, bottom:6 }}
  fullWidth
  margin="dense"/> &nbsp;&nbsp;
  &nbsp;<CakeOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="standard-full-width"
+ <TextField id="date"
  label="Data di Nascita"
  style={{ margin: -10, width: 130, left:7, bottom:6 }}
  fullWidth
  margin="normal"/>&nbsp;&nbsp;
  &nbsp; &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="standard-full-width"
+ <TextField id="city"
  label="Città"
  style={{ margin: -10, width: 110, left:7, bottom:6 }}
  fullWidth
@@ -172,19 +175,19 @@ className={classes.large} className={classes.avatar}/>
   <Row>
 <Col>
 <br/><AssignmentOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="standard-full-width"
+ <TextField id="description"
  label="Descrizione"
  style={{ margin: -10, width: 100, left:7, bottom:6}}
  fullWidth
  margin="normal"/>&nbsp;&nbsp;
 &nbsp;&nbsp;<CallOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="standard-full-width"
+ <TextField id="number"
  label="Numero di Telefono"
  style={{ margin: -10, width: 150, left:7, bottom:6 }}
  fullWidth
  margin="normal"/> &nbsp;&nbsp;&nbsp;&nbsp;
  &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>
- <TextField id="standard-full-width"
+ <TextField id="district"
  label="Distretto"
  style={{ margin: -10, width: 150, left:7, bottom:6}}
  fullWidth
