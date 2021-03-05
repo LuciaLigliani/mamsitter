@@ -110,6 +110,18 @@ announcementSchema.pre('findOneAndUpdate', function(next) {
   next();
 });
 
+// announcementSchema.pre('remove', async function(next) {
+//   const app = await Application.find({ announcement_id: this._id});
+//   app.remove();
+//   // console.log(app);
+//   // delete specific announcement
+//   if (this.typeAnnouncement === 'babysitter') await BabysitterAnn.findByIdAndDelete(this.babysitterAnn_id);
+//   if (this.typeAnnouncement === 'badante') await BadanteAnn.findByIdAndDelete(this.badanteAnn_id);
+//   if (this.typeAnnouncement === 'colf') await ColfAnn.findByIdAndDelete(this.colfAnn_id);
+
+//   next();
+// });
+
 // announcementSchema.virtual('candidates', {
 //   ref: 'Application',
 //   foreignField: 'announcement_id',
