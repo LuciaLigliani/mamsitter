@@ -4,9 +4,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.apply = catchAsync (async (req, res, next) => {
-  let announcement;
+  const {announcement} = req;
 
-  if(req.params.id === undefined) return new AppError('This route is not for the worker', 400);
+  if(req.params.id === undefined) return next(new AppError('This route is not for the worker', 400));
 
   if(req.user.can) {
       try{
@@ -36,12 +36,15 @@ exports.getAllApplications = catchAsync (async (req, res, next) => {
   if(req.user.role === 'famiglia') {
     req.query.announcement_id = req.params.id;
   } 
-  else {
-    if(req.params.id !== undefined) return new AppError('This route is not for the worker', 400);
+  if(req.user.role === 'babysitter' || req.user.role === 'badante' || req.user.role === 'colf') {
+    if(req.params.id !== undefined) return next(new AppError('This route is not for the worker ', 400));
     req.query.user_id = req.user.id;
   }
-  
-  applications = new APIFeatures(Application.find(), req.query).filter();
+  if(req.user.role === 'admin' && req.params.id !== undefined) {
+    req.query.announcement_id = req.params.id;
+  }
+
+  applications = new APIFeatures(Application.find(), req.query).filter('generic');
   applications = await applications.query;
 
   res.status(200).json({
@@ -52,7 +55,7 @@ exports.getAllApplications = catchAsync (async (req, res, next) => {
 });
 
 exports.getApplication = catchAsync (async (req, res, next) => {
-  const application = await Application.findById(req.param.appId).populate({
+  const application = await Application.findById(req.params.appId).populate({
     path: 'user_id'
   }).populate({
     path: 'announcement_id'

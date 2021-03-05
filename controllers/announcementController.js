@@ -75,11 +75,10 @@ exports.deleteAnnouncement = catchAsync (async (req, res, next) => {
 });
 
 exports.deleteAllAnnouncements = catchAsync (async (req, res, next) => {
-  await announcementService.deleteAllAnnouncements();
+  await announcementService.deleteAnnouncements({});
 
   res.status(204).json({
     status: 'success',
     data: null
   });
 });
-

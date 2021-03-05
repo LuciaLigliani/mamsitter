@@ -13,12 +13,9 @@ router.use(authController.protect);
 
 router.use(async function (req, res, next) {
   if(req.user.role === 'famiglia' && req.params.id === undefined) {
-    return new AppError('This route is not for the family.', 400);
+    return next(new AppError('This route is not for the family.', 400));
   }
-  if(req.user.role === 'admin' && req.params.id === undefined) {
-    return new AppError('This route is not for the admin.', 400);
-  }
-  
+
   next();
 });
 
@@ -28,7 +25,7 @@ router.use('/:appId', catchAsync( async function (req, res, next) {
   if(!app) {
     return next(new AppError('Application not found', 404));
   }
-  if(req.params.id !== undefined && req.params.id !== app.announcement_id){
+  if(req.params.id !== undefined && req.params.id.toString() !== app.announcement_id.toString()){
     return next(new AppError('Application not found', 404));
   }
   if(req.user.role !== 'famiglia' && req.user.role !== 'admin' && app.user_id.toString() !== req.user.id.toString()) {

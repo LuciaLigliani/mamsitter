@@ -2,6 +2,7 @@ const Announcement = require("../models/announcementModel");
 const BabysitterAnn = require("../models/babysitterAnnModel");
 const BadanteAnn = require("../models/badanteAnnModel");
 const ColfAnn = require("../models/colfAnnModel");
+const Application = require("../models/applicationModel");
 const util = require("../utils/util");
 const APIFeatures = require('../utils/apiFeatures');
 
@@ -79,20 +80,31 @@ exports.getAnnouncement = async (id) => {
 }
 
 exports.deleteAnnouncement = async (ann) => {
+  // delete specific ann
   const type = ann.typeAnnouncement;
   if (type === 'babysitter') await BabysitterAnn.findByIdAndDelete(ann.babysitterAnn_id);
   if (type === 'badante') await BadanteAnn.findByIdAndDelete(ann.badanteAnn_id);
   if (type === 'colf') await ColfAnn.findByIdAndDelete(ann.colfAnn_id);
+
+  // delete apps 
+  await Application.deleteMany({ announcement_id: ann._id});
   
   await Announcement.findByIdAndDelete(ann._id);
   return ann;
 }
 
-exports.deleteAllAnnouncements = async () => {
-  await Announcement.deleteMany();
-  await BabysitterAnn.deleteMany();
-  await BadanteAnn.deleteMany();
-  await ColfAnn.deleteMany();
+exports.deleteAnnouncements = async (options) => {
+  const anns = await Announcement.find(options);
+  // eslint-disable-next-line no-plusplus
+  for(let i = 0; i < anns.length; i++){
+    // eslint-disable-next-line no-await-in-loop
+    await this.deleteAnnouncement(anns[i]);
+  }
+  // await Announcement.deleteMany();
+  // await BabysitterAnn.deleteMany();
+  // await BadanteAnn.deleteMany();
+  // await ColfAnn.deleteMany();
+  // await Application.deleteMany();
 }
 
 exports.updateAnnouncement = async (ann, body) => {
@@ -112,8 +124,8 @@ exports.updateAnnouncement = async (ann, body) => {
 
   // escludo i campi che non possono essere modificati
   let validFields = { ...body };
-
-  validFields = util.excludeFields(validFields, 'user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'city', 'district');
+  const toExclude = ['user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'city', 'district'];
+  validFields = util.excludeFields(validFields, toExclude);
 
   const type = ann.typeAnnouncement;
   const {title} = ann;
@@ -136,19 +148,8 @@ exports.updateAnnouncement = async (ann, body) => {
       ann.save();
     }
   }
-
-  // elimino la possibilità di aggiungere informazioni non richieste
-  if (specificAnnouncement.typeWork === 'occasionale') {
-    specificAnnouncement.set({neededDays: undefined});
-    specificAnnouncement.save();
-  }
-  else {
-    specificAnnouncement.set({when: undefined});
-    specificAnnouncement.save();
-  }
-
   return {
-    ann,
+    generalAnnouncement: ann,
     specificAnnouncement
   };
 }

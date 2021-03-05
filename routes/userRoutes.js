@@ -9,10 +9,9 @@ router.use(authController.protect);
 
 router
   .route('/myProfile') //DONE
-  // .use(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf')) // controllare se funziona
-  .get(userController.myProfile)
-  .patch(userController.updateMyProfile)
-  .delete(userController.deleteAccount)
+  .get(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.myProfile)
+  .patch(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.updateMyProfile)
+  .delete(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.deleteAccount)
 
 router.patch('/updateMyPassword', userController.updateMyPassword);//DONE
 // router.get('/logout', authController.logout);
@@ -21,7 +20,7 @@ router.patch('/updateMyPassword', userController.updateMyPassword);//DONE
 router.get('/', authController.restrictTo('admin', 'famiglia'), userController.getAllUsers);
 router.delete('/', authController.restrictTo('admin'), userController.deleteAllUsers);
 router.get('/:id', authController.restrictTo('admin', 'famiglia'), userController.getUser);
-router.delete('/:id', authController.restrictTo('admin'), userController.getUser);
+router.delete('/:id', authController.restrictTo('admin'), userController.deleteUser);
 
 // TODO: PAYMENT
 

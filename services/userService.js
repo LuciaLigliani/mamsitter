@@ -6,6 +6,12 @@ const Famiglia = require("../models/famigliaModel");
 const util = require('../utils/util');
 const validationFields = require('../utils/validationFields');
 const APIFeatures = require("../utils/apiFeatures");
+const Announcement = require("../models/announcementModel");
+const BabysitterAnn = require("../models/babysitterAnnModel");
+const BadanteAnn = require("../models/badanteAnnModel");
+const ColfAnn = require("../models/colfAnnModel");
+const Application = require("../models/applicationModel");
+const announcementService = require("./announcementService");
 
 exports.createUser = async(user) => {
   let specificUser;
@@ -123,11 +129,17 @@ exports.deleteUser = async (id) => {
     return undefined;
   }
 
+  // delete specific user, anns e applications
   const type = user.role;
-  if (type === 'babysitter') await Babysitter.findByIdAndDelete(user.babysitter_id);
-  if (type === 'badante') await Badante.findByIdAndDelete(user.badante_id);
-  if (type === 'colf') await Colf.findByIdAndDelete(user.colf_id);
-  if (type === 'famiglia') await Famiglia.findByIdAndDelete(user.famiglia_id);
+  if (type === 'famiglia') {
+    await announcementService.deleteAnnouncements({user_id: user._id});
+    await Famiglia.findByIdAndDelete(user.famiglia_id);
+  } else {
+    await Application.deleteMany({user_id: user._id});
+    if (type === 'babysitter') await Babysitter.findByIdAndDelete(user.babysitter_id);
+    if (type === 'badante') await Badante.findByIdAndDelete(user.badante_id);
+    if (type === 'colf') await Colf.findByIdAndDelete(user.colf_id);
+  }
 
   await User.findByIdAndDelete(id);
 
@@ -140,11 +152,16 @@ exports.deleteAllUsers = async () => {
   await Badante.deleteMany();
   await Colf.deleteMany();
   await Famiglia.deleteMany();
+  await Announcement.deleteMany();
+  await BabysitterAnn.deleteMany();
+  await BadanteAnn.deleteMany();
+  await ColfAnn.deleteMany();
+  await Application.deleteMany();
 }
 
 exports.getAllUsers = async (req) => {
    // TODO: gestire sort, limitFields e paginate
-   let generalUsers = new APIFeatures (User.find(), req.query).filter('generic');
+   let generalUsers = new APIFeatures (User.find({role: {$ne: 'admin'}}), req.query).filter('generic');
    let babysitters = new APIFeatures (Babysitter.find(), req.query).filter('specific').moreFilters();
    let badantes = new APIFeatures (Badante.find(), req.query).filter('specific').moreFilters();
    let colfs = new APIFeatures (Colf.find(), req.query).filter('specific').moreFilters();

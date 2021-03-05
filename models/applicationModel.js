@@ -16,7 +16,7 @@ const applicationSchema = new mongoose.Schema(
   }
 );
 
-applicationSchema.index({ user_id: 1, announcement_id:1 }, { unique: true });
+applicationSchema.index({ user_id: 1, announcement_id: 1 }, { unique: true });
 
 applicationSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
