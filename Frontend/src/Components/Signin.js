@@ -8,9 +8,9 @@ import { Col, Row } from 'react-bootstrap';
 import { FormLabel } from '@material-ui/core';
 import Navbar from '..//Components/Navbar'
 import Form from 'react-bootstrap/Form'
-
 import Container from 'react-bootstrap/Container'
 import axios from 'axios'
+import util from '..//util/util'
 class Signin extends Component{
   constructor(props){
     super(props)
@@ -35,39 +35,20 @@ class Signin extends Component{
   }
 submitHandler = (e) => {
   e.preventDefault()
-  console.log(this.state)
   axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
     if(response.data.status === 'success') {
+      let jwt =  response.data.token;
+      util.setCookie("user_jwt",jwt,7);
       alert('ok');
      setTimeout(()=> {
-        window.location.assign('/myProfile');
-      }, 100);
+        window.location.assign('/login');
+      }, 10);
     }
   })
   .catch(error=>{
     alert(error.response.data.message)
   })
 }
- /*check = (e) => {
-  if(this.state === isValidElement) {
-    a href to="/myProfile"></Link>
-  } 
-}
-  if(document.getElementById('email').checked){
-    alert("inserisci la tua email:"+document.getElementById('email').value)
-  } else if(document.getElementById('password').checked){
-    alert("inserisci la pw:"+document.getElementById('password').value)
-  }*/
-  /* if(this.state) === isValid{
-    return <Link to="/cerca"></Link>
-  };
-  if (this.state == isValid) {
-    console.log('ok')}
-    <Link to="/myProfile"></Link>
-    {
-    console.log('error')
-  }*/
-
 
   render(){
   return (

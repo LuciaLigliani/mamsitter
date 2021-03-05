@@ -7,6 +7,7 @@ import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Profilo from './Components/Profilo';
 
+import Blog from './Components/Blog';
 function App() {
   return (
     <Router> 
@@ -15,7 +16,7 @@ function App() {
      
       <Switch>
         <Route path="/signup" component={Signin}/>
-        
+        <Route path="/blog" component={Blog}/>
         <Route path="/myProfile" component={Profilo}/>
         <Route path="/cerca" component={Cerca}/>
         

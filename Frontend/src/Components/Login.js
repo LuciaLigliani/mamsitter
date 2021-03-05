@@ -23,27 +23,28 @@ class Home extends Component {
       password:''
     }
   }
+  
 
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
   }
 submitHandler = (e) => {
   e.preventDefault()
-  console.log(this.state);
   axios.post('http://localhost:3000/api/v1/auth/login', this.state).then(response=>{
   if(response.data.status === 'success') {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
     alert('ok');
     setTimeout(()=> {
-    window.location.assign('/myProfile');
-     }, 100);
+    window.location.assign('/blog');
+     }, 10);
   }
   })
   .catch(error=>{
     alert(error.response.data.message);
   })
 }
+
 
 
 render(){
@@ -58,7 +59,7 @@ render(){
         
     </Col>
         <Col>
-        <Form onSubmit={this.submitHandler} className="form">
+        <Form onSubmit={this.submitHandler}  className="form">
         
         <br/> <Form.Label><font face='Georgia'><h3>ACCEDI A MAMSITTER </h3></font></Form.Label><br/><br/>
          <Form.Group controlId="formBasicEmail">   
