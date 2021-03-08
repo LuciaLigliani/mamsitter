@@ -77,6 +77,15 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
+app.all((req, res, next) => {
+  res.header('Access-Control-Allow-Origin','*');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+ res.header('Content-Type', 'text/plain');  
+ res.header('Access-Control-Max-Age: 600');
+  next();
+});
+
 app.use(globalErrorHandler);
 
 module.exports = app;

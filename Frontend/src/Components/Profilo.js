@@ -17,70 +17,94 @@ import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
 import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import CallOutlinedIcon from '@material-ui/icons/CallOutlined';
-import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import avatar from '..//avatar.png';
+//import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import util from '..//util/util'
-
-const Profilo = () => {
-
-  const [ciao] = React.useState({
-    email:'',
-    role:'',
-    name:'',
-    surname:''
-  })
+import { Component } from 'react';
 
 
-  const getProfile = () => {
-    const url = 'http://localhost:3000/api/v1/users/myProfile';
+class Profilo extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      email:'',
+      role:'',
+      name:'',
+      surname:'',
+      sex:'',
+      birthDate:'',
+      city:'',
+      district:'',
+      description:'',
+      phoneNumber:'',
+      anchorEl:''
+    }
+}
+
+  setData = (data, specificData) => {
+    this.setState({email: data.email});
+    this.setState({role: data.role});
+    this.setState({name: specificData.name});
+    this.setState({surname: specificData.surname});
+    this.setState({sex: specificData.sex});
+    this.setState({birthDate: specificData.birthDate});
+    this.setState({city: specificData.city});
+    this.setState({district: specificData.district});
+    this.setState({description: specificData.description});
+    this.setState({phoneNumber: specificData.phoneNumber});
+}
+
+
+  componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get(url)
-    .then((profile)=>{
-      console.log(profile)
-      ciao(profile.profile);
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      let specificData;
+      if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
+      if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
+      if(profile.data.data.role === 'badante') specificData = profile.data.data.badante_id;
+      if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
+      this.setData(profile.data.data , specificData);
     })
     .catch((err)=> alert(err));
-
-
   }
 
-  const styles = makeStyles((theme) => ({
-    avatar: {
-      bottom:40,
-      margin: -50,
-      top:-15, 
-      width:200,
-      height:200
-    }
-  }))
+  deleteProfile = () => {
+    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+        alert('utente eliminato');
+        setTimeout(()=> {
+          window.location.assign('/');
+           }, 10); 
+           axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+      })
+    .catch((err)=>alert(err));
+  }
 
-  const useStyles = makeStyles((theme) => ({
-    icon: {
+  logout = () => {
+    setTimeout(()=> {
+      window.location.assign('/');
+       }, 10); 
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+  }
 
-      width:20,
-      height:20
-    },
-    large: {
-      width: theme.spacing(10),
-      height: theme.spacing(10),
-    }
+  /* updateProfile = () => {
+    axios.patch('http://localhost:3000/api/v1/users/myProfile')
+  }*/
 
-  }));
-  
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+
+  handleClick = (event) => {
+    this.setState({anchorEl:event.currentTarget});
+  }
+  handleClose = () => {
+    this.setState({anchorEl:null});
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const classes = useStyles();
-  const classe= styles();
-  return(
+
+  render(){
     
+    return(
+      <div>
     <div className="profile">
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -95,20 +119,18 @@ const Profilo = () => {
           <Link to="/aboutUs">
             <li><font face='Georgia' color='black'>DICONO DI NOI</font></li>
           </Link>
-        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}> <AccountCircle/>
+        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
         </Button>
           <Menu
               id="simple-menu"
-              anchorEl={anchorEl}
+              anchorEl={this.state.anchorEl}
               keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
+              open={Boolean(this.state.anchorEl)}
+              onClose={this.handleClose}
             >
-           <Link to="/myProfile"><MenuItem  onClick={handleClose}>Visualizza profilo</MenuItem></Link> 
-            <Link to="/signup"> <MenuItem onClick={handleClose}>Passa a profilo premium</MenuItem></Link>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-            
+            <Link to="/signup"> <MenuItem onClick={this.handleClose}>Passa a profilo premium</MenuItem></Link>
+            <MenuItem onClick={this.logout}>Logout</MenuItem>
           </Menu>
         </ul>
     </div>
@@ -117,38 +139,46 @@ const Profilo = () => {
      <font size="5" face='Georgia' color="white"> My Profile</font>
     </Box>
    <div className="mprofile">
-     <Container>
+     <Container >
        <Row>
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
-<Avatar  alt="Remy Sharp" src={avatar}
-className={classes.large} className={classe.avatar}/>
+<Avatar  alt="Remy Sharp" src={avatar} style={{
+      bottom:40,
+      margin: -50,
+      top:-15, 
+      width:200,
+      height:200}} />
 </Box>
          </Col>
          <Col sm={7}>
-         <TextField id="email"
- label="Email"
+         <TextField name='email'
+ label={this.state.email}
+ disabled
  style={{  margin: 1, width: 300, left:80}}
  fullWidth
  margin="normal"/>
-  <TextField id="role"
- label="Ruolo"
+  <TextField name='role'
+ label={this.state.role}
+ disabled
  style={{  margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
- <TextField id="name"
- label="Nome"
+ <TextField name='name'
+ label={this.state.name}
+ disabled
  style={{ margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
-<TextField id="surname"
- label="Cognome"
+<TextField name='surname'
+ label={this.state.surname}
+ disabled
  style={{  margin: 1, width: 300, left:80 }}
  fullWidth
  margin="normal"/> 
          </Col>
          <Col sm={3}><font face='Georgia' color="white">
-   <br/><br/><br/><br/> &nbsp;&nbsp;<button onClick={()=>getProfile()} type="submit" className="buttonp buttonpp" >Elimina Profilo</button></font>
+   <br/><br/><br/><br/> &nbsp;&nbsp;<button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
     <font  face='Georgia' color="white">
     <br/><br/> &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
          </Col>
@@ -156,20 +186,23 @@ className={classes.large} className={classe.avatar}/>
 <Row>
   <Col>
   <PersonOutlineSharpIcon fontSize="large" />&nbsp;
- <TextField id="sex"
- label="Sesso"
+ <TextField name='sex'
+ label={this.state.sex}
+ disabled
  style={{ margin: -5, width: 70, left:-2, bottom:6 }}
  fullWidth
  margin="dense"/> &nbsp;&nbsp;
  &nbsp;<CakeOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="date"
- label="Data di Nascita"
+ <TextField name='birthDate'
+ label={this.state.birthDate}
+ disabled
  style={{ margin: -10, width: 130, left:7, bottom:6 }}
  fullWidth
  margin="normal"/>&nbsp;&nbsp;
  &nbsp; &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="city"
- label="Città"
+ <TextField name='city'
+ label={this.state.city}
+ disabled
  style={{ margin: -10, width: 110, left:7, bottom:6 }}
  fullWidth
  margin="normal"/>
@@ -177,20 +210,23 @@ className={classes.large} className={classe.avatar}/>
   <Row>
 <Col>
 <br/><AssignmentOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="description"
- label="Descrizione"
+ <TextField name='description'
+ label={this.state.description}
+ disabled
  style={{ margin: -10, width: 100, left:7, bottom:6}}
  fullWidth
  margin="normal"/>&nbsp;&nbsp;
 &nbsp;&nbsp;<CallOutlinedIcon fontSize="large"/>&nbsp;
- <TextField id="number"
- label="Numero di Telefono"
+ <TextField name='phoneNumber'
+ label={this.state.phoneNumber}
+ disabled
  style={{ margin: -10, width: 150, left:7, bottom:6 }}
  fullWidth
  margin="normal"/> &nbsp;&nbsp;&nbsp;&nbsp;
  &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>
- <TextField id="district"
- label="Distretto"
+ <TextField  name='district'
+ label={this.state.district}
+ disabled
  style={{ margin: -10, width: 150, left:7, bottom:6}}
  fullWidth
  margin="normal"/> 
@@ -200,12 +236,13 @@ className={classes.large} className={classe.avatar}/>
 
 </Row>
      </Container>
-  
-
+     
    </div>
     </div>
-  );
+      </div>
+
+    );
+  }
+
 }
-
 export default Profilo;
-

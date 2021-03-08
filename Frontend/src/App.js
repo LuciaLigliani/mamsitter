@@ -9,6 +9,7 @@ import Profilo from './Components/Profilo';
 import Payments from './Components/Payments';
 import VetrinaPayment from './Components/VetrinaPayment';
 
+import Blog from './Components/Blog';
 function App() {
   return (
     <Router> 
@@ -17,7 +18,7 @@ function App() {
      
       <Switch>
         <Route path="/signup" component={Signin}/>
-        
+        <Route path="/blog" component={Blog}/>
         <Route path="/myProfile" component={Profilo}/>
         <Route path="/cerca" component={Cerca}/>
         
