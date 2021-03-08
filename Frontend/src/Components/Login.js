@@ -35,9 +35,9 @@ submitHandler = (e) => {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
     alert('ok');
-    setTimeout(()=> {
+    /*setTimeout(()=> {
     window.location.assign('/blog');
-     }, 10);
+     }, 10);*/
   }
   })
   .catch(error=>{

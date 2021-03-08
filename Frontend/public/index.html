@@ -4,38 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://www.paypal.com/sdk/js?client-id=AUFxBSGfdWq7IT4OEDBp3XLkRObZnTf-FuL3nwMJA4W3Ta6CZh46UbokOi6o9LrayV0Xv3wuS01SK_A_&currency=EUR"></script>
+
+  
   </head>
   <body>
     
-    <script
-    src="https://www.paypal.com/sdk/js?client-id=SB_CLIENT_ID&vault=true&intent=subscription">
-</script>
-
-<div id="paypal-button-container"></div>
-
-<script>
- paypal.Buttons({
-
-createSubscription: function(data, actions) {
-
-return actions.subscription.create({
-
- 'plan_id': 'P-2UF78835G6983425GLSM44MA'
-
-});
-
-},
-
-
-onApprove: function(data, actions) {
-
-alert('You have successfully created subscription ' + data.subscriptionID);
-
-}
-
-
-}).render('#paypal-button-container');
-</script>
+    <div id="root"></div>
+    
 
   </body>
 </html>

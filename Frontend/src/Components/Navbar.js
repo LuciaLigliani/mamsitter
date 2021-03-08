@@ -44,7 +44,7 @@ function Navbar() {
             >
            <Link to="/login"><MenuItem  onClick={handleClose}>Accedi</MenuItem></Link> 
             <Link to="/signup"> <MenuItem onClick={handleClose}>Registrati</MenuItem></Link>
-            
+            <Link to="/myProfile"> <MenuItem onClick={handleClose}>Visualizza profilo</MenuItem></Link>
           </Menu>
         </ul>
     </div>
