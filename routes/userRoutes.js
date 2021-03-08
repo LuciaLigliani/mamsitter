@@ -10,7 +10,7 @@ router.use(authController.protect);
 router
   .route('/myProfile') //DONE
   .get(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.myProfile)
-  .patch(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.updateMyProfile)
+  .patch(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMyProfile)
   .delete(authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.deleteAccount)
 
 router.patch('/updateMyPassword', userController.updateMyPassword);//DONE

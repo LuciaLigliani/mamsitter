@@ -6,6 +6,8 @@ import Cerca from './Components/Cerca';
 import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Profilo from './Components/Profilo';
+import Payments from './Components/Payments';
+import VetrinaPayment from './Components/VetrinaPayment';
 
 function App() {
   return (
@@ -20,7 +22,8 @@ function App() {
         <Route path="/cerca" component={Cerca}/>
         
         <Route path="/aboutUs" component={AboutUs}/>
-        
+        <Route path ="/payments" component={Payments}/>
+        <Route path ="/vetrina" component={VetrinaPayment}/>
         
         <Route path="/login" component={Login}/>
         <Route path="/" component={Cerca}/>

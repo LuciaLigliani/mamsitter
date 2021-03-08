@@ -110,6 +110,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
       required: true
+    },
+    photo: {
+      type: String,
+      default: 'default.jpg'
     }
   },
   

@@ -93,10 +93,15 @@ exports.updateUser = async (id, body) => {
     body.ageRange = undefined;
   }
 
-  // escludo i campi che non possono essere modificati (non posso modificare lo specificUser)
+  // escludo i campi che non possono essere modificati (non posso modificare lo specificUser, tranne la foto)
   let validFields = { ...body };
   let toExclude = ['name', 'surname'];
   validFields = util.excludeFields(validFields, toExclude);
+
+  if(body.photo) {
+    user.photo = body.photo;
+    user.save({ validateBeforeSave: false });
+  }
 
   const type = user.role;
   let specificUser;
