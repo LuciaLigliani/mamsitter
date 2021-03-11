@@ -6,7 +6,7 @@ class VetrinaPayment extends React.Component {
   componentDidMount() {
     window.paypal.Buttons({
       createSubscription: function(data, actions) {
-        axios.get('http://localhost:3000/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
+        axios.get('/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
         console.log(actions);
         return actions.subscription.create({
           'plan_id': 'P-87674821SB904544FMBCBNUY'

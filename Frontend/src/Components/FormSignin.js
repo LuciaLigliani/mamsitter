@@ -7,8 +7,8 @@ import { Col, Row } from 'react-bootstrap';
 import axios from 'axios'
 
 
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
+// import Form from 'react-bootstrap/Form'
+// import Container from 'react-bootstrap/Container'
 //import FormBabysitter from './FormBabysitter';
 //import FormFamiglia from './FormFamiglia';
 
@@ -59,7 +59,7 @@ changeHandler = (e) => {
 submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
-  axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
+  axios.post('/api/v1/auth/signup', this.state).then(response=>{
       console.log(response)
     })
     .catch(error=>{

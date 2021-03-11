@@ -35,7 +35,7 @@ class Signin extends Component{
   }
 submitHandler = (e) => {
   e.preventDefault()
-  axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
+  axios.post('/api/v1/auth/signup', this.state).then(response=>{
     if(response.data.status === 'success') {
       let jwt =  response.data.token;
       util.setCookie("user_jwt",jwt,7);
