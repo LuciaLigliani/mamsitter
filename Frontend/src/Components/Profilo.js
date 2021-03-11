@@ -69,6 +69,7 @@ class Profilo extends Component {
     })
     .catch((err)=> alert(err));
   }
+  
 
   deleteProfile = () => {
     axios.delete('/api/v1/users/myProfile').then(profile => {
