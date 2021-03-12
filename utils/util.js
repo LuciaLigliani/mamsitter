@@ -23,6 +23,7 @@ exports.createSendToken = (user, statusCode, res, req) => {
 
   // to not show password when create a user
   user.password = undefined;
+  console.log(token);
 
   res.status(statusCode).json({
     status: 'success',
