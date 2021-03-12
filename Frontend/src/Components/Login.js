@@ -30,17 +30,23 @@ class Home extends Component {
   }
 submitHandler = (e) => {
   e.preventDefault()
+  console.log('1');
   axios.post('/api/v1/auth/login', this.state).then(response=>{
+    console.log('2');
   if(response.data.status === 'success') {
+    console.log('3');
     let jwt =  response.data.token;
+    console.log(jwt);
     util.setCookie("user_jwt",jwt,7);
     alert('ok');
     /*setTimeout(()=> {
     window.location.assign('/blog');
      }, 10);*/
   }
+  console.log('4');
   })
   .catch(error=>{
+    console.log(error);
     alert(error.response.data.message);
   })
 }
