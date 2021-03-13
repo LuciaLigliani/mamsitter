@@ -11,6 +11,10 @@ import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import util from '..//util/util'
+import { Snackbar } from '@material-ui/core';
+
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 class Signin extends Component{
   constructor(props){
     super(props)
@@ -26,9 +30,15 @@ class Signin extends Component{
       city:'',
       district:'',
       description:'',
-      phoneNumber:''
+      phoneNumber:'',
+      open: false,
+      message:''
     }
   }
+
+  handleClose= (e) => {
+    this.setState({open:false})
+   }
 
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
@@ -39,14 +49,60 @@ submitHandler = (e) => {
     if(response.data.status === 'success') {
       let jwt =  response.data.token;
       util.setCookie("user_jwt",jwt,7);
-      alert('ok');
+      this.setState({open:true, message:'Registrazione effettuata'})
      setTimeout(()=> {
         window.location.assign('/login');
       }, 10);
     }
   })
   .catch(error=>{
-    alert(error.response.data.message)
+    if(error.response.data.message === 'User validation failed: passwordConfirm: Passwords are not the same')
+      this.setState({open:true, message:'Le due password non corrispondono'});
+    
+   if(error.response.data.message === 'User validation failed: email: Incorrect email or password')
+      this.setState({open:true, message:'Email o password incorretti'});
+     
+    if(error.response.data.message === 'User validation failed: role: Please provide a role')
+      this.setState({open:true, message:'Per favore, inserisci un ruolo'});
+
+    if(error.response.data.message === 'User validation failed: email: Please provide your email')
+      this.setState({open:true, message:'Per favore, inserisci la tua email'});
+
+    if(error.response.data.message === 'User validation failed: password: Password must be at least 8 character')
+      this.setState({open:true, message:'La password deve avere più di 8 caratteri!'});
+
+    if(error.response.data.message === 'Please provide a password')
+      this.setState({open:true, message:'Per favore, inserisci una password'});
+
+    if(error.response.data.message === 'Please confirm your password')
+      this.setState({open:true, message:'Per favore, conferma la password'});
+    
+    if (error.response.data.message.includes('Please provide your birth date.'))
+      this.setState({open:true, message:'Per favore, inserisci una data di nascita'});
+   
+    if (error.response.data.message.includes('You have to be more then 18 years old'))
+      this.setState({open:true, message:'Devi avere più di 18 anni!'});
+
+    if(error.response.data.message.includes('You can\'t be more then 100 years old'))
+      this.setState({open:true, message:'Non puoi avere più di 100 anni!'});
+
+    if(error.response.data.message.includes('Please provide a name'))
+      this.setState({open:true, message:'Per favore inserisci un nome'});
+      
+    if(error.response.data.message.includes('Please provide a surname'))
+      this.setState({open:true, message:'Per favore inserisci un cognome'});
+
+    if(error.response.data.message.includes('Please provide the sex'))
+      this.setState({open:true, message:'Per favore inserisci il sesso'});
+
+    if(error.response.data.message.includes('Please provide a city'))
+      this.setState({open:true, message:'Per favore inserisci una città'});
+     
+    if(error.response.data.message.includes('Please provide a correct district'))
+      this.setState({open:true, message:'Per favore inserisci un distretto corretto'});
+
+    if(error.response.data.message.includes('Please provide a valid phone number.'))
+      this.setState({open:true, message:'Per favore inserisci un numero di telefono valido'});
   })
 }
 
@@ -54,6 +110,22 @@ submitHandler = (e) => {
   return (
     
     <div className="pagSignin"><Navbar></Navbar>
+     <Snackbar 
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
+      
       <Container className="Signin">
         <Form onSubmit={this.submitHandler}  className="formS">
         <Row> 
@@ -103,7 +175,7 @@ submitHandler = (e) => {
         <option value='district2'>district2</option>
         <option valure='district3'>district3</option>
         </Form.Control>
-        <br/><br/> <Form.Control required placeholder="Numero di telefono" name='phoneNumber' onChange={this.changeHandler}  />
+        <br/><br/> <Form.Control required placeholder="Numero di telefono" name='phoneNumber' onChange={this.changeHandler}  /><br/>
         </Col>
        
 

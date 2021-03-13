@@ -10,9 +10,11 @@ import Container from 'react-bootstrap/Container'
 import mamsitter from '..//mamsitter.png';
 import Navbar from '..//Components/Navbar'
 import util from '..//util/util'
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
+import { Snackbar } from '@material-ui/core';
 
 
 class Home extends Component {
@@ -20,10 +22,17 @@ class Home extends Component {
     super(props)
     this.state = {
       email:'',
-      password:''
+      password:'',
+      open: false,
+      message:''
     }
+    
   }
-  
+
+
+  handleClose= (e) => {
+   this.setState({open:false})
+  }
 
   changeHandler = (e) => {
     this.setState({[e.target.name]:e.target.value})
@@ -34,22 +43,43 @@ submitHandler = (e) => {
   if(response.data.status === 'success') {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
-    alert('ok');
+    this.setState({open:true, message:'Login effettuato'})
+   
     /*setTimeout(()=> {
     window.location.assign('/blog');
      }, 10);*/
   }
   })
   .catch(error=>{
-    alert(error.response.data.message);
+  if(error.response.data.message === 'Incorrect email or password')
+    this.setState({open:true, message:'Email o password incorretti'});
   })
 }
 
 
 
 render(){
-  return ( 
+  
+    return ( 
+      <div>
+        <Snackbar 
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
+      
     <div className="pagLogin">  
+    
   <Navbar/>
     <Container className="Login">
       <Row>
@@ -71,14 +101,16 @@ render(){
           <Form.Control required name='password'  type="password" placeholder="Password" onChange={this.changeHandler} />
         </Form.Group>
         <br/><br/>
-         <button type="submit" class="button1 button2"  >Login</button><br/> 
+         <button onClick={()=>this.state.open} class="button1 button2"  >Login</button><br/>
         <br/><FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
         <br/> <br/><h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>
       </Row>
+     
     </Container>
     
 
+    </div>
     </div>
   ); 
 }
