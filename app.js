@@ -72,6 +72,11 @@ app.use('/api/v1/announcements', announcementRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/applications', applicationRouter);
+app.get('/api/v1/test', (req, res, next) => {
+  res.status(200).json({
+    status: 'yo!'
+  });
+})
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
