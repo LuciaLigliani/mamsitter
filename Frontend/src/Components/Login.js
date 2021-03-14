@@ -62,7 +62,7 @@ render(){
   
     return ( 
       <div>
-        <Snackbar 
+        <Snackbar className="snackbar"
   anchorOrigin={{
     vertical: 'top',
     horizontal: 'center'
