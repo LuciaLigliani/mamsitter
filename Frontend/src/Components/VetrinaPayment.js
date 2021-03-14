@@ -1,25 +1,46 @@
 import axios from 'axios';
 import React from 'react';
-import scriptLoader from "react-async-script-loader";
+// import scriptLoader from "react-async-script-loader";
 
 class VetrinaPayment extends React.Component {
   componentDidMount() {
     window.paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
       createSubscription: function(data, actions) {
-        axios.get('/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
-        console.log(actions);
+        axios.get('http://localhost:3000/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
         return actions.subscription.create({
-          'plan_id': 'P-87674821SB904544FMBCBNUY'
+          'plan_id': 'P-0BA48243K7280713TMBF6VSY'
         });
-      },    
+      },
       onApprove: function(data, actions) {
-        alert('You have successfully created subscription ' + data.subscriptionID);
+        alert(data.subscriptionID);
       },
       onCancel: function (data) {
-        console.log(data)
+        // Show a cancel page, or return to cart
       }
+  }).render('#paypal-button-container');
+
+    // window.paypal.Buttons({
+    //   createSubscription: function(data, actions) {
+    //     axios.get('/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
+    //     console.log(actions);
+    //     return actions.subscription.create({
+    //       'plan_id': 'P-87674821SB904544FMBCBNUY'
+    //     });
+    //   },    
+    //   onApprove: function(data, actions) {
+    //     alert('You have successfully created subscription ' + data.subscriptionID);
+    //   },
+    //   onCancel: function (data) {
+    //     console.log(data)
+    //   }
     
-    }).render('#paypal-button-container');
+    // }).render('#paypal-button-container');
     // console.log(window.paypal.Buttons.canRenderTo);
     // window.paypal.Buttons.canRenderTo({
     //   env: 'sandbox', // Or 'production'
@@ -53,16 +74,11 @@ class VetrinaPayment extends React.Component {
       <div>
         <h1>Vetrina</h1>
         {/* <script src="https://www.paypalobjects.com/api/checkout.js"></script> */}
-
         <div id="paypal-button-container"></div>
-
-        <script>
-          
-        </script>
       </div>
     );
   }
 }
-export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(VetrinaPayment);
+// export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(VetrinaPayment);
 
-// export default VetrinaPayment;
+export default VetrinaPayment;
