@@ -15,16 +15,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position:'relative',
     height: '30vh',
-    width:'97.8rem',
-    display: 'flex',
-    flexWrap: 'wrap',
+    width:'130%',
+    display: 'block',
     justifyContent: 'center',
     alignItems:'stretch',
     overflow: 'hidden',
-    backgroundColor: 'rgb(255, 255, 255)',
+    backgroundColor: 'rgb(255, 101, 195);',
   },
   gridList: {
-    flexWrap: 'nowrap',
     transform: 'translateZ(0)',
   },
   title: {
@@ -53,21 +51,7 @@ const ciao = [
       title: 'CArla, 21',
       author: 'author',
      },
-     {
-      img: tata,
-      title: 'Carla Rossi, 24',
-      author: 'author',
-    },
-     {
-      img: bimbo,
-      title: 'Agnese, 20',
-      author: 'author',
-     },
-     {
-      img: viso1,
-      title: 'CArla, 21',
-      author: 'author',
-     },
+   
    ];
 
 function Grid() {

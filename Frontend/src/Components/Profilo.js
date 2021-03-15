@@ -106,7 +106,7 @@ class Profilo extends Component {
     
     return(
       <div>
-    <div className="profile">
+  
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
@@ -135,8 +135,9 @@ class Profilo extends Component {
           </Menu>
         </ul>
     </div>
-    
-    <Box height="5%" width="10%" mb="0%" m="2rem" ml="35rem" bgcolor="text.primary" color="background.paper">
+    <div className="profile">
+    <br/><br/><br/>
+    <Box height="5%" width="10%" mb="10%" m="2%" ml="45%"  bgcolor="text.primary" >
      <font size="5" face='Georgia' color="white"> My Profile</font>
     </Box>
    <div className="mprofile">
@@ -153,28 +154,28 @@ class Profilo extends Component {
 </Box>
          </Col>
          <Col sm={7}>
-         <TextField name='email'
+       <br/><br></br>  <TextField name='email'
  label={this.state.email}
  disabled
- style={{  margin: 1, width: 300, left:80}}
+ style={{  margin: 1  , width: 300, left:150}}
  fullWidth
  margin="normal"/>
   <TextField name='role'
  label={this.state.role}
  disabled
- style={{  margin: 1, width: 300, left:80 }}
+ style={{  margin: 1, width: 300, left:150 }}
  fullWidth
  margin="normal"/> 
  <TextField name='name'
  label={this.state.name}
  disabled
- style={{ margin: 1, width: 300, left:80 }}
+ style={{ margin: 1, width: 300, left:150 }}
  fullWidth
  margin="normal"/> 
 <TextField name='surname'
  label={this.state.surname}
  disabled
- style={{  margin: 1, width: 300, left:80 }}
+ style={{  margin: 1, width: 300, left:150 }}
  fullWidth
  margin="normal"/> 
          </Col>
@@ -184,51 +185,51 @@ class Profilo extends Component {
     <br/><br/> &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
          </Col>
  </Row>
-<Row>
-  <Col>
-  <PersonOutlineSharpIcon fontSize="large" />&nbsp;
+<Row >
+  <Col >
+  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <PersonOutlineSharpIcon fontSize="large" />
  <TextField name='sex'
  label={this.state.sex}
  disabled
- style={{ margin: -5, width: 70, left:-2, bottom:6 }}
+ style={{ margin: 5, width: 70, left:-4, bottom:6 }}
  fullWidth
- margin="dense"/> &nbsp;&nbsp;
- &nbsp;<CakeOutlinedIcon fontSize="large"/>&nbsp;
+ margin="dense"/> 
+&nbsp;<CakeOutlinedIcon fontSize="large"/>
  <TextField name='birthDate'
  label={this.state.birthDate}
  disabled
- style={{ margin: -10, width: 130, left:7, bottom:6 }}
+ style={{ margin: 10, width: 130, left:-4, bottom:14 }}
  fullWidth
- margin="normal"/>&nbsp;&nbsp;
- &nbsp; &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>&nbsp;
+ margin="normal"/>
+<PlaceOutlinedIcon fontSize="large"/>
  <TextField name='city'
  label={this.state.city}
  disabled
- style={{ margin: -10, width: 110, left:7, bottom:6 }}
+ style={{ margin: -10, width: 110, left:5, bottom:-6    }}
  fullWidth
  margin="normal"/>
   </Col>
   <Row>
 <Col>
-<br/><AssignmentOutlinedIcon fontSize="large"/>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<AssignmentOutlinedIcon fontSize="large"/>
  <TextField name='description'
  label={this.state.description}
  disabled
- style={{ margin: -10, width: 100, left:7, bottom:6}}
+ style={{ margin: -10, width: 100, left:10, bottom:6}}
  fullWidth
  margin="normal"/>&nbsp;&nbsp;
-&nbsp;&nbsp;<CallOutlinedIcon fontSize="large"/>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<CallOutlinedIcon fontSize="large"/>&nbsp;
  <TextField name='phoneNumber'
  label={this.state.phoneNumber}
  disabled
- style={{ margin: -10, width: 150, left:7, bottom:6 }}
+ style={{ margin: -10, width: 150, left:10, bottom:6 }}
  fullWidth
  margin="normal"/> &nbsp;&nbsp;&nbsp;&nbsp;
  &nbsp;&nbsp;<PlaceOutlinedIcon fontSize="large"/>
  <TextField  name='district'
  label={this.state.district}
  disabled
- style={{ margin: -10, width: 150, left:7, bottom:6}}
+ style={{ margin: -10, width: 150, left:10, bottom:6}}
  fullWidth
  margin="normal"/> 
 

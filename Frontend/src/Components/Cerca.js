@@ -17,12 +17,13 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined';
 
+import logomodi from '..//logomodi.png';
 import Form from 'react-bootstrap/Form'
 import { Col, Row } from 'react-bootstrap';
 const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(4),
-  },
+    margin: 20,
+    marginLeft:100  },
 }));
 
 function Cerca(){
@@ -37,8 +38,8 @@ function Cerca(){
   };
 
   return(
-    <div >
-      <Navbar/>
+    <div className="cerca">
+  <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
       <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -60,12 +61,12 @@ function Cerca(){
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-            <Link to="/login"><MenuItem  onClick={handleClose}>Login</MenuItem></Link> 
+            <Link to="/login"><MenuItem  onClick={handleClose}>Accedi</MenuItem></Link> 
             <Link to="/signup"> <MenuItem onClick={handleClose}>Registrazione</MenuItem></Link>
           </Menu>
         </ul>
-     <div className="cerca">
-     <h3><b><font face='Georgia' color='black'>Cerca la babysitter giusta per te!</font></b></h3 >
+     
+     <br/><br/><br/><br/><br/><br/><h3><b><font face='Georgia' color='black'>Cerca la babysitter giusta per te!</font></b></h3 >
      <Form><Row>
        <Col>
 
@@ -111,7 +112,7 @@ function Cerca(){
      </div>
 
       
-    </div>
+    
 
   )
 }
