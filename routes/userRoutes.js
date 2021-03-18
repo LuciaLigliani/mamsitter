@@ -4,6 +4,9 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
+// home page
+router.get('/', userController.getAllUsersLessInfo);
+
 // you need to authenticate
 router.use(authController.protect);
 
@@ -21,14 +24,5 @@ router.get('/', authController.restrictTo('admin', 'famiglia'), userController.g
 router.delete('/', authController.restrictTo('admin'), userController.deleteAllUsers);
 router.get('/:id', authController.restrictTo('admin', 'famiglia'), userController.getUser);
 router.delete('/:id', authController.restrictTo('admin'), userController.deleteUser);
-
-// TODO: PAYMENT
-
-router.patch('/payment/can', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.can);//DONE
-router.patch('/payment/highlight', authController.restrictTo('babysitter', 'badante', 'colf'), userController.beHighlighted);//DONE
-router.patch('/payment/base', authController.restrictTo('famiglia'), userController.beBase);//DONE
-// /payment/worker/can... /payment/family/can...
-router.patch('/payment/premium', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.bePremium);//DONE
-router.patch('/payment/topClass', authController.restrictTo('famiglia', 'babysitter', 'badante', 'colf'), userController.beTopClass);//DONE
 
 module.exports = router;

@@ -33,12 +33,12 @@ const announcementSchema = new mongoose.Schema(
       },
       required: [true, 'Please provide the worker you need']
     },
-    city: {
+    annCity: {
       type: String,
       trim: true,
       required: [true, 'Please provide a city.']
     },
-    district: {
+    annDistrict: {
       type: String,
       required: [true, 'Please provide a correct district.'],
       enum: {
