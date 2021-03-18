@@ -10,6 +10,7 @@ import Payments from './Components/Payments';
 import VetrinaPayment from './Components/VetrinaPayment';
 
 import Blog from './Components/Blog';
+import Search from './Components/Search';
 function App() {
   return (
     <Router> 
@@ -20,7 +21,7 @@ function App() {
         <Route path="/signup" component={Signin}/>
         <Route path="/blog" component={Blog}/>
         <Route path="/myProfile" component={Profilo}/>
-        <Route path="/cerca" component={Cerca}/>
+        <Route path="/search" component={Search}/>
         
         <Route path="/aboutUs" component={AboutUs}/>
         <Route path ="/payments" component={Payments}/>

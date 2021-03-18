@@ -133,7 +133,7 @@ submitHandler = (e) => {
           <font face='Georgia' color='black'><h4>Compila il modulo per la registrazione</h4></font><br/>
           </FormLabel> 
           <Col>
-          <img src={mamsitter} className="im" alt="mamsitter" />
+          <img src={mamsitter} className="image" alt="mamsitter" />
           </Col>
           <Col>
           <Form.Group controlId="formBasicEmail"> 

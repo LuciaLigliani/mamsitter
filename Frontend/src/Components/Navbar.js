@@ -30,9 +30,9 @@ function Navbar() {
           </Link>
           
           <Link to="/aboutUs">
-            <li><font face='Georgia' color='black'>DICONO DI NOI</font></li>
+            <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
           </Link>
-        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}> <AccountCircle/>
+        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
         </Button>
           <Menu

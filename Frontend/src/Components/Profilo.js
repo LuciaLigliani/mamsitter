@@ -18,7 +18,7 @@ import PlaceOutlinedIcon from '@material-ui/icons/PlaceOutlined';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import CallOutlinedIcon from '@material-ui/icons/CallOutlined';
 import Avatar from '@material-ui/core/Avatar';
-import avatar from '..//avatar.png';
+import avatar from '..//default.jpg';
 //import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import util from '..//util/util'
@@ -106,7 +106,7 @@ class Profilo extends Component {
     
     return(
       <div>
-  
+  <div className="profile">
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
@@ -118,9 +118,9 @@ class Profilo extends Component {
           </Link>
           
           <Link to="/aboutUs">
-            <li><font face='Georgia' color='black'>DICONO DI NOI</font></li>
+            <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
           </Link>
-        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle/>
+        <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
         </Button>
           <Menu
@@ -135,7 +135,7 @@ class Profilo extends Component {
           </Menu>
         </ul>
     </div>
-    <div className="profile">
+    
     <br/><br/><br/>
     <Box height="5%" width="10%" mb="10%" m="2%" ml="45%"  bgcolor="text.primary" >
      <font size="5" face='Georgia' color="white"> My Profile</font>
@@ -157,37 +157,33 @@ class Profilo extends Component {
        <br/><br></br>  <TextField name='email'
  label={this.state.email}
  disabled
- style={{  margin: 1  , width: 300, left:150}}
+ style={{  margin: 1  , width: 300, left:70}}
  fullWidth
  margin="normal"/>
   <TextField name='role'
  label={this.state.role}
  disabled
- style={{  margin: 1, width: 300, left:150 }}
+ style={{  margin: 1, width: 300, left:70 }}
  fullWidth
  margin="normal"/> 
  <TextField name='name'
  label={this.state.name}
  disabled
- style={{ margin: 1, width: 300, left:150 }}
+ style={{ margin: 1, width: 300, left:70 }}
  fullWidth
  margin="normal"/> 
 <TextField name='surname'
  label={this.state.surname}
  disabled
- style={{  margin: 1, width: 300, left:150 }}
+ style={{  margin: 1, width: 300, left:70 }}
  fullWidth
  margin="normal"/> 
          </Col>
-         <Col sm={3}><font face='Georgia' color="white">
-   <br/><br/><br/><br/> &nbsp;&nbsp;<button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
-    <font  face='Georgia' color="white">
-    <br/><br/> &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
-         </Col>
+        
  </Row>
 <Row >
   <Col >
-  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <PersonOutlineSharpIcon fontSize="large" />
+ <PersonOutlineSharpIcon fontSize="large" />
  <TextField name='sex'
  label={this.state.sex}
  disabled
@@ -211,7 +207,7 @@ class Profilo extends Component {
   </Col>
   <Row>
 <Col>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<AssignmentOutlinedIcon fontSize="large"/>
+<AssignmentOutlinedIcon fontSize="large"/>
  <TextField name='description'
  label={this.state.description}
  disabled
@@ -237,10 +233,16 @@ class Profilo extends Component {
 </Row>
 
 </Row>
+<div className="bottoni"><font face='Georgia' color="white">
+   <br/> &nbsp;&nbsp;<button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
+    <font  face='Georgia' color="white">
+    &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
+         </div>
      </Container>
      
    </div>
     </div>
+   
       </div>
 
     );

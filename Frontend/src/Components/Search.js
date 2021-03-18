@@ -12,11 +12,12 @@ import util from '..//util/util'
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
+
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
-class Cerca extends Component {
+class Search extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -33,8 +34,7 @@ class Cerca extends Component {
       diurnal:'',
       nocturnal:'',
       allDay:'',
-      atHour:'',
-      highlighted: ''
+      atHour:''
     }
   }
   handleClick = (event) => {
@@ -86,7 +86,7 @@ class Cerca extends Component {
   }
   
   async componentDidMount(){
-    let vetrina = [];
+    let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/users';
     axios.get(url).then(response=>{
@@ -115,31 +115,31 @@ class Cerca extends Component {
       console.log(error);
     })
   }
-  
-  
-  
+  logout = () => {
+    setTimeout(()=> {
+      window.location.assign('/');
+       }, 10); 
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+  }
 
  grid (vetrina) {
-
-    return(
-     
-      <div className="root">
-        <h4><font face='Times New Roman' color='black'>Vetrina</font></h4>
-        <GridList className="gridList" cols={5}>
-          {vetrina.map((user) => (
-            <GridListTile key={user.generalUser.photo}>
-             <Link to="/myProfile"> <img src={user.generalUser.photo} alt=''  /> </Link>
-              <GridListTileBar
-              className="titleBar title" 
-                title={user.specificUser.name}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
-    );
- }
-  
+  return(
+    <div className="root">
+      <h4><font face='Times New Roman' color='black'>Vetrina</font></h4>
+      <GridList className="gridList" cols={5}>
+        {vetrina.map((user) => (
+          <GridListTile key={user.generalUser.photo}>
+           <Link to="/myProfile"> <img src={user.generalUser.photo} alt=''  /> </Link>
+            <GridListTileBar
+            className="titleBar title" 
+              title={user.specificUser.name}
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+    </div> 
+  );
+}
   
  
   render() {
@@ -168,8 +168,8 @@ class Cerca extends Component {
                     open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
                   >
-                  <Link to="/login"><MenuItem  onClick={this.handleClose}>Accedi</MenuItem></Link> 
-                  <Link to="/signup"> <MenuItem onClick={this.handleClose}>Registrati</MenuItem></Link>
+                  <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+                  <Link to="/home">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
                 </Menu>
                  
               </ul>
@@ -190,8 +190,8 @@ class Cerca extends Component {
                <option>district2</option> 
                <option>district3</option> 
             </Form.Control><br/>
-              <Form.Control style={{marginLeft:100}} name='ageMin' placeHolder="Inserisci età minima" onChange={this.changeHandler} /> <br/>
-              <Form.Control style={{marginLeft:100}} name='ageMax' placeHolder="Inserisci età massima" onChange={this.changeHandler} /> <br/>
+              <Form.Control style={{marginLeft:100}} name='ageMax' placeHolder="Inserisci età minima" onChange={this.changeHandler} /> <br/>
+              <Form.Control style={{marginLeft:100}} name='ageMin' placeHolder="Inserisci età massima" onChange={this.changeHandler} /> <br/>
               <Form.Control style={{marginLeft:100}} name='sex' as="select" defaultValue="Sesso" onChange={this.changeHandler} > <br/>
                <option value  hidden="hidden"  >Sesso</option>
                <option>Maschio</option> 
@@ -209,7 +209,7 @@ class Cerca extends Component {
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
              <br/> <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
               </Form.Label>
-             <Col sm={11}>
+             <Col sm={9}>
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
@@ -234,14 +234,14 @@ class Cerca extends Component {
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Ad orario"
+              label="A ora"
               name='atHour'
               id="formHorizontalRadios3"
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Tutto il giorno"
+              label="Al giorno"
               name='allDay'
               id="formHorizontalRadios3"
             />
@@ -263,42 +263,37 @@ class Cerca extends Component {
           </Row>
         </Form>
     </Col>
-
     <Col>
     
     <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe>
      </Col>
               
-              {this.state.highlighted}
-
-
-              <div className="card_container">
-           
-           {this.state.users.map(users=>(
-             <div key={users.generalUser.id}>
-            <div className="card">
-              <div className="card_title">
-              {users.specificUser.name} {users.specificUser.surname} 
-              </div> 
-              <div className="card_body">
-             <img src={users.generalUser.photo} alt=''></img>
-             
-              {this.calculateAge(users.specificUser.birthDate)} <br/>
-              {users.specificUser.city} <br/>
-              {users.specificUser.role}
-              </div> 
-             </div>
-             </div>
-           ))}
-           
-
-           </div>
-     
-
-           
-
+              
+     {this.state.highlighted}
       
-         
+          <div className="card_container">
+           
+            {this.state.users.map(users=>(
+              <div key={users.generalUser.id}>
+             <div className="card">
+               <div className="card_title">
+               {users.specificUser.name} {users.specificUser.surname} 
+               </div> 
+               <div className="card_body">
+              <img src={users.generalUser.photo} alt=''></img>
+              
+               {this.calculateAge(users.specificUser.birthDate)} <br/>
+               {users.specificUser.city} <br/>
+               {users.specificUser.role}
+              <Link to="/myProfile"> <button class="button1 button2" >Visualizza Profilo</button></Link>
+               </div> 
+              </div>
+              </div>
+            ))}
+            
+
+            </div>
+      
       
     
       
@@ -310,6 +305,6 @@ class Cerca extends Component {
 
 
 }
- export default Cerca;
+ export default Search;
 
  

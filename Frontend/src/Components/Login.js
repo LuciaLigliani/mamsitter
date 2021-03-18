@@ -1,8 +1,6 @@
 import React from 'react';
 import '..//App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
 import {Link} from 'react-router-dom';
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
@@ -44,10 +42,9 @@ submitHandler = (e) => {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
     this.setState({open:true, message:'Login effettuato'})
-   
-    /*setTimeout(()=> {
-    window.location.assign('/blog');
-     }, 10);*/
+    setTimeout(()=> {
+    window.location.assign('/search');
+     }, 10);
   }
   })
   .catch(error=>{
@@ -102,8 +99,8 @@ render(){
         </Form.Group>
         <br/><br/><br/>
          <button onClick={()=>this.state.open} class="button1 button2"  >Login</button><br/><br/>
-        <br/><FacebookIcon></FacebookIcon><InstagramIcon></InstagramIcon>
-        <br/><br/> <br/><h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
+        <br/>
+       <h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>
       </Row>
      
