@@ -12,7 +12,10 @@ class APIFeatures {
     const queryObj = util.excludeFields({ ...this.queryString }, toExclude);
 
     // campi riguardanti l'annuncio specifico
-    toExclude = ['user_id', 'title', 'typeAnnouncement', 'role', 'announcement_id'];
+    // per user role, profile, highlighted, can
+    // per ann user_id, title, typeAnn, annCity, annDistrict
+    // per app user_id, ann_id, connection
+    toExclude = ['user_id', 'title', 'typeAnnouncement', 'annCity', 'annDistrict', 'role', 'profile', 'highlighted', 'can', 'announcement_id', 'connection'];
     const specificFields = util.excludeFields(queryObj, toExclude);
 
     // campi riguardanti l'annuncio generico

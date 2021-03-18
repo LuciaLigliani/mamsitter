@@ -32,8 +32,8 @@ exports.createAnnouncement = catchAsync (async (req, res, next) => {
 
   // assign location
   const user = await Famiglia.findById(req.user.famiglia_id);
-  body.city = user.city;
-  body.district = user.district;
+  body.annCity = user.city;
+  body.annDistrict = user.district;
 
   const newAnnouncement = await announcementService.createAnnouncement(body);
 

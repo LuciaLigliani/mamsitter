@@ -124,7 +124,7 @@ exports.updateAnnouncement = async (ann, body) => {
 
   // escludo i campi che non possono essere modificati
   let validFields = { ...body };
-  const toExclude = ['user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'city', 'district'];
+  const toExclude = ['user_id', 'typeAnnouncement', 'babysitterAnn_id', 'badanteAnn_id', 'colfAnn_id', 'typeWork', 'startDate', 'endDate', 'annCity', 'annDistrict'];
   validFields = util.excludeFields(validFields, toExclude);
 
   const type = ann.typeAnnouncement;
