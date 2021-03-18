@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 // home page
-router.get('/', userController.getAllUsersLessInfo);
+router.get('/search', userController.getAllUsersLessInfo);
 
 // you need to authenticate
 router.use(authController.protect);
