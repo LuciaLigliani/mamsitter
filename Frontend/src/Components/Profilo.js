@@ -93,7 +93,7 @@ class Profilo extends Component {
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -106,7 +106,7 @@ class Profilo extends Component {
   
 
   deleteProfile = () => {
-    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.delete('/api/v1/users/myProfile').then(profile => {
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/');

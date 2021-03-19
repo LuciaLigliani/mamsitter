@@ -85,7 +85,7 @@ class User extends Component {
   componentDidMount(){
     const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
+    axios.get('/api/v1/users/' + id).then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;

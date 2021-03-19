@@ -90,7 +90,7 @@ class Search extends Component {
   async componentDidMount(){
     let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/users';
+    const url='/api/v1/users';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -107,7 +107,7 @@ class Search extends Component {
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
-    const url = 'http://localhost:3000/api/v1/users' + query;
+    const url = '/api/v1/users' + query;
     axios.get(url).then(response=>{
       console.log(url);
       this.setState({users: response.data.data});
