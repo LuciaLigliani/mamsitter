@@ -160,8 +160,8 @@ submitHandler = (e) => {
         <option>Scegli ruolo</option>
         <option value='famiglia'>Famiglia</option>
         <option value='babysitter'>Babysitter</option>
-        <option>Badante</option>
-        <option>Colf</option>
+        <option value='badante'>Badante</option>
+        <option value='colf'> Colf</option>
       </Form.Control>
       <Form.Group controlId="formPassword">
          <br/> <Form.Control required name='passwordConfirm'  type="password" placeholder="Conferma Password"onChange={this.changeHandler}  />

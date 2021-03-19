@@ -8,13 +8,14 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import logomodi from '..//logomodi.png';
 import axios from 'axios';
-import util from '..//util/util'
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+
+import img from '..//img.png';
 
 class Cerca extends Component {
   constructor(props){
@@ -87,8 +88,7 @@ class Cerca extends Component {
   
   async componentDidMount(){
     let vetrina = [];
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/users';
+    const url='http://localhost:3000/api/v1/users/search';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -105,7 +105,7 @@ class Cerca extends Component {
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
-    const url = 'http://localhost:3000/api/v1/users' + query;
+    const url = 'http://localhost:3000/api/v1/users/search' + query;
     axios.get(url).then(response=>{
       console.log(url);
       this.setState({users: response.data.data});
@@ -128,9 +128,9 @@ class Cerca extends Component {
         <GridList className="gridList" cols={5}>
           {vetrina.map((user) => (
             <GridListTile key={user.generalUser.photo}>
-             <Link to="/myProfile"> <img src={user.generalUser.photo} alt=''  /> </Link>
+              <img src={img} style={{paddingBottom:10, height:180, width:180}} alt=''  /> 
               <GridListTileBar
-              className="titleBar title" 
+              className="titleBar" 
                 title={user.specificUser.name}
               />
             </GridListTile>
@@ -181,27 +181,28 @@ class Cerca extends Component {
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='city' as="select" defaultValue="Città" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Città</option>
+               <option value='' >Città</option>
                <option>Milano</option> 
             </Form.Control><br/>
             <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Distretto" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Distretto</option>
-               <option>district1</option> 
-               <option>district2</option> 
-               <option>district3</option> 
+            <option value='' >Distretto</option>
+               <option value='district1'>district1</option> 
+               <option value='district2'>district2</option> 
+               <option value='district3'>district3</option>  
             </Form.Control><br/>
               <Form.Control style={{marginLeft:100}} name='ageMin' placeHolder="Inserisci età minima" onChange={this.changeHandler} /> <br/>
               <Form.Control style={{marginLeft:100}} name='ageMax' placeHolder="Inserisci età massima" onChange={this.changeHandler} /> <br/>
               <Form.Control style={{marginLeft:100}} name='sex' as="select" defaultValue="Sesso" onChange={this.changeHandler} > <br/>
-               <option value  hidden="hidden"  >Sesso</option>
-               <option>Maschio</option> 
-               <option>Femmina</option> 
+              <option value=''>Sesso</option>
+               <option value='M'>Maschio</option> 
+               <option value='F'>Femmina</option> 
             </Form.Control><br/>
             <Form.Control style={{marginLeft:100}} name='role' as="select" defaultValue="Ruolo" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Ruolo</option>
-               <option>Babysitter</option> 
-               <option>Colf</option> 
-               <option>Badante</option> 
+            <option value='' >Ruolo</option>
+              <option value='famiglia'>Famiglia</option> 
+               <option value='babysitter'>Babysitter</option> 
+               <option value='colf'>Colf</option> 
+               <option value='badante'>Badante</option> 
             </Form.Control><br/>
             </Col>
             <Col>
@@ -276,12 +277,13 @@ class Cerca extends Component {
            
            {this.state.users.map(users=>(
              <div key={users.generalUser.id}>
-            <div className="card">
+            <div className="card"> 
+            <div className="card_body">
+             <img src={img} style={{marginLeft:2, width:100, height:100}} alt=''></img>
+             
               <div className="card_title">
               {users.specificUser.name} {users.specificUser.surname} 
               </div> 
-              <div className="card_body">
-             <img src={users.generalUser.photo} alt=''></img>
              
               {this.calculateAge(users.specificUser.birthDate)} <br/>
               {users.specificUser.city} <br/>

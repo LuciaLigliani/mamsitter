@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Profilo from './Components/Profilo';
 import Payments from './Components/Payments';
 import VetrinaPayment from './Components/VetrinaPayment';
+import User from './Components/User'
 
 import Blog from './Components/Blog';
 import Search from './Components/Search';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/blog" component={Blog}/>
         <Route path="/myProfile" component={Profilo}/>
         <Route path="/search" component={Search}/>
+        <Route path="/users" component={User} ></Route>
         
         <Route path="/aboutUs" component={AboutUs}/>
         <Route path ="/payments" component={Payments}/>

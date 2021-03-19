@@ -13,6 +13,8 @@ import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
 
+import img from '..//img.png';
+
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -115,6 +117,7 @@ class Search extends Component {
       console.log(error);
     })
   }
+
   logout = () => {
     setTimeout(()=> {
       window.location.assign('/');
@@ -129,7 +132,7 @@ class Search extends Component {
       <GridList className="gridList" cols={5}>
         {vetrina.map((user) => (
           <GridListTile key={user.generalUser.photo}>
-           <Link to="/myProfile"> <img src={user.generalUser.photo} alt=''  /> </Link>
+           <Link to={"/users/" + user.generalUser._id} >  <img src={img} style={{paddingBottom:10, height:180, width:180}} alt=''  /> </Link>
             <GridListTileBar
             className="titleBar title" 
               title={user.specificUser.name}
@@ -169,7 +172,7 @@ class Search extends Component {
                     onClose={this.handleClose}
                   >
                   <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/home">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                  <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
                 </Menu>
                  
               </ul>
@@ -181,27 +184,27 @@ class Search extends Component {
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='city' as="select" defaultValue="Città" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Città</option>
+               <option value='' >Città</option>
                <option>Milano</option> 
             </Form.Control><br/>
             <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Distretto" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Distretto</option>
-               <option>district1</option> 
-               <option>district2</option> 
-               <option>district3</option> 
+               <option value =''>Distretto</option>
+               <option value='district1'>district1</option> 
+               <option value='district2'>district2</option> 
+               <option value='district3'>district3</option> 
             </Form.Control><br/>
-              <Form.Control style={{marginLeft:100}} name='ageMax' placeHolder="Inserisci età minima" onChange={this.changeHandler} /> <br/>
-              <Form.Control style={{marginLeft:100}} name='ageMin' placeHolder="Inserisci età massima" onChange={this.changeHandler} /> <br/>
+              <Form.Control style={{marginLeft:100}} name='ageMin' placeHolder="Inserisci età minima" onChange={this.changeHandler} /> <br/>
+              <Form.Control style={{marginLeft:100}} name='ageMax' placeHolder="Inserisci età massima" onChange={this.changeHandler} /> <br/>
               <Form.Control style={{marginLeft:100}} name='sex' as="select" defaultValue="Sesso" onChange={this.changeHandler} > <br/>
-               <option value  hidden="hidden"  >Sesso</option>
-               <option>Maschio</option> 
-               <option>Femmina</option> 
+               <option value='' >Sesso</option>
+               <option value='M'>Maschio</option> 
+               <option value='F'>Femmina</option> 
             </Form.Control><br/>
             <Form.Control style={{marginLeft:100}} name='role' as="select" defaultValue="Ruolo" onChange={this.changeHandler} > 
-               <option value  hidden="hidden"  >Ruolo</option>
-               <option>Babysitter</option> 
-               <option>Colf</option> 
-               <option>Badante</option> 
+               <option value='' >Ruolo</option>
+               <option value='babysitter'>Babysitter</option> 
+               <option value='colf'>Colf</option> 
+               <option value='badante'>Badante</option> 
             </Form.Control><br/>
             </Col>
             <Col>
@@ -276,16 +279,18 @@ class Search extends Component {
             {this.state.users.map(users=>(
               <div key={users.generalUser.id}>
              <div className="card">
+                <div className="card_body">
+
+               <img src={img} style={{marginLeft:2, width:100, height:100}} alt=''></img>
                <div className="card_title">
                {users.specificUser.name} {users.specificUser.surname} 
                </div> 
-               <div className="card_body">
-              <img src={users.generalUser.photo} alt=''></img>
+              
               
                {this.calculateAge(users.specificUser.birthDate)} <br/>
                {users.specificUser.city} <br/>
                {users.specificUser.role}
-              <Link to="/myProfile"> <button class="button1 button2" >Visualizza Profilo</button></Link>
+              <Link to={"/users/" + users.generalUser._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
                </div> 
               </div>
               </div>

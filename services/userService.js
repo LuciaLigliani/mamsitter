@@ -171,7 +171,7 @@ exports.getAllUsers = async (req) => {
    let badantes = new APIFeatures (Badante.find(), req.query).filter('specific').moreFilters();
    let colfs = new APIFeatures (Colf.find(), req.query).filter('specific').moreFilters();
    let famiglias;
-   if(req.user.role === 'famiglia') famiglias = [];
+   if(req.user && req.user.role === 'famiglia') famiglias = [];
    else {
     famiglias = new APIFeatures (Famiglia.find(), req.query).filter('specific').moreFilters();
     famiglias = await famiglias.query;

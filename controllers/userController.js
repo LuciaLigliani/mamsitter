@@ -148,7 +148,7 @@ exports.getAllUsers = catchAsync (async (req, res, next) => {
 });
 
 exports.getAllUsersLessInfo = catchAsync (async (req, res, next) => {
-  req.query.fields = 'role,photo';
+  //req.query.fields = 'role,photo';
   const users = await userService.getAllUsers(req);
 
   res.status(200).json({

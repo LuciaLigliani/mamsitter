@@ -18,12 +18,9 @@ import avatar from '..//default.jpg';
 import axios from 'axios';
 import util from '..//util/util'
 import { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { Snackbar } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
-class Profilo extends Component {
+class User extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -41,14 +38,9 @@ class Profilo extends Component {
       work:'',
       available:'',
       languages:'',
-      open: false,
-      message:'',
       anchorEl:''
     }
 }
-  handleClose= (e) => {
-  this.setState({open:false})
-  }
 
   setData = (data, specificData) => {
     specificData.birthDate=new Date(specificData.birthDate).toLocaleDateString();
@@ -87,13 +79,13 @@ class Profilo extends Component {
     this.setState({work: work});
     this.setState({available: available});
     this.setState({languages: specificData.languages});
-    
 }
 
 
   componentDidMount(){
+    const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -103,30 +95,13 @@ class Profilo extends Component {
     })
     .catch((err)=> console.log(err));
   }
-  
-
-  deleteProfile = () => {
-    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
-      this.setState({open:true, message:'Account eliminato'})
-        setTimeout(()=> {
-          window.location.assign('/');
-           }, 10); 
-           axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
-      })
-    .catch((err)=>console.log(err));
-  }
-
+ 
   logout = () => {
     setTimeout(()=> {
       window.location.assign('/');
        }, 10); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
-
-  /* updateProfile = () => {
-    axios.patch('http://localhost:3000/api/v1/users/myProfile')
-  }*/
-
 
   handleClick = (event) => {
     this.setState({anchorEl:event.currentTarget});
@@ -138,22 +113,7 @@ class Profilo extends Component {
 
   render(){
     
-    return(<div>
-      <Snackbar className="snackbar"
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'center'
-      }}
-      open={this.state.open}
-      autoHideDuration={3000}
-      onClose={this.handleClose}
-      message = {<span id="message-id">{this.state.message}</span>}
-      action={
-        <IconButton onClick={this.handleClose}>
-          <CloseIcon/>
-        </IconButton>
-      }
-      />
+    return(
       <div>
   <div className="profile">
       <div className="Navbar">
@@ -179,17 +139,13 @@ class Profilo extends Component {
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-            <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
+              <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </Menu>
         </ul>
     </div>
-    
     <br/><br/><br/>
-    <Box height="5%" width="30%" mb="10%" m="2%" ml="34%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Il Mio Profilo</font>
-    </Box>
-   <div className="mprofile">
+   <div className="userprofile">
      <Container >
        <Row>
          <Col sm={1}>
@@ -310,17 +266,11 @@ name='work'
    
    </div>
     </div>
-    <div className="bottoni">
-  <Link to="/home"><font face='Georgia' color="white">
-   
-   <button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
-    <font  face='Georgia' color="white">
-    &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
-         </div>
+ 
       </div>
-      </div>
+
     );
   }
 
 }
-export default Profilo;
+export default User;
