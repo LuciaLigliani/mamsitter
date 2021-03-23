@@ -13,11 +13,9 @@ import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
 
+import Box from '@material-ui/core/Box';
 import img from '..//img.png';
 
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 class Search extends Component {
   constructor(props){
@@ -102,6 +100,11 @@ class Search extends Component {
     this.setState({highlighted: this.grid(vetrina)});
     console.log(vetrina);
   })
+  .catch(error=>{
+    setTimeout((err)=> {
+      window.location.assign('/error');
+       }, 10)
+  })
   }
 
   submitHandler = (e) => {
@@ -127,23 +130,29 @@ class Search extends Component {
 
  grid (vetrina) {
   return(
-    <div className="root">
-      <h4><font face='Times New Roman' color='black'>Vetrina</font></h4>
-      <GridList className="gridList" cols={5}>
-        {vetrina.map((user) => (
-          <GridListTile key={user.generalUser.photo}>
-           <Link to={"/users/" + user.generalUser._id} >  <img src={img} style={{paddingBottom:10, height:180, width:180}} alt=''  /> </Link>
-            <GridListTileBar
-            className="titleBar title" 
-              title={user.specificUser.name}
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-    </div> 
+    <div>
+        <Box height="5%" width="20%" mb="0%" m="2%" ml="87%"  bgcolor="text.primary" >
+     <font size="3" face='Georgia' color="white"> Vetrina</font>
+    </Box>
+      
+      <div className="vetrina">
+      {vetrina.map(user=>(
+        
+        <div key={user.generalUser.photo}>
+       <div className="cardv" > 
+       <div className="card_bodyv" >
+       <Link to={"/users/" + user.generalUser._id} >  <img src={img} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> </Link>
+         {user.specificUser.name} {user.specificUser.surname} 
+         </div>
+         </div> 
+        </div>
+      
+      ))}
+      
+     </div> 
+     </div>
   );
 }
-  
  
   render() {
     return (  
@@ -289,7 +298,7 @@ class Search extends Component {
               
                {this.calculateAge(users.specificUser.birthDate)} <br/>
                {users.specificUser.city} <br/>
-               {users.specificUser.role}
+               {users.specificUser.role}<br/>
               <Link to={"/users/" + users.generalUser._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
                </div> 
               </div>

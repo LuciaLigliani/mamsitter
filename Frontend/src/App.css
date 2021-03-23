@@ -77,7 +77,15 @@ text-align: center;
   width: 190px;
   top: 8px;
 }
-
+.error{
+  height: 100%;
+  margin-right: 1%;
+  padding-bottom: 40%;
+  padding-top: 1%;
+  width: 100%;
+  background-color: rgb(255, 101, 195);
+  transition: transform .3s ease;
+}
 
 .Signin{
   align-content: center;
@@ -136,7 +144,8 @@ text-align: center;
   width: 50%;
   margin-top:0%;
   margin-left:3%;
-  padding-bottom: 100%;
+  padding-bottom: 300%;
+  
 }
 
 
@@ -268,14 +277,13 @@ background-color: rgb(0, 0, 0);
   padding-top: 10%;
 }
 .card {
-  margin: -2rem 0rem 4rem 7rem;
+  margin: -2rem 0rem 5rem 7rem;
   padding: 2rem;
   width: 250px;
-  box-shadow: 0 0 28px 4px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 10px 4px rgb(0, 0, 0);
   transition: transform .3s ease;
   cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
 }
 .card:hover {
   transform: scale(1.1);
@@ -298,28 +306,34 @@ background-color: rgb(0, 0, 0);
 .formm{
  padding-top:5rem;
 } 
-.root{
-  margin-top:3%;
-  height: 35vh;
-  width:190%;
-  display: flex;
-  justify-content: space-around;
-  margin-left:-1%;
-  background-color: rgb(255,255,255);
-  flex-wrap:wrap;
-}
-.gridList{
-  width:100%;
+.vetrina{
+  
+  width: 190%;
+  height: 100%;
+  background-color:rgb(255, 255, 255);
+  display:flex;
   flex-wrap: nowrap;
-  transform: translateZ(0);
+  overflow: auto;
 }
-.title{
-
-  color: rgb(0, 0, 0);
+.cardv {
+  background-color:rgb(255, 255, 255);
+  margin: 2rem 3rem 2rem 2rem;
+  padding: 0rem;
+  width: 250px;
+  box-shadow: 2px 2px 10px 4px rgb(0, 0, 0);
+  
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
 }
-.titleBar{
-  background-color:
-  linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%);
+.card_titlev{
+  text-align: center;
+  font-weight: 50;
+    font-size: 1.5rem;
+}
+.card_bodyv{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+ text-align: center;
 }
 
 

@@ -11,11 +11,11 @@ import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-
+import Box from '@material-ui/core/Box';
+//import { makeStyles } from '@material-ui/core/styles';
 import img from '..//img.png';
+
+
 
 class Cerca extends Component {
   constructor(props){
@@ -38,6 +38,7 @@ class Cerca extends Component {
       highlighted: ''
     }
   }
+  
   handleClick = (event) => {
     this.setState({anchorEl:event.currentTarget});
   }
@@ -120,23 +121,31 @@ class Cerca extends Component {
   
 
  grid (vetrina) {
-
     return(
-     
-      <div className="root">
-        <h4><font face='Times New Roman' color='black'>Vetrina</font></h4>
-        <GridList className="gridList" cols={5}>
-          {vetrina.map((user) => (
-            <GridListTile key={user.generalUser.photo}>
-              <img src={img} style={{paddingBottom:10, height:180, width:180}} alt=''  /> 
-              <GridListTileBar
-              className="titleBar" 
-                title={user.specificUser.name}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
+      <div>
+        <Box height="5%" width="20%" mb="0%" m="2%" ml="87%"  bgcolor="text.primary" >
+     <font size="3" face='Georgia' color="white"> Vetrina</font>
+    </Box>
+      
+      <div className="vetrina">
+      {vetrina.map(user=>(
+        <div key={user.generalUser.photo}>
+       <div className="cardv" > 
+       <div className="card_bodyv" >
+       <img src={img} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
+
+        
+
+        
+         {user.specificUser.name} {user.specificUser.surname} 
+         </div>
+         </div> 
+        </div>
+      
+      ))}
+      
+     </div> 
+     </div>
     );
  }
   
@@ -287,7 +296,7 @@ class Cerca extends Component {
              
               {this.calculateAge(users.specificUser.birthDate)} <br/>
               {users.specificUser.city} <br/>
-              {users.specificUser.role}
+              {users.specificUser.role}<br/>
               </div> 
              </div>
              </div>

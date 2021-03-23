@@ -12,6 +12,7 @@ import User from './Components/User'
 
 import Blog from './Components/Blog';
 import Search from './Components/Search';
+import ErrorPage from './Components/ErrorPage';
 function App() {
   return (
     <Router> 
@@ -24,7 +25,7 @@ function App() {
         <Route path="/myProfile" component={Profilo}/>
         <Route path="/search" component={Search}/>
         <Route path="/users" component={User} ></Route>
-        
+        <Route path="/error" component={ErrorPage} ></Route>
         <Route path="/aboutUs" component={AboutUs}/>
         <Route path ="/payments" component={Payments}/>
         <Route path ="/vetrina" component={VetrinaPayment}/>

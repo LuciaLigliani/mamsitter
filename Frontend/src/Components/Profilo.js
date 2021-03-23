@@ -101,7 +101,11 @@ class Profilo extends Component {
       if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
       this.setData(profile.data.data , specificData);
     })
-    .catch((err)=> console.log(err));
+    .catch((err)=> 
+    setTimeout((err)=> {
+      window.location.assign('/error');
+       }, 10)
+       );
   }
   
 
@@ -110,7 +114,7 @@ class Profilo extends Component {
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/');
-           }, 10); 
+           }, 30); 
            axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
       })
     .catch((err)=>console.log(err));

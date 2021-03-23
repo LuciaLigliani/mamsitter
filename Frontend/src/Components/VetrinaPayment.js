@@ -15,7 +15,7 @@ class VetrinaPayment extends React.Component {
       },
       createSubscription: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.get('/api/v1/users/myProfile').then((data => {
+        return axios.get('/users/myProfile').then((data => {
           console.log(data.data.data);
           return actions.subscription.create({
             'plan_id': 'P-0BA48243K7280713TMBF6VSY'
@@ -53,7 +53,7 @@ class VetrinaPayment extends React.Component {
 
     // window.paypal.Buttons({
     //   createSubscription: function(data, actions) {
-    //     axios.get('/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
+    //     axios.get('http://localhost:3001/api/v1/users/myProfile').then((data => console.log(data))).catch((err)=> alert(err));
     //     console.log(actions);
     //     return actions.subscription.create({
     //       'plan_id': 'P-87674821SB904544FMBCBNUY'
