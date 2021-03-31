@@ -101,9 +101,7 @@ class Search extends Component {
     console.log(vetrina);
   })
   .catch(error=>{
-    setTimeout((err)=> {
-      window.location.assign('/error');
-       }, 10)
+    console.log(error);
   })
   }
 
