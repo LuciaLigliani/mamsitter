@@ -43,7 +43,8 @@ class Profilo extends Component {
       languages:'',
       open: false,
       message:'',
-      anchorEl:''
+      anchorEl:'',
+      seeData:''
     }
 }
   handleClose= (e) => {
@@ -51,11 +52,14 @@ class Profilo extends Component {
   }
 
   setData = (data, specificData) => {
-    specificData.birthDate=new Date(specificData.birthDate).toLocaleDateString();
-    if(specificData.car === true) specificData.car = 'SI';
-    if(specificData.car === false) specificData.car = 'NO';
+    let birthDate = '';
+    birthDate=new Date(specificData.birthDate).toLocaleDateString();
+    let car = '';
+    if(specificData.car === true) car = 'SI';
+    if(specificData.car === false) car = 'NO';
+    let languages = '';
     if(specificData.languages !== undefined){
-      specificData.languages = specificData.languages.toString();
+      languages = specificData.languages.toString();
     }
     let work = '' ; 
     if(specificData.occasional === true) work += 'occasionale, ' ;
@@ -73,6 +77,25 @@ class Profilo extends Component {
     if(specificData.moreSeniors === true) available += 'più anziani, ';
     if(specificData.beSelfSufficient === false) available += 'non autosufficienti, ';
     available=available.substring(0, available.length - 2);
+    const info = {
+      email: data.email,
+      role: data.role,
+      name: specificData.name,
+      surname: specificData.surname,
+      sex: specificData.sex,
+      birthDate: birthDate,
+      city: specificData.city,
+      district: specificData.district,
+      description: specificData.description,
+      phoneNumber: specificData.phoneNumber,
+      car: car,
+      work: work,
+      available: available,
+      languages: languages
+    };
+    this.setState({
+      seeData: info
+    });
     this.setState({email: data.email});
     this.setState({role: data.role});
     this.setState({name: specificData.name});
@@ -86,14 +109,14 @@ class Profilo extends Component {
     this.setState({car: specificData.car});
     this.setState({work: work});
     this.setState({available: available});
-    this.setState({languages: specificData.languages});
+    this.setState({languages: languages});
     
 }
 
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -101,16 +124,20 @@ class Profilo extends Component {
       if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
       this.setData(profile.data.data , specificData);
     })
-    .catch((err)=> 
-    setTimeout((err)=> {
-      window.location.assign('/error');
-       }, 10)
-       );
+    .catch((err)=> {
+      setTimeout((err)=> {
+        window.location.assign('/error');
+         }, 10)
+  
+      console.log(err);
+
+    } );
+
   }
   
 
   deleteProfile = () => {
-    axios.delete('/api/v1/users/myProfile').then(profile => {
+    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/');
@@ -127,9 +154,32 @@ class Profilo extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
-  /* updateProfile = () => {
-    axios.patch('http://localhost:3000/api/v1/users/myProfile')
-  }*/
+  changeHandler = (e) => {
+    this.setState({[e.target.name]:e.target.value})
+  }
+
+
+  updateProfile = () => {
+    console.log(this.state.car);
+    axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(profile=>{
+     /* if(response.data.status === 'success') {
+        this.setState({open:true, message:'Profilo aggirornat'})
+       setTimeout(()=> {
+          window.location.assign('/login');
+        }, 10);
+      }*/
+    //alert con scritto: profilo aggiornato correttamente
+    
+    })
+
+  }
+
+  canUpdate = () => {
+    console.log(this.state.car);
+    document.getElementById('role').disabled = false;
+
+
+  }
 
 
   handleClick = (event) => {
@@ -208,20 +258,22 @@ class Profilo extends Component {
          </Col>
          <Col sm={7}>
        <br/>  <br/>
-  <TextField name='role'
- label={this.state.role}
+  <TextField 
+  id='role'
+  name='role'
+ label={this.state.seeData.role}
  disabled
  style={{  margin: 1, width: 200, left:-80 }}
  fullWidth
  margin="normal"/>  <br/>
  <TextField name='name'
- label={this.state.name}
+ label={this.state.seeData.name}
  disabled
  style={{ margin: 1, width: 200, left:-80 }}
  fullWidth
  margin="normal"/>  <br/>
 <TextField name='surname'
- label={this.state.surname}
+ label={this.state.seeData.surname}
  disabled
  style={{  margin: 1, width: 200, left:-80 }}
  fullWidth
@@ -233,7 +285,7 @@ class Profilo extends Component {
      
 <TextField 
 name='work'
- label={this.state.work}
+ label={this.state.seeData.work}
  disabled
  style={{  marginLeft: -200    , width: 400, bottom:70}}
  fullWidth
@@ -243,7 +295,7 @@ name='work'
  <Typography style={{marginTop:-38, marginLeft:-730}} variant="subtitle1" gutterBottom> Disponibilità a: &nbsp;
         </Typography>
   <TextField name='available'
- label={this.state.available}
+ label={this.state.seeData.available}
  disabled
  style={{  marginLeft: -200  , width: 400,bottom:70}}
  fullWidth
@@ -251,7 +303,7 @@ name='work'
  <Typography style={{marginTop:-35, marginLeft:-730}} variant="subtitle1" gutterBottom> Lingue parlate:&nbsp;
         </Typography>
  <TextField name='languages'
- label={this.state.languages}
+ label={this.state.seeData.languages}
  disabled
  style={{  marginLeft: -196 , width: 400, bottom:70}}
  fullWidth
@@ -259,7 +311,7 @@ name='work'
  <Typography style={{marginTop:-40, marginLeft:-750}} variant="subtitle1" gutterBottom> Automunita:
         </Typography>
  <TextField name='car'
- label={this.state.car}
+ label={this.state.seeData.car}
  disabled
  style={{ marginLeft:-530  , width: 100,  bottom:70  }}
  fullWidth
@@ -271,20 +323,20 @@ name='work'
   <Col >
  <br/>
  <TextField name='sex'
- label={this.state.sex}
+ label={this.state.seeData.sex}
  disabled
  style={{ margin: 1, width: 40, left:-40, bottom:80 }}
  fullWidth
  margin="dense"/> 
 
  <TextField name='birthDate'
- label={this.state.birthDate}
+ label={this.state.seeData.birthDate}
  disabled
  style={{ margin: 10, width: 130, left:-10, bottom:91 }}
  fullWidth
  margin="normal"/>
  <TextField name='city'
- label={this.state.city}
+ label={this.state.seeData.city}
  disabled
  style={{ margin: -10, width: 110, left:30, bottom:70   }}
  fullWidth
@@ -293,13 +345,13 @@ name='work'
   <Row>
 <Col>
  <TextField name='phoneNumber'
- label={this.state.phoneNumber}
+ label={this.state.seeData.phoneNumber}
  disabled
  style={{ margin: -10, width: 130, left:-10, bottom:90 }}
  fullWidth
  margin="normal"/> 
  <TextField  name='district'
- label={this.state.district}
+ label={this.state.seeData.district}
  disabled
  style={{ margin: -10, width: 120, left:45, bottom:90}}
  fullWidth
@@ -319,7 +371,8 @@ name='work'
    
    <button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
     <font  face='Georgia' color="white">
-    &nbsp;&nbsp; <button type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
+    &nbsp;&nbsp; <button onClick={this.canUpdate} type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
+    <font> <button onClick={this.updateProfile} className="buttonp buttonpp" >Salva</button></font>
          </div>
       </div>
       </div>

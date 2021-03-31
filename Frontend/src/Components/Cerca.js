@@ -89,7 +89,7 @@ class Cerca extends Component {
   
   async componentDidMount(){
     let vetrina = [];
-    const url='/api/v1/users/search';
+    const url='http://localhost:3000/api/v1/users/search';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -106,7 +106,7 @@ class Cerca extends Component {
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
-    const url = '/api/v1/users/search' + query;
+    const url = 'http://localhost:3000/api/v1/users/search' + query;
     axios.get(url).then(response=>{
       console.log(url);
       this.setState({users: response.data.data});
