@@ -1,4 +1,5 @@
 const multer = require('multer');
+const path = require('path');
 const sharp = require('sharp');
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/userModel');
@@ -61,9 +62,35 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(path.join(__dirname, `public/img/users/${req.file.filename}`));
 
   next();
+});
+
+exports.getPhoto = catchAsync (async (req, res, next) => {
+  const user = await userService.getUser(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  const options = {
+    root: path.join(__dirname, '../public'),
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  }
+
+  const fileName = `/img/users/${req.params.filename}`;
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Sent:', fileName);
+    }
+  });
 });
 
 exports.updateMyProfile = catchAsync (async (req, res, next) => {
@@ -157,3 +184,91 @@ exports.getAllUsersLessInfo = catchAsync (async (req, res, next) => {
     data: users
   });
 });
+
+exports.reviewWorker = catchAsync (async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No user found!', 404));
+  }
+
+  if(user.role === 'famiglia' || user.role === 'admin') {
+    return next(new AppError('You can\'t review this user!', 403));
+  }
+
+  // if(user.profile === 'premium') {
+  //   return next(new AppError('You have already reviewed this user!', 403));
+  // }
+
+  console.log(!req.body.review && !req.body.rate);
+  if(!req.body.review && !req.body.rate) {
+    user.profile = 'base';
+  } else {
+    if(req.body.rate > 5 || req.body.rate < 1) {
+      return next(new AppError('Rate must be between 1 and 5', 400));
+    }
+    user.profile = 'premium';
+  }
+
+  
+
+  user.review = req.body.review;
+  user.rate = req.body.rate;
+  user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+// exports.updateReview = catchAsync (async (req, res, next) => {
+//   const user = await User.findById(req.params.id);
+
+//   if (!user) {
+//     return next(new AppError('No user found!', 404));
+//   }
+
+//   if(user.role === 'famiglia' || user.role === 'admin') {
+//     return next(new AppError('You can\'t review this user!', 403));
+//   }
+
+//   if(user.profile !== 'premium') {
+//     return next(new AppError('You have not reviewed this user yet!', 403));
+//   }
+
+//   user.review = req.body.review;
+//   user.rate = req.body.rate;
+//   user.save({ validateBeforeSave: false });
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: user
+//   });
+// });
+
+// exports.deleteReview = catchAsync (async (req, res, next) => {
+//   const user = await User.findById(req.params.id);
+
+//   if (!user) {
+//     return next(new AppError('No user found!', 404));
+//   }
+
+//   if(user.role === 'famiglia' || user.role === 'admin') {
+//     return next(new AppError('You can\'t review this user!', 403));
+//   }
+
+//   if(user.profile !== 'premium') {
+//     return next(new AppError('You have not reviewed this user yet!', 403));
+//   }
+
+//   user.review = undefined;
+//   user.rate = undefined;
+//   user.profile = 'base';
+//   user.save({ validateBeforeSave: false });
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: user
+//   });
+// });

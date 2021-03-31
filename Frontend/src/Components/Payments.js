@@ -11,7 +11,6 @@ render() {
       <Link to="/canApply"><h1>Can apply</h1></Link>
       <Link to="/base"><h1>Base profile</h1></Link>
       <Link to="/premium"><h1>Premium profile</h1></Link>
-      <Link to="/topClass"><h1>TopClass profile</h1></Link>
 
     </div>
   );

@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Container } from 'react-bootstrap';
 import Avatar from '@material-ui/core/Avatar';
-import avatar from '..//default.jpg';
+// import avatar from '..//default.jpg';
 //import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import util from '..//util/util'
@@ -24,8 +24,10 @@ class User extends Component {
   constructor(props){
     super(props)
     this.state = {
+      id:'',
       email:'',
       role:'',
+      photo:'',
       name:'',
       surname:'',
       sex:'',
@@ -65,8 +67,10 @@ class User extends Component {
     if(specificData.moreSeniors === true) available += 'più anziani, ';
     if(specificData.beSelfSufficient === false) available += 'non autosufficienti, ';
     available=available.substring(0, available.length - 2);
+    this.setState({id: data._id});
     this.setState({email: data.email});
     this.setState({role: data.role});
+    this.setState({photo: data.photo})
     this.setState({name: specificData.name});
     this.setState({surname: specificData.surname});
     this.setState({sex: specificData.sex});
@@ -85,7 +89,7 @@ class User extends Component {
   componentDidMount(){
     const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/' + id).then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -150,7 +154,7 @@ class User extends Component {
        <Row>
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
-<Avatar  alt="Remy Sharp" src={avatar} style={{
+<Avatar  alt="Remy Sharp" src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: -55,
       top:16, 

@@ -95,7 +95,7 @@ const userSchema = new mongoose.Schema(
     profile: {
       type: String,
       required: true,
-      enum: ['semplice', 'base', 'premium', 'topClas'],
+      enum: ['semplice', 'base', 'premium'],
       // controllare
       default: function() {
           return this.role === 'famiglia' ? 'semplice' : 'base';
@@ -114,6 +114,12 @@ const userSchema = new mongoose.Schema(
     photo: {
       type: String,
       default: 'default.jpg'
+    },
+    review: String,
+    rate: {
+      type: Number,
+      min: [1, 'Rate must be between 1 and 5'],
+      max: [5, 'Rate must be between 1 and 5']
     }
   },
   

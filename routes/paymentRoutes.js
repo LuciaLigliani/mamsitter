@@ -9,7 +9,11 @@ router.use(authController.protect);
 
 router.use(authController.restrictTo('babysitter', 'badante', 'colf', 'famiglia'));
 
-router.post('/', paymentController.createPayment);
-router.delete('/:plan_id', paymentController.deletePayment);
+router.post('/canApply', authController.restrictTo('babysitter', 'badante', 'colf'), paymentController.canApply);
+router.post('/highlight', authController.restrictTo('babysitter', 'badante', 'colf'), paymentController.highlight);
+router.post('/base', authController.restrictTo('famiglia'), paymentController.base);
+router.post('/premium', authController.restrictTo('famiglia'), paymentController.premium);
+router.post('/createAnn', authController.restrictTo('famiglia'), paymentController.createAnn);
+// router.delete('/:plan_id', paymentController.deletePayment);
 
 module.exports = router;
