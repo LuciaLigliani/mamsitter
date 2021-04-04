@@ -12,11 +12,11 @@ import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Container } from 'react-bootstrap';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 // import avatar from '..//default.jpg';
 import photo from '..//photo.jpg';
 import Typography from '@material-ui/core/Typography';
-// import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Table from 'react-bootstrap/Table'
 import axios from 'axios';
@@ -52,8 +52,6 @@ class Profile extends Component{
       homework:'',
       cook:'',
       alsoColf:'',
-      available: [],
-      work: [],
       availableDays: [],
       seeData: '',
       update: '',
@@ -74,21 +72,6 @@ class Profile extends Component{
     else can = data.role === 'famiglia' ? 'Abbonati per creare annunci!' : 'Abbonati per candidarti agli annunci!'
     let highlighted = '';
     if (data.role !== 'famiglia') highlighted = data.highlighted === true ? 'Sei in vetrina!' : 'Abbonati per andare in vetrina!'
-    let work = [];
-    if (specificData.occasional === true) work.push('Occasionale');
-    if (specificData.regular === true) work.push('Regolare');
-    if (specificData.allDay === true) work.push('Tutto il giorno');
-    if (specificData.atHour === true) work.push('A orario');
-    if (specificData.diurnal === true) work.push('Diurno');
-    if (specificData.nocturnal === true) work.push('Notturno');
-    work = work.map(el => <dd>{el}</dd>);
-    let available = [];
-    if (specificData.homework === true) available.push('Aiuto compiti');
-    if (specificData.cook === true)  available.push('Cucinare');
-    if (specificData.car === true) available.push('Guidare');
-    if (specificData.alsoColf === true) available.push('Fare pulizie');
-    available = available.map(el => <dd>{el}</dd>);
-    console.log(specificData.availableDays);
     specificData.availableDays.map(el => {
       let id = '';
       if (el.partOfDay === 'morning') id = 'm';
@@ -102,9 +85,20 @@ class Profile extends Component{
       else if(el.weekDay === 'friday') id += 'v';
       else if(el.weekDay === 'saturday') id += 's';
       else if(el.weekDay === 'sunday') id += 'd';
-      document.getElementById(id).innerText = 'X';
+      document.getElementById(id).checked = true;
       return el;
     })
+    document.getElementById(specificData.sex).checked = true;
+    if (specificData.occasional === true) document.getElementById('occasional').checked = true;
+    if (specificData.regular === true) document.getElementById('regular').checked = true;
+    if (specificData.allDay === true) document.getElementById('allDay').checked = true;
+    if (specificData.atHour === true) document.getElementById('atHour').checked = true;
+    if (specificData.diurnal === true) document.getElementById('diurnal').checked = true;
+    if (specificData.nocturnal === true) document.getElementById('nocturnal').checked = true;
+    if (specificData.homework === true) document.getElementById('homework').checked = true;
+    if (specificData.cook === true) document.getElementById('cook').checked = true;
+    if (specificData.car === true) document.getElementById('car').checked = true;
+    if (specificData.alsoColf === true) document.getElementById('alsoColf').checked = true;
     
     const info = {
       email: data.email,
@@ -121,8 +115,6 @@ class Profile extends Component{
       description: specificData.description,
       phoneNumber: specificData.phoneNumber,
       car: specificData.car,
-      work: work,
-      available: available,
       languages: specificData.languages,
       availableDays: specificData.availableDays 
     };
@@ -199,11 +191,39 @@ class Profile extends Component{
     <label><img src={photo} width="35" alt=''></img></label>
     </div>;
     document.getElementById('phoneNumber').disabled = false;
+    document.getElementById('phoneNumber').style.backgroundColor = '#afafaf3d';
     document.getElementById('name').disabled = false;
+    document.getElementById('name').style.backgroundColor = '#afafaf3d';
     document.getElementById('surname').disabled = false;
-    document.getElementById('sex').disabled = false;
+    document.getElementById('surname').style.backgroundColor = '#afafaf3d';
+    document.getElementById('M').disabled = false;
+    document.getElementById('F').disabled = false;
     document.getElementById('birthDate').disabled = false;
-
+    document.getElementById('birthDate').style.backgroundColor = '#afafaf3d';
+    document.getElementById('occasional').disabled = false;
+    document.getElementById('regular').disabled = false;
+    document.getElementById('allDay').disabled = false;
+    document.getElementById('atHour').disabled = false;
+    document.getElementById('diurnal').disabled = false;
+    document.getElementById('nocturnal').disabled = false;
+    document.getElementById('homework').disabled = false;
+    document.getElementById('cook').disabled = false;
+    document.getElementById('car').disabled = false;
+    document.getElementById('alsoColf').disabled = false;
+    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+    const arr = ['m', 'p', 's', 'n'];
+    arr.forEach(part => {
+      array.forEach(day => {
+        const id = part + day;
+        document.getElementById(id).disabled = false;
+      })
+    })
+    document.getElementById('salva').hidden = false;
+    document.getElementById('aggiorna').hidden = true;
+    document.getElementById('description').disabled = false;
+    document.getElementById('description').style.backgroundColor = '#afafaf3d';
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     const update = {
       photo: image
     }
@@ -218,9 +238,82 @@ class Profile extends Component{
   };
 
   changeHandler = (e) => {
-    if (e.target.name === 'photo')
-      this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
-    else this.setState({[e.target.name]:e.target.value});
+    if (e.target.name === 'photo') this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
+    else if (e.target.id === 'M' && e.target.value === 'on') e.target.value = 'M';
+    else if (e.target.id === 'F' && e.target.value === 'on') e.target.value = 'F';
+    else if (e.target.name === 'occasional') e.target.value = e.target.checked;
+    else if (e.target.name === 'regular') e.target.value = e.target.checked;
+    else if (e.target.name === 'diurnal') e.target.value = e.target.checked;
+    else if (e.target.name === 'nocturnal') e.target.value = e.target.checked;
+    else if (e.target.name === 'allDay') e.target.value = e.target.checked;
+    else if (e.target.name === 'atHour') e.target.value = e.target.checked;
+    else if (e.target.name === 'homework') e.target.value = e.target.checked;
+    else if (e.target.name === 'cook') e.target.value = e.target.checked;
+    else if (e.target.name === 'car') e.target.value = e.target.checked;
+    else if (e.target.name === 'alsoColf') e.target.value = e.target.checked;
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  // tableChangeHandler = (e) => {
+  //   const value = {
+  //     partOfDay: '',
+  //     weekDay: ''
+  //   };
+  //   if(e.target.checked === true) {
+  //     if(e.target.id[0] === 'm' ) value.
+  //     else if(e.target.id[0] === 'p')
+  //     else if(e.target.id[0] === 's')
+  //     else if(e.target.id[0] === 'n')
+  //   } else {
+
+  //   }
+
+
+
+  //   // this.setState({availableDays: this.state.availableDays.push(value)});
+  // }
+
+  updateProfile = () => {
+    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+    const arr = ['m', 'p', 's', 'n'];
+    const availableDays = [];
+    arr.forEach(part => {
+      array.forEach(day => {
+        const id = part + day;
+        if(document.getElementById(id).checked === true) {
+          let partOfDay = '';
+          let weekDay = '';
+          if(part === 'm') partOfDay = 'morning';
+          else if(part === 'p') partOfDay = 'afternoon';
+          else if(part === 's') partOfDay = 'evening';
+          else if(part === 'n') partOfDay = 'night';
+          if(day === 'l') weekDay = 'monday';
+          else if(day === 'ma') weekDay = 'tuesday';
+          else if(day === 'me') weekDay = 'wednesday';
+          else if(day === 'g') weekDay = 'thursday';
+          else if(day === 'v') weekDay = 'friday';
+          else if(day === 's') weekDay = 'saturday';
+          else if(day === 'd') weekDay = 'sunday';
+          const value = {
+            partOfDay,
+            weekDay
+          };
+          availableDays.push(value);
+        }
+      })
+    });
+    this.state.availableDays = availableDays;
+    console.log(this.state);
+    axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
+      if(response.data.status === 'success') {
+        this.setState({open:true, message:'Profilo aggiornato correttamente'})
+       setTimeout(()=> {
+          window.location.assign('/myProfile');
+        }, 10);
+      }
+    }).catch((err)=> {
+      console.log(err);
+    } );
   }
 
   showInformations = (role) => {
@@ -231,50 +324,56 @@ class Profile extends Component{
         <Col sm={3}>
 <Typography style={{bottom:152, marginLeft:45, marginTop:-90}} variant="subtitle1" gutterBottom>
         Tipo di lavoro: &nbsp;</Typography>
-        <ul style={{bottom:152, marginLeft:70, textAlign: 'left'}}>{this.state.seeData.work}</ul>
+        {/* <ul style={{bottom:152, marginLeft:70, textAlign: 'left'}}>{this.state.seeData.work}</ul> */}
 
-        {/* <Form.Check
+         <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
               label="Occasionale"
               name='occasional'
-              id="formHorizontalRadios1"
+              id="occasional"
+              disabled
             />
-            <Form.Check
+           <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
               label="Regolare"
               name='regular'
-              id="formHorizontalRadios2"
+              id="regular"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
-              label="Giornaliero"
+              label="Diurno"
               name='diurnal'
-              id="formHorizontalRadios3"
+              id="diurnal"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
               label="Notturno"
               name='nocturnal'
-              id="formHorizontalRadios3"
+              id="nocturnal"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
               label="Ad orario"
               name='atHour'
-              id="formHorizontalRadios3"
+              id="atHour"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
               label="Tutto il giorno"
               name='allDay'
-              id="formHorizontalRadios3"
-            /> */}
+              id="allDay"
+              disabled
+            />
             </Col>
   <Col >
   <Typography style={{bottom:152, marginRight:300, marginTop:-90}} variant="subtitle1" gutterBottom>
@@ -295,43 +394,43 @@ class Profile extends Component{
   <tbody>
     <tr>
       <td >Mattino</td>
-      <td id='ml'></td>
-      <td id='mma'></td>
-      <td id='mme'></td>
-      <td id='mg'></td>
-      <td id='mv'></td>
-      <td id='ms'></td>
-      <td id='md'></td>
+      <td><Form.Check id='ml' disabled/></td>
+      <td><Form.Check id='mma' disabled/></td>
+      <td><Form.Check id='mme' disabled/></td>
+      <td><Form.Check id='mg' disabled/></td>
+      <td><Form.Check id='mv' disabled/></td>
+      <td><Form.Check id='ms' disabled/></td>
+      <td><Form.Check id='md' disabled/></td>
     </tr>
     <tr>
       <td>Pomeriggio</td>
-      <td id='pl'></td>
-      <td id='pma'></td>
-      <td id='pme'></td>
-      <td id='pg'></td>
-      <td id='pv'></td>
-      <td id='ps'></td>
-      <td id='pd'></td>
+      <td><Form.Check id='pl' disabled/></td>
+      <td><Form.Check id='pma' disabled/></td>
+      <td><Form.Check id='pme' disabled/></td>
+      <td><Form.Check id='pg' disabled/></td>
+      <td><Form.Check id='pv' disabled/></td>
+      <td><Form.Check id='ps' disabled/></td>
+      <td><Form.Check id='pd' disabled/></td>
     </tr>
     <tr>
       <td>Sera</td>
-      <td id='sl'></td>
-      <td id='sma'></td>
-      <td id='sme'></td>
-      <td id='sg'></td>
-      <td id='sv'></td>
-      <td id='ss'></td>
-      <td id='sd'></td>
+      <td><Form.Check id='sl' disabled/></td>
+      <td><Form.Check id='sma' disabled/></td>
+      <td><Form.Check id='sme' disabled/></td>
+      <td><Form.Check id='sg' disabled/></td>
+      <td><Form.Check id='sv' disabled/></td>
+      <td><Form.Check id='ss' disabled/></td>
+      <td><Form.Check id='sd' disabled/></td>
     </tr>
     <tr>
       <td>Notte</td>
-      <td id='nl'></td>
-      <td id='nma'></td>
-      <td id='nme'></td>
-      <td id='ng'></td>
-      <td id='nv'></td>
-      <td id='ns'></td>
-      <td id='nd'></td>
+      <td><Form.Check id='nl' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='nma' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='nme' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='ng' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='nv' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='ns' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='nd' onChange={this.changeHandler} disabled/></td>
     </tr>
   </tbody>
 </Table>
@@ -340,35 +439,39 @@ class Profile extends Component{
   <Col sm={2}>
 <Typography style={{bottom:152, marginLeft:-250, marginTop:-90}} variant="subtitle1" gutterBottom>
         Disponibilità a: &nbsp;</Typography>
-        <ul style={{bottom:152, marginLeft:-125, textAlign: 'left'}}>{this.state.seeData.available}</ul>
-        {/* <Form.Check
+        {/* <ul style={{bottom:152, marginLeft:-125, textAlign: 'left'}}>{this.state.seeData.available}</ul> */}
+        <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:-100, textAlign:'left'}}
               label="Aiuto compiti"
               name='homework'
-              id="formHorizontalRadios1"
+              id="homework"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:-100, textAlign:'left'}}
               label="Cucinare"
               name='cook'
-              id="formHorizontalRadios2"
+              id="cook"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:-100, textAlign:'left'}}
               label="Guidare"
               name='car'
-              id="formHorizontalRadios3"
+              id="car"
+              disabled
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:-100, textAlign:'left'}}
               label="Fare pulizie"
               name='alsoColf'
-              id="formHorizontalRadios3"
-            /> */}
+              id="alsoColf"
+              disabled
+            />
             </Col>
   </Row>
   <br/><br/><br/><br/></div>
@@ -434,7 +537,7 @@ class Profile extends Component{
          </Col>
          <Col sm={7}>
        <br/>  <br/> <br/>  
-       <TextField name='email'
+<TextField name='email'
  label={this.state.seeData.email}
  disabled
  style={{  margin: 1, width: 200,  bottom:40, marginLeft: 50 }}
@@ -467,8 +570,10 @@ class Profile extends Component{
  fullWidth
  margin="normal"/>  <br/>
  <TextField name='phoneNumber' id='phoneNumber'
+ onChange={this.changeHandler}
  label={this.state.seeData.phoneNumber}
  disabled
+ type="tel"
  style={{ margin: 1, width: 200, bottom: 40, marginLeft: 50   }}
  fullWidth
  margin="normal"/><br/>
@@ -478,6 +583,7 @@ class Profile extends Component{
          <br/> 
 <TextField 
 name='name' id='name'
+onChange={this.changeHandler}
  label={this.state.seeData.name}
  disabled
  style={{marginLeft: -150, width: 200, bottom:7}}
@@ -486,18 +592,22 @@ name='name' id='name'
 
  <br/>
   <TextField name='surname' id='surname'
+  onChange={this.changeHandler}
  label={this.state.seeData.surname}
  disabled
  style={{marginLeft: -150,  width: 200,bottom:29}}
  fullWidth
  margin="normal"/><br/>
- <TextField name='sex' id='sex'
- label={this.state.seeData.sex}
+ <TextField 
+ label="Sesso: "
  disabled
- style={{marginLeft: -150, width: 200, bottom:50}}
+ style={{marginLeft: -160,  width: 60, top:-55}}
  fullWidth
- margin="normal"/><br/>
+ margin="normal"/>
+ <input type="radio" id="M" name="sex" onChange={this.changeHandler} style={{marginLeft:20, width: 30, top:-300, borderColor: 'black'}} disabled/> <label for="M" style={{color:'grey'}}>M</label>
+ <input type="radio" id="F" name="sex" onChange={this.changeHandler} style={{marginLeft:20, width: 30, top:-300}} disabled/> <label for="F" style={{color:'grey'}}>F</label><br/>
  <TextField name='birthDate' id='birthDate'
+ onChange={this.changeHandler}
  label={this.state.seeData.birthDate}
  disabled
  style={{marginLeft: -150, width: 200,  bottom:73  }}
@@ -528,13 +638,15 @@ name='name' id='name'
          <Typography style={{bottom:152, marginLeft:-400, marginTop:-90}} variant="subtitle1" gutterBottom>
         Descrizione: &nbsp;</Typography>
          <TextareaAutosize
+         onChange={this.changeHandler}
          style={{ width: 600,  borderColor:'white', overflow: 'auto'}}
+         name="description"
+         id="description"
       rowsMax={7}
       disabled
       aria-label="maximum height"
-      placeholder="Maximum 4 rows"
-      defaultValue="Questo sito utilizza cookie, di prima e di terza parte, per mostrarti pubblicità in linea con le tue preferenze e per misurare le prestazioni di annunci e contenuti pubblicati, come esplicato nella cookie policy. In particolare, noi e alcuni partner selezionati potremmo utilizzare dati di geolocalizzazione precisi e fare una scansione attiva delle caratteristiche del dispositivo ai fini dell’identificazione con lo scopo di archiviare e/o accedere ad alcune informazioni su un dispositivo e conseguentemente trattare i tuoi dati personali (es. dati di navigazione, indirizzi IP, etc.) per le seguenti finalità: annunci e contenuti personalizzati, valutazione dell’annuncio e del contenuto, osservazioni del pubblico, sviluppare e perfezionare i prodotti."
-    />
+      placeholder={this.state.seeData.description}
+      />
          </Col>
 </Row>
 
@@ -544,8 +656,8 @@ name='name' id='name'
    
    <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
     <font  face='Georgia' color="white">
-   &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
-    <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} className="buttonp buttonpp" hidden>Salva</button></font>
+   &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
+    <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
          </div>
 </Row>
      </Container>
