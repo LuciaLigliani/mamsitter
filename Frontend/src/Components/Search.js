@@ -179,6 +179,7 @@ class Search extends Component {
                     onClose={this.handleClose}
                   >
                   <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+                  <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
                   <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
                 </Menu>
                  

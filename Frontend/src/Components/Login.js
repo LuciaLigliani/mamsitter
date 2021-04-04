@@ -42,9 +42,15 @@ submitHandler = (e) => {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
     this.setState({open:true, message:'Login effettuato'})
+    if(response.data.data.role === 'babysitter' && 'badante' && 'colf'){
     setTimeout(()=> {
-    window.location.assign('/search');
-     }, 10);
+      window.location.assign('/announcement');
+       }, 10);
+      }
+    if(response.data.data.role === 'famiglia') 
+    setTimeout(()=> {
+      window.location.assign('/search');
+       }, 10);
   }
   })
   .catch(error=>{
