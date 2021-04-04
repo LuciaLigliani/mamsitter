@@ -95,8 +95,8 @@ exports.updateUser = async (id, body) => {
 
   // escludo i campi che non possono essere modificati (non posso modificare lo specificUser, tranne la foto)
   let validFields = { ...body };
-  let toExclude = ['name', 'surname'];
-  validFields = util.excludeFields(validFields, toExclude);
+  // let toExclude = ['name', 'surname'];
+  // validFields = util.excludeFields(validFields, toExclude);
 
   if(body.photo) {
     user.photo = body.photo;
@@ -116,7 +116,7 @@ exports.updateUser = async (id, body) => {
     specificUser = await Colf.findByIdAndUpdate(user.colf_id, validFields);
   }
   if (type === 'famiglia') {
-    toExclude = ['city', 'district'];
+    const toExclude = ['city', 'district'];
     validFields = util.excludeFields(validFields, toExclude);
     specificUser = await Famiglia.findByIdAndUpdate(user.famiglia_id, validFields);
   }
