@@ -15,32 +15,25 @@ class VetrinaPayment extends React.Component {
       },
       createSubscription: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.get('http://localhost:3000/users/myProfile').then((data => {
-          console.log(data.data.data);
+        return axios.get('http://localhost:3000/api/v1/users/myProfile').then((data => {
+          console.log(data.data.data.role);
           return actions.subscription.create({
             'plan_id': 'P-0BA48243K7280713TMBF6VSY'
           });
         })).catch(err => {
-          alert('fai il login');
-          // setTimeout(()=> {
-          //   window.location.assign('/vetrina');
-          // }, 10); 
+          alert('error');
           console.log(err);
         });
       },
       onApprove: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.patch('http://localhost:3000/api/v1/users/payment/highlight').then((data => {
+        return axios.post('http://localhost:3000/api/v1/payments/highlight', ).then((data => {
           console.log(data.data.data);
           console.log(data);
         })).catch(err => {
           alert('qualcosa è andato storto')
-          // setTimeout(()=> {
-          //   window.location.assign('/vetrina');
-          // }, 10); 
           console.log(err);
-        });     
-        // alert(data.subscriptionID); 
+        });
       },
       onCancel: function (data) {
         // Show a cancel page, or return to cart

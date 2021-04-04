@@ -11,7 +11,7 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: [true, 'Please provide the type of payment'],
-      enum: ['highlight', 'createAnn', 'apply', 'base', 'premium', 'topClass']
+      enum: ['highlight', 'canApply', 'createAnn', 'base', 'premium']
     },
     plan_id: {
       type: String,

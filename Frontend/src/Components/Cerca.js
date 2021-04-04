@@ -13,7 +13,7 @@ import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
 import Box from '@material-ui/core/Box';
 //import { makeStyles } from '@material-ui/core/styles';
-import img from '..//img.png';
+// import img from '..//img.png';
 
 
 
@@ -94,12 +94,10 @@ class Cerca extends Component {
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
       if(user.generalUser.highlighted === true) vetrina.push(user);
-    
       return vetrina
 
     });
     this.setState({highlighted: this.grid(vetrina)});
-    console.log(vetrina);
   })
   }
 
@@ -132,7 +130,7 @@ class Cerca extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       <img src={img} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
+       <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
 
         
 
@@ -288,7 +286,7 @@ class Cerca extends Component {
              <div key={users.generalUser.id}>
             <div className="card"> 
             <div className="card_body">
-             <img src={img} style={{marginLeft:2, width:100, height:100}} alt=''></img>
+             <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
              
               <div className="card_title">
               {users.specificUser.name} {users.specificUser.surname} 

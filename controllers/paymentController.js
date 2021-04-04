@@ -1,56 +1,83 @@
-const Payment = require("../models/payment");
-const User = require("../models/userModel");
+const paymentService = require("../services/paymentService");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 
-exports.createPayment = catchAsync (async (req, res, next) => {
-  const payment = await Payment.create({
-    user_id: req.user.id,
-    kind: req.body.kind,
-    plan_id: req.body.plan_id,
-    subscription_id: req.body.subscription_id
-  });
+exports.canApply = catchAsync (async (req, res, next) => {
+  const response = await paymentService.createPayment(req.user.id, 'apply', req.body.plan_id, req.body.subscription_id);
 
-  let options;
-  if(req.body.kind === 'highlight') options = { highlighted: true };
-  else if(req.body.kind === 'createAnn') options = { can: true };
-  else if(req.body.kind === 'apply') options = { can: true };
-  else if(req.body.kind === 'base') options = { profile: "base" };
-  else if(req.body.kind === 'premium') options = { profile: "premium" };
-  else if(req.body.kind === 'topClass') options = { profile: "topClass" };
-
-  const user = await User.findByIdAndUpdate(req.user.id, { $set: options });
-
-  if(!user) {
+  if(!response.user) {
     return next(new AppError('User not found', 404));
   }
   
   res.status(201).json({
     status: 'success',
-    data: payment
+    data: response
   });
 });
 
-exports.deletePayment = catchAsync (async (req, res, next) => {
-  const payment = await Payment.findOneAndDelete({user_id: req.user.id, plan_id: req.params.plan_id});
+exports.highlight = catchAsync (async (req, res, next) => {
+  const payment = {user_id: req.user.id, kind: 'highlight', plan_id: req.body.plan_id, subscription_id: req.body.subscription_id};
+  const response = await paymentService.createPayment(payment);
   
-  let options;
-  if(payment.kind === 'highlight') options = { highlighted: false };
-  else if(payment.kind === 'createAnn') options = { can: false };
-  else if(payment.kind === 'apply') options = { can: false };
-  else if(payment.kind === 'base') options = { profile: "standard" };
-  else if(payment.kind === 'premium') options = { profile: "base" };
-  else if(payment.kind === 'topClass') options = { profile: "base" };
-
-  const user = await User.findByIdAndUpdate(req.user.id, { $set: options });
-
-  if(!user) {
+  if(!response.user) {
     return next(new AppError('User not found', 404));
   }
-
-  res.status(204).json({
+  
+  res.status(201).json({
     status: 'success',
-    data: null
+    data: response
   });
 });
+
+exports.base = catchAsync (async (req, res, next) => {
+  const response = await paymentService.createPayment(req.user.id, 'base', req.body.plan_id, req.body.subscription_id);
+
+  if(!response.user) {
+    return next(new AppError('User not found', 404));
+  }
+  
+  res.status(201).json({
+    status: 'success',
+    data: response
+  });
+});
+
+exports.premium = catchAsync (async (req, res, next) => {
+  const response = await paymentService.createPayment(req.user.id, 'premium', req.body.plan_id, req.body.subscription_id);
+
+  if(!response.user) {
+    return next(new AppError('User not found', 404));
+  }
+  
+  res.status(201).json({
+    status: 'success',
+    data: response
+  });
+});
+
+exports.createAnn = catchAsync (async (req, res, next) => {
+  const response = await paymentService.createPayment(req.user.id, 'createAnn', req.body.plan_id, req.body.subscription_id);
+
+  if(!response.user) {
+    return next(new AppError('User not found', 404));
+  }
+  
+  res.status(201).json({
+    status: 'success',
+    data: response
+  });
+});
+
+// exports.deletePayment = catchAsync (async (req, res, next) => {
+//   const response = await paymentService.createPayment(req.user.id, 'highlight', req.body.plan_id, req.body.subscription_id);
+
+//   if(!response.user) {
+//     return next(new AppError('User not found', 404));
+//   }
+  
+//   res.status(201).json({
+//     status: 'success',
+//     data: response
+//   });
+// });
