@@ -16,6 +16,7 @@ import ErrorPage from './Components/ErrorPage';
 import Announcements from './Components/Announcements';
 import VisualizzaAnnuncio from './Components/VisualizzaAnnuncio';
 import Profile from './Components/Profile';
+import CreaAnnuncio from './Components/CreaAnnuncio';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
         <Route path="/announcements" component ={VisualizzaAnnuncio}></Route>
         <Route path="/error" component={ErrorPage} ></Route>
         <Route path="/prova" component={Profile} ></Route>
+        <Route path="/createann" component={CreaAnnuncio} ></Route>
+
 
         <Route path="/aboutUs" component={AboutUs}/>
         <Route path ="/payments" component={Payments}/>
