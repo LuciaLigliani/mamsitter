@@ -71,23 +71,26 @@ class Profile extends Component{
     if (data.can === true) can = data.role === 'famiglia' ? 'Puoi creare annunci!' : 'Puoi candidarti agli annunci!'
     else can = data.role === 'famiglia' ? 'Abbonati per creare annunci!' : 'Abbonati per candidarti agli annunci!'
     let highlighted = '';
-    if (data.role !== 'famiglia') highlighted = data.highlighted === true ? 'Sei in vetrina!' : 'Abbonati per andare in vetrina!'
-    specificData.availableDays.map(el => {
-      let id = '';
-      if (el.partOfDay === 'morning') id = 'm';
-      else if (el.partOfDay === 'afternoon') id = 'p';
-      else if (el.partOfDay === 'evening') id = 's';
-      else if (el.partOfDay === 'night') id = 'n';
-      if(el.weekDay === 'monday') id += 'l';
-      else if(el.weekDay === 'tuesday') id += 'ma';
-      else if(el.weekDay === 'wednesday') id += 'me';
-      else if(el.weekDay === 'thursday') id += 'g';
-      else if(el.weekDay === 'friday') id += 'v';
-      else if(el.weekDay === 'saturday') id += 's';
-      else if(el.weekDay === 'sunday') id += 'd';
-      document.getElementById(id).checked = true;
-      return el;
-    })
+    if (data.role !== 'famiglia') {
+      highlighted = data.highlighted === true ? 'Sei in vetrina!' : 'Abbonati per andare in vetrina!';
+
+      specificData.availableDays.map(el => {
+        let id = '';
+        if (el.partOfDay === 'morning') id = 'm';
+        else if (el.partOfDay === 'afternoon') id = 'p';
+        else if (el.partOfDay === 'evening') id = 's';
+        else if (el.partOfDay === 'night') id = 'n';
+        if(el.weekDay === 'monday') id += 'l';
+        else if(el.weekDay === 'tuesday') id += 'ma';
+        else if(el.weekDay === 'wednesday') id += 'me';
+        else if(el.weekDay === 'thursday') id += 'g';
+        else if(el.weekDay === 'friday') id += 'v';
+        else if(el.weekDay === 'saturday') id += 's';
+        else if(el.weekDay === 'sunday') id += 'd';
+        document.getElementById(id).checked = true;
+        return el;
+      })
+    }
     document.getElementById(specificData.sex).checked = true;
     if (specificData.occasional === true) document.getElementById('occasional').checked = true;
     if (specificData.regular === true) document.getElementById('regular').checked = true;
@@ -200,24 +203,27 @@ class Profile extends Component{
     document.getElementById('F').disabled = false;
     document.getElementById('birthDate').disabled = false;
     document.getElementById('birthDate').style.backgroundColor = '#afafaf3d';
-    document.getElementById('occasional').disabled = false;
-    document.getElementById('regular').disabled = false;
-    document.getElementById('allDay').disabled = false;
-    document.getElementById('atHour').disabled = false;
-    document.getElementById('diurnal').disabled = false;
-    document.getElementById('nocturnal').disabled = false;
-    document.getElementById('homework').disabled = false;
-    document.getElementById('cook').disabled = false;
-    document.getElementById('car').disabled = false;
-    document.getElementById('alsoColf').disabled = false;
-    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
-    const arr = ['m', 'p', 's', 'n'];
-    arr.forEach(part => {
-      array.forEach(day => {
-        const id = part + day;
-        document.getElementById(id).disabled = false;
+    if (this.state.role !== 'famiglia') {
+      document.getElementById('occasional').disabled = false;
+      document.getElementById('regular').disabled = false;
+      document.getElementById('allDay').disabled = false;
+      document.getElementById('atHour').disabled = false;
+      document.getElementById('diurnal').disabled = false;
+      document.getElementById('nocturnal').disabled = false;
+      document.getElementById('homework').disabled = false;
+      document.getElementById('cook').disabled = false;
+      document.getElementById('car').disabled = false;
+      document.getElementById('alsoColf').disabled = false;
+
+      const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+      const arr = ['m', 'p', 's', 'n'];
+      arr.forEach(part => {
+        array.forEach(day => {
+          const id = part + day;
+          document.getElementById(id).disabled = false;
+        })
       })
-    })
+    }
     document.getElementById('salva').hidden = false;
     document.getElementById('aggiorna').hidden = true;
     document.getElementById('description').disabled = false;
@@ -254,55 +260,38 @@ class Profile extends Component{
     this.setState({[e.target.name]: e.target.value});
   }
 
-  // tableChangeHandler = (e) => {
-  //   const value = {
-  //     partOfDay: '',
-  //     weekDay: ''
-  //   };
-  //   if(e.target.checked === true) {
-  //     if(e.target.id[0] === 'm' ) value.
-  //     else if(e.target.id[0] === 'p')
-  //     else if(e.target.id[0] === 's')
-  //     else if(e.target.id[0] === 'n')
-  //   } else {
-
-  //   }
-
-
-
-  //   // this.setState({availableDays: this.state.availableDays.push(value)});
-  // }
-
   updateProfile = () => {
-    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
-    const arr = ['m', 'p', 's', 'n'];
-    const availableDays = [];
-    arr.forEach(part => {
-      array.forEach(day => {
-        const id = part + day;
-        if(document.getElementById(id).checked === true) {
-          let partOfDay = '';
-          let weekDay = '';
-          if(part === 'm') partOfDay = 'morning';
-          else if(part === 'p') partOfDay = 'afternoon';
-          else if(part === 's') partOfDay = 'evening';
-          else if(part === 'n') partOfDay = 'night';
-          if(day === 'l') weekDay = 'monday';
-          else if(day === 'ma') weekDay = 'tuesday';
-          else if(day === 'me') weekDay = 'wednesday';
-          else if(day === 'g') weekDay = 'thursday';
-          else if(day === 'v') weekDay = 'friday';
-          else if(day === 's') weekDay = 'saturday';
-          else if(day === 'd') weekDay = 'sunday';
-          const value = {
-            partOfDay,
-            weekDay
-          };
-          availableDays.push(value);
-        }
-      })
-    });
-    this.state.availableDays = availableDays;
+    if(this.state.role !== 'famiglia'){
+      const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+      const arr = ['m', 'p', 's', 'n'];
+      const availableDays = [];
+      arr.forEach(part => {
+        array.forEach(day => {
+          const id = part + day;
+          if(document.getElementById(id).checked === true) {
+            let partOfDay = '';
+            let weekDay = '';
+            if(part === 'm') partOfDay = 'morning';
+            else if(part === 'p') partOfDay = 'afternoon';
+            else if(part === 's') partOfDay = 'evening';
+            else if(part === 'n') partOfDay = 'night';
+            if(day === 'l') weekDay = 'monday';
+            else if(day === 'ma') weekDay = 'tuesday';
+            else if(day === 'me') weekDay = 'wednesday';
+            else if(day === 'g') weekDay = 'thursday';
+            else if(day === 'v') weekDay = 'friday';
+            else if(day === 's') weekDay = 'saturday';
+            else if(day === 'd') weekDay = 'sunday';
+            const value = {
+              partOfDay,
+              weekDay
+            };
+            availableDays.push(value);
+          }
+        })
+      });
+      this.state.availableDays = availableDays;
+    }
     console.log(this.state);
     axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
@@ -324,8 +313,6 @@ class Profile extends Component{
         <Col sm={3}>
 <Typography style={{bottom:152, marginLeft:45, marginTop:-90}} variant="subtitle1" gutterBottom>
         Tipo di lavoro: &nbsp;</Typography>
-        {/* <ul style={{bottom:152, marginLeft:70, textAlign: 'left'}}>{this.state.seeData.work}</ul> */}
-
          <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:90, textAlign:'left'}}
@@ -424,13 +411,13 @@ class Profile extends Component{
     </tr>
     <tr>
       <td>Notte</td>
-      <td><Form.Check id='nl' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='nma' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='nme' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='ng' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='nv' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='ns' onChange={this.changeHandler} disabled/></td>
-      <td><Form.Check id='nd' onChange={this.changeHandler} disabled/></td>
+      <td><Form.Check id='nl' disabled/></td>
+      <td><Form.Check id='nma' disabled/></td>
+      <td><Form.Check id='nme' disabled/></td>
+      <td><Form.Check id='ng' disabled/></td>
+      <td><Form.Check id='nv' disabled/></td>
+      <td><Form.Check id='ns' disabled/></td>
+      <td><Form.Check id='nd' disabled/></td>
     </tr>
   </tbody>
 </Table>
@@ -439,7 +426,6 @@ class Profile extends Component{
   <Col sm={2}>
 <Typography style={{bottom:152, marginLeft:-250, marginTop:-90}} variant="subtitle1" gutterBottom>
         Disponibilità a: &nbsp;</Typography>
-        {/* <ul style={{bottom:152, marginLeft:-125, textAlign: 'left'}}>{this.state.seeData.available}</ul> */}
         <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:-100, textAlign:'left'}}
@@ -557,6 +543,7 @@ class Profile extends Component{
  fullWidth
  margin="normal"/>  <br/>
 <TextField name='highlighted'
+ id='highlighted'
  label={this.state.seeData.highlighted}
  disabled
  style={{  margin: 1, width: 240, bottom: 40, marginLeft: 50   }}

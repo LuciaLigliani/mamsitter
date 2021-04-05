@@ -18,6 +18,16 @@ const applicationSchema = new mongoose.Schema(
 
 applicationSchema.index({ user_id: 1, announcement_id: 1 }, { unique: true });
 
+applicationSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'user_id'
+  }).populate({
+    path: 'announcement_id'
+  });
+  
+  next();
+});
+
 applicationSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;
   this.options.new = true;
