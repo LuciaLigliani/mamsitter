@@ -162,9 +162,6 @@ class Profile extends Component{
       this.setData(profile.data.data , specificData);
     })
     .catch((err)=> {
-      setTimeout((err)=> {
-        window.location.assign('/error');
-         }, 10)
       console.log(err);
     } );
   }

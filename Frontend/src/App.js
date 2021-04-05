@@ -5,7 +5,6 @@ import Signin from './Components/Signin';
 import Cerca from './Components/Cerca';
 import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Profilo from './Components/Profilo';
 import Payments from './Components/Payments';
 import VetrinaPayment from './Components/VetrinaPayment';
 import User from './Components/User'
@@ -17,6 +16,8 @@ import Announcements from './Components/Announcements';
 import VisualizzaAnnuncio from './Components/VisualizzaAnnuncio';
 import Profile from './Components/Profile';
 import CreaAnnuncio from './Components/CreaAnnuncio';
+import VisualizzaTuttiGliAnnunci from './Components/VisualizzaTuttiGliAnnunci';
+import VisualizzaCandidature from './Components/VisualizzaCandidature';
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
         <Route path="/error" component={ErrorPage} ></Route>
         <Route path="/prova" component={Profile} ></Route>
         <Route path="/createann" component={CreaAnnuncio} ></Route>
+        <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
+        <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
 
 
         <Route path="/aboutUs" component={AboutUs}/>

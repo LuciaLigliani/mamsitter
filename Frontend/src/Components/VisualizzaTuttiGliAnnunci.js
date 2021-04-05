@@ -1,0 +1,130 @@
+import React from  'react';
+import '..//App.css';
+import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import logomodi from '..//logomodi.png';
+import axios from 'axios';
+import util from '..//util/util'
+import { Col, Row } from 'react-bootstrap';
+import { Component } from 'react';
+
+import Box from '@material-ui/core/Box';
+// import img from '..//img.png';
+
+
+class VisualizzaTuttiGliAnnunci extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      announcements: [],
+      user_id: '',
+      anchorEl:'',
+      title:'',
+      typeAnnouncement: '',
+      typeWork:'',
+      startDate:'',
+      annCity:'',
+      annDistrict:''
+    
+    }
+  }
+  async componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    const url='http://localhost:3000/api/v1/announcements';
+    axios.get(url).then(response=>{
+    this.setState({announcements: response.data.data});
+    })
+    .catch(error=>{
+     console.log(error);
+    })
+  }
+
+  setData(date) {
+    date=new Date(date).toLocaleDateString();
+    if(date==='Invalid Date')
+    return '';  
+    return date;
+  }
+  handleClick = (event) => {
+    this.setState({anchorEl:event.currentTarget});
+  }
+  handleClose = () => {
+    this.setState({anchorEl:null});
+  };
+  
+
+render(){
+  return(
+    <div className="cerca">
+      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+         <ul className="linksNav">
+             <Link to="/mamsitter">
+               <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
+             </Link>
+             <Link to="/mamsitter">
+               <li><font face='Georgia' color='black'>BLOG</font></li>
+             </Link>
+             
+             <Link to="/aboutUs">
+               <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
+             </Link>
+           <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
+               <ArrowDropDownIcon></ArrowDropDownIcon>
+           </Button>
+             <Menu
+                 id="simple-menu"
+                 anchorEl={this.state.anchorEl}
+                 keepMounted
+                 open={Boolean(this.state.anchorEl)}
+                 onClose={this.handleClose}
+               >
+               <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+               <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+             </Menu>
+              
+           </ul><br/><br/><br/>
+           <Box height="5%" width="30%" mb="4%" m="7%" ml="80%"  bgcolor="text.primary" >
+     <font size="5" face='Georgia' color="white"> I Miei Annunci</font>
+    </Box>
+           <div className="card_container_ann"> 
+      {this.state.announcements.map(announcements=>(     
+         <div className="card_ann">
+            <div className="card_body_ann">
+               <div className="card_title_ann">
+               <Row>
+                <Col sm={8}>
+                  {'TITOLO: ' + announcements.generalAnnouncement.title} <br/> {'TIPOLOGIA: ' + announcements.generalAnnouncement.typeAnnouncement} <br/> 
+                  {'DA: ' + this.setData(announcements.specificAnnouncement.startDate)} <br/>
+                  {'A: ' + this.setData(announcements.specificAnnouncement.endDate)}<br/>
+                </Col>
+                <Col>
+                <br/>
+                <br/>
+                <br/>
+               <Link to={"/announcements/" + announcements.generalAnnouncement._id} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
+               </Col>
+               </Row>
+               </div> 
+            </div>
+          </div>
+      ))} 
+            
+
+      </div>
+      
+      
+
+</div>
+
+
+
+
+  );
+}
+}
+
+export default VisualizzaTuttiGliAnnunci;
