@@ -133,10 +133,7 @@ class Profilo extends Component {
       // .catch((err)=>console.log(err));
     })
     .catch((err)=> {
-      setTimeout((err)=> {
-        window.location.assign('/error');
-         }, 10)
-  
+    
       console.log(err);
 
     } );
