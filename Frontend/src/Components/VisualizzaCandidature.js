@@ -21,11 +21,20 @@ class VisualizzaCandidature extends Component {
     super(props);
     this.state = {
       announcements: [],
-      _id:'',
       user_id: '',
-      announcement_id:'',
       anchorEl:'',
-      
+      title:'',
+      typeAnnouncement: '',
+      typeWork:'',
+      startDate:'',
+      annCity:'',
+      annDistrict:'',
+      regular:'',
+      occasional:'',
+      diurnal:'',
+      nocturnal:'',
+      allDay:'',
+      atHour:''
 
     }
   }
@@ -33,7 +42,7 @@ class VisualizzaCandidature extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/applications';
     axios.get(url).then(response=>{
-    console.log(response.data.data);
+    
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
@@ -85,7 +94,7 @@ render(){
              </Menu>
               
            </ul><br/><br/><br/>
-           <Box height="5%" width="30%" mb="4%" m="7%" ml="80%"  bgcolor="text.primary" >
+           <Box height="5%" width="40%" mb="4%" m="7%" ml="70%"  bgcolor="text.primary" >
      <font size="5" face='Georgia' color="white"> Le Mie Candidature</font>
     </Box>
            <div className="card_container_ann"> 
@@ -95,15 +104,16 @@ render(){
                <div className="card_title_ann">
                <Row>
                 <Col sm={8}>
-                  {'TITOLO: ' + announcements.data._id} <br/> {'TIPOLOGIA: ' +  announcements.data.user_id +  announcements.data.announcement_id} <br/> 
-                  {'DA: ' + this.setData(announcements.specificAnnouncement.startDate)} <br/>
-                  {'A: ' + this.setData(announcements.specificAnnouncement.endDate)}<br/>
+                  {'Titolo: ' + announcements.announcement_id.title} <br/> {'Tipologia: ' + announcements.announcement_id.typeAnnouncement} <br/> 
+                  {'Città: ' + announcements.announcement_id.annCity} <br/> 
+                  {'Distretto: ' + announcements.announcement_id.annDistrict} <br/> 
+                 
                 </Col>
                 <Col>
                 <br/>
                 <br/>
                 <br/>
-               <Link to={"/announcements/" + announcements.generalAnnouncement._id} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
+               <Link to={"/announcements/" + announcements.announcement_id._id} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
                </Col>
                </Row>
                </div> 
