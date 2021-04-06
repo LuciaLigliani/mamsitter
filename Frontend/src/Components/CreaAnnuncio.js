@@ -22,6 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios'
 import Table from 'react-bootstrap/Table'
 import Modal from 'react-bootstrap/Modal'
+
 class CreaAnnuncio extends Component{
   constructor(props){
     super(props);

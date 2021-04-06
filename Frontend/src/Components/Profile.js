@@ -168,6 +168,7 @@ class Profile extends Component{
 
   deleteProfile = () => {
     axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/');
@@ -642,8 +643,8 @@ onChange={this.changeHandler}
 
   <Row>
   <div >
-  <Link to="/home"><font face='Georgia' color="white">
-   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
+  <font face='Georgia' color="white">
+   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
 
     <font  face='Georgia' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
