@@ -11,7 +11,7 @@ import logomodi from '..//logomodi.png';
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
-import util from '..//util/util'
+import util from '..//util/util';
 
 
 class Announcements extends Component {
@@ -33,7 +33,6 @@ class Announcements extends Component {
       nocturnal:'',
       allDay:'',
       atHour:''
-
     }
   }
   handleClick = (event) => {
@@ -51,32 +50,26 @@ class Announcements extends Component {
   }
 
   changeHandler = (e) => {
-    if(['regular', 'occasional', 'diurnal', 'nocturnal', 'atHour', 'allDay'].includes(e.target.name))
-    this.setState({[e.target.name]:e.target.checked});
+    // if(['regular', 'occasional', 'diurnal', 'nocturnal', 'atHour', 'allDay'].includes(e.target.name))
+    if(e.target.name === 'typeWork' && e.target.value === 'on') 
+    this.setState({[e.target.name]:e.target.id});
     else this.setState({[e.target.name]:e.target.value})
-    }
+  }
 
     createQuery () {
       let filter = '';
         if(this.state.startDate) 
         filter = (filter || '?') + 'startDate[gte]='+this.state.startDate+'&';
         if(this.state.annCity) filter = (filter || '?') + 'annCity='+this.state.annCity+'&';
+        if(this.state.annDistrict) filter = (filter || '?') + 'annDistrict='+this.state.annDistrict+'&';
         if(this.state.typeAnnouncement) filter = (filter || '?') + 'typeAnnouncement='+this.state.typeAnnouncement+'&';
-        if(this.state.regular) filter = (filter || '?') + 'regolare='+this.state.regular+'&';
-        if(this.state.occasional) filter = (filter || '?') + 'occasionale='+this.state.occasional+'&';
-        if(this.state.district) filter = (filter || '?') + 'district='+this.state.district+'&';
-        if(this.state.diurnal) filter = (filter || '?') + 'diurno='+this.state.diurnal+'&';
-        if(this.state.nocturnal) filter = (filter || '?') + 'notturno='+this.state.nocturnal+'&';
-        if(this.state.allDay) filter = (filter || '?') + 'allDay='+this.state.allDay+'&';
-        if(this.state.atHour) filter = (filter || '?') + 'aOre='+this.state.atHour+'&';
-  
+        if(this.state.typeWork) filter = (filter || '?') + 'typeWork='+this.state.typeWork+'&';
       return filter;
     }
   async componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
-
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
@@ -85,12 +78,11 @@ class Announcements extends Component {
   }
 
   submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const query = this.createQuery();
     const url = 'http://localhost:3000/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
-      console.log(url);
     })
     .catch(error=>{
       console.log(error);
@@ -161,48 +153,42 @@ class Announcements extends Component {
              <br/> <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
               </Form.Label>
              <Col sm={9}>
-            <Form.Check
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Occasionale"
-              name='occasionale'
-              id="formHorizontalRadios1"
-            />
-            <Form.Check
+            style={{marginLeft:110, width: 30}}
+              name='typeWork'
+              id="occasionale"
+            /><label for="occasionale">Occasionale</label><br/>
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Regolare"
-              name='regolare'
-              id="formHorizontalRadios2"
-            />
-            <Form.Check
+            style={{marginLeft:88, width: 30}}
+              name='typeWork'
+              id="regolare"
+            /><label for="regolare">Regolare</label><br/>
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Giornaliero"
-              name='diurno'
-              id="formHorizontalRadios3"
-            />
-            <Form.Check
+            style={{marginLeft:74, width: 30}}
+              name='typeWork'
+              id="diurno"
+            /><label for="diurno">Diurno</label><br/>
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="A ora"
-              name='aOra'
-              id="formHorizontalRadios3"
-            />
-            <Form.Check
+            style={{marginLeft:72, width: 30}}
+              name='typeWork'
+              id="aOre"
+            /><label for="aOre">Ad ora</label><br/>
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Al giorno"
-              name='allDay'
-              id="formHorizontalRadios3"
-            />
-            <Form.Check
+            style={{marginLeft:125, width: 30}}
+              name='typeWork'
+              id="24h"
+            /><label for="24h">Tutto il giorno</label><br/>
+            <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Notturno"
-              name='notturno'
-              id="formHorizontalRadios3"
-            />
+            style={{marginLeft:90, width: 30}}
+              name='typeWork'
+              id="notturno"
+            /><label for="notturno">Notturno</label><br/>
           </Col>
           </Form.Group>
             </Col>

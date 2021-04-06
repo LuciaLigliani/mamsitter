@@ -186,10 +186,10 @@ class Profile extends Component{
 
   canUpdate = () => {
     // update photo
-    const image = <div class="inner">
-    <input class="inputfile" type="file"  accept="image/*" name='photo' onChange={this.changeHandler}/>
-    <label><img src={photo} width="35" alt=''></img></label>
-    </div>;
+    // const image = <div class="inner">
+    // <input class="inputfile" type="file"  accept="image/*" name='photo' onChange={this.changeHandler}/>
+    // <label><img src={photo} width="35" alt=''></img></label>
+    // </div>;
     document.getElementById('phoneNumber').disabled = false;
     document.getElementById('phoneNumber').style.backgroundColor = '#afafaf3d';
     document.getElementById('name').disabled = false;
@@ -227,10 +227,10 @@ class Profile extends Component{
     document.getElementById('description').style.backgroundColor = '#afafaf3d';
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    const update = {
-      photo: image
-    }
-    this.setState({update: update});
+    // const update = {
+    //   photo: image
+    // }
+    // this.setState({update: update});
   }
 
   handleClick = (event) => {
@@ -241,8 +241,14 @@ class Profile extends Component{
   };
 
   changeHandler = (e) => {
-    if (e.target.name === 'photo') this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
-    else if (e.target.id === 'M' && e.target.value === 'on') e.target.value = 'M';
+    // if (e.target.name === 'photo') {
+    //   // this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
+    //   // console.log(e.target.value.split('\\')[2].split('.')[0]);
+      // this.setState({'photo': e.target.files[0]});
+    //   console.log(e.target.files);
+    // }
+
+     if (e.target.id === 'M' && e.target.value === 'on') e.target.value = 'M';
     else if (e.target.id === 'F' && e.target.value === 'on') e.target.value = 'F';
     else if (e.target.name === 'occasional') e.target.value = e.target.checked;
     else if (e.target.name === 'regular') e.target.value = e.target.checked;
@@ -289,10 +295,11 @@ class Profile extends Component{
       });
       this.state.availableDays = availableDays;
     }
-    console.log(this.state);
+    // this.state.photo = document.getElementById('photo').files[0];
     axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
+        console.log(response.data.data);
        setTimeout(()=> {
           window.location.assign('/myProfile');
         }, 10);
@@ -513,7 +520,7 @@ class Profile extends Component{
       width:150,
       height:150}} alt=''></img>
   
-    {this.state.update.photo}
+    {/* {this.state.update.photo} */}
   </div>
 </div>
 </Box>
@@ -561,7 +568,6 @@ class Profile extends Component{
  style={{ margin: 1, width: 200, bottom: 40, marginLeft: 50   }}
  fullWidth
  margin="normal"/><br/>
-
          </Col>
          <Col>
          <br/> 
@@ -588,7 +594,7 @@ onChange={this.changeHandler}
  style={{marginLeft: -160,  width: 60, top:-55}}
  fullWidth
  margin="normal"/>
- <input type="radio" id="M" name="sex" onChange={this.changeHandler} style={{marginLeft:20, width: 30, top:-300, borderColor: 'black'}} disabled/> <label for="M" style={{color:'grey'}}>M</label>
+ <input type="radio" id="M" name="sex" onChange={this.changeHandler} style={{marginLeft:20, width: 30, top:-30}} disabled/> <label for="M" style={{color:'grey'}}>M</label>
  <input type="radio" id="F" name="sex" onChange={this.changeHandler} style={{marginLeft:20, width: 30, top:-300}} disabled/> <label for="F" style={{color:'grey'}}>F</label><br/>
  <TextField name='birthDate' id='birthDate'
  onChange={this.changeHandler}
@@ -637,8 +643,8 @@ onChange={this.changeHandler}
   <Row>
   <div >
   <Link to="/home"><font face='Georgia' color="white">
-   
    <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
+
     <font  face='Georgia' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
