@@ -59,7 +59,7 @@ submitHandler = (e) => {
   }
   })
   .catch(error=>{
-  if(error.response.data.message === 'Incorrect email or password')
+  if(error.response && error.response.data.message === 'Incorrect email or password')
     this.setState({open:true, message:'Email o password incorretti'});
   })
 }

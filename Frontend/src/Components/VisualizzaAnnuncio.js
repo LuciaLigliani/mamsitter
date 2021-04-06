@@ -14,6 +14,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import util from '..//util/util'
+import Table from 'react-bootstrap/Table'
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
+
 class VisualizzaAnnuncio extends Component{
   constructor(props){
     super(props);
@@ -175,88 +179,226 @@ handleClose = () => {
      <br/><br/><br/>
      <div className="announcement">
      <Container >
-       <Row>
-         <Col sm={1}>  
-         </Col>
+     <Row>
          <Col sm={7}>
-       <br/>  <br/>
-  <TextField name='title'
+       <br/>  <br/> <br/>  
+       
+       <TextField 
+       name='title'
  label={this.state.title}
- disabled
- style={{  margin: -20, width: 200, left:-210 }}
+ style={{  margin: 10, width: 180, left:0}}
  fullWidth
- margin="normal"/>  <br/>
- <TextField name='typeAnnouncement'
- label={this.state.typeAnnouncement}
+ margin="normal"
+ onChange={this.changeHandler}
  disabled
- style={{ margin: 2, width: 200, left:-210 }}
+ />  <br/>
+  <TextField 
+  name='typeAnnouncement'
+  id='typeAnnouncement'
+  label={this.state.typeAnnouncement}
+  select
+ style={{  margin: 10, width: 180, left:0 }}
  fullWidth
- margin="normal"/>  <br/>
-<TextField name='annCity'
- label={this.state.annCity}
  disabled
- style={{  margin: 1, width: 200, left:-210 }}
+ margin="normal"
+ onChange={this.changeHandler}>  <br/>
+ <MenuItem value='babysitter' >Babysitter</MenuItem>
+ <MenuItem value='badante'>Badante</MenuItem>
+ <MenuItem value='colf'>Colf</MenuItem>
+ </TextField>
+  <br/>
+  </Col>
+  {/* <Col>
+  <br/>
+  <TextField label= {this.state.children.map(child => child.name + "  ")} style={{ margin: 1, width: 260, left:-230, bottom: -55 }} disabled/>
+ <Button  onClick={this.handleShow} style={{  margin: 1, left:-250, bottom: -100 }}>Bambino+</Button>
+      <Modal show={this.state.show} onHide={this.handleClos}>
+       
+        <Modal.Body>
+        <TextField name='name'
+ label='Nome'
+ style={{ margin: 1, width: 200, left:80, bottom: 10 }}
  fullWidth
- margin="normal"/>  <br/>
- <TextField name='annDistrict'
- label={this.state.annDistrict}
- disabled
- style={{  margin:  0, width: 200, left:-210 }}
+ margin="normal"
+ onChange={this.changeHandler}/>  <br/>
+<TextField name='sex'
+ label='Sesso'
+ style={{  margin: 1, width: 200, left:80, bottom: 10  }}
  fullWidth
- margin="normal"/>  <br/>
-  <TextField name='startDate'
- label={'da: ' + this.state.startDate}
- disabled
- style={{  margin:  0, width: 100, left:-210 }}
+ margin="normal"
+ onChange={this.changeHandler}/>  <br/>
+ <TextField name='age'
+ label='Età'
+ style={{  margin: 1, width: 200, left:80, bottom: 10  }}
  fullWidth
- margin="normal"/>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <TextField name='endDate'
- label={'a: ' + this.state.endDate}
- disabled
- style={{  margin:  0, width: 100, left:-210 }}
- fullWidth
- margin="normal"/>  <br/>
-         </Col>
+ margin="normal"
+ onChange={this.changeHandler}/> 
+        </Modal.Body>
+        <Modal.Footer>
+          <Button  onClick={this.handleClos}>
+            Annulla
+          </Button>
+          <Button  onClick={this.add}>
+            Aggiungi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+         </Col> */}
          <Col>
-         <Typography style={{marginTop:52, marginLeft:-730}} variant="subtitle1" gutterBottom>
-        Tipo di lavoro: &nbsp;</Typography>
-     
-<TextField 
-name='typeWork'
- label={this.state.typeWork}
- disabled
- style={{  marginLeft: -200    , width: 400, bottom:70}}
- fullWidth
- margin="normal"/> 
-
- <br/>
- <Typography style={{marginTop:-38, marginLeft:-730}} variant="subtitle1" gutterBottom> Richieste per: &nbsp;
-        </Typography>
-  <TextField name='available'
- label={this.state.available}
- disabled
- style={{  marginLeft: -200  , width: 400,bottom:70}}
- fullWidth
- margin="normal"/><br/>
- <Typography style={{marginTop:-35, marginLeft:-730}} variant="subtitle1" gutterBottom> Lingue parlate:&nbsp;
-        </Typography>
- <TextField name='languages'
- label={this.state.languages}
- disabled
- style={{  marginLeft: -196 , width: 400, bottom:70}}
- fullWidth
- margin="normal"/>
- <Typography style={{marginTop:-40, marginLeft:-750}} variant="subtitle1" gutterBottom> Automunita:
-        </Typography>
- <TextField name='car'
- label={this.state.car}
- disabled
- style={{ marginLeft:-530  , width: 100,  bottom:70  }}
- fullWidth
- margin="normal"/>
+        
+<TextField label={this.state.startDate} helperText='data di inizio' onChange={this.changeHandler} name='startDate' style={{ margin: 1, width: 180, top:85, marginLeft:-300}} disabled/><br/>
+<TextField label={this.state.endDate} helperText='data di fine' onChange={this.changeHandler} name='endDate' style={{ margin: 1, width: 180, top:75, marginLeft:-300}} disabled/>
  
  </Col>
-
+  
+ </Row>
+<Row >
+  <br/>
+        <Col sm={3}>
+<Typography style={{bottom:152, marginLeft:45, marginTop:50}}  gutterBottom>
+        Tipo di lavoro: &nbsp;</Typography>
+        <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:60, width: 30}}
+            disabled
+              name='typeWork'
+              id="occasionale"
+            /><label for="occasionale">Occasionale</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:38, width: 30}}
+            disabled
+              name='typeWork'
+              id="regolare"
+            /><label for="regolare">Regolare</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:24, width: 30}}
+            disabled
+              name='typeWork'
+              id="diurno"
+            /><label for="diurno">Diurno</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:22, width: 30}}
+            disabled
+              name='typeWork'
+              id="aOre"
+            /><label for="aOre">Ad ora</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:75, width: 30}}
+            disabled
+              name='typeWork'
+              id="24h"
+            /><label for="24h">Tutto il giorno</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:40, width: 30}}
+            disabled
+              name='typeWork'
+              id="notturno"
+            /><label for="notturno">Notturno</label><br/>
+            </Col>
+  <Col >
+  <Typography style={{bottom:152, marginRight:300, marginTop:50}}  gutterBottom>
+        Giorni disponibili: &nbsp;</Typography>
+  <Table striped bordered hover size="sm" style={{width:90, marginLeft:50}} >
+  <thead>
+    <tr>
+      <th></th>
+      <th>Lun</th>
+      <th>Mar</th>
+      <th>Mer</th>
+      <th>Gio</th>
+      <th>Ven</th>
+      <th>Sab</th>
+      <th>Dom</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td >Mattino</td>
+      <td><Form.Check id='ml' disabled/></td>
+      <td><Form.Check id='mma' disabled/></td>
+      <td><Form.Check id='mme' disabled/></td>
+      <td><Form.Check id='mg' disabled/></td>
+      <td><Form.Check id='mv' disabled/></td>
+      <td><Form.Check id='ms' disabled/></td>
+      <td><Form.Check id='md' disabled/></td>
+    </tr>
+    <tr>
+      <td>Pomeriggio</td>
+      <td><Form.Check id='pl' disabled/></td>
+      <td><Form.Check id='pma' disabled/></td>
+      <td><Form.Check id='pme' disabled/></td>
+      <td><Form.Check id='pg' disabled/></td>
+      <td><Form.Check id='pv' disabled/></td>
+      <td><Form.Check id='ps' disabled/></td>
+      <td><Form.Check id='pd' disabled/></td>
+    </tr>
+    <tr>
+      <td>Sera</td>
+      <td><Form.Check id='sl' disabled/></td>
+      <td><Form.Check id='sma' disabled/></td>
+      <td><Form.Check id='sme' disabled/></td>
+      <td><Form.Check id='sg' disabled/></td>
+      <td><Form.Check id='sv' disabled/></td>
+      <td><Form.Check id='ss' disabled/></td>
+      <td><Form.Check id='sd' disabled/></td>
+    </tr>
+    <tr>
+      <td>Notte</td>
+      <td><Form.Check id='nl' disabled/></td>
+      <td><Form.Check id='nma' disabled/></td>
+      <td><Form.Check id='nme' disabled/></td>
+      <td><Form.Check id='ng' disabled/></td>
+      <td><Form.Check id='nv' disabled/></td>
+      <td><Form.Check id='ns' disabled/></td>
+      <td><Form.Check id='nd' disabled/></td>
+    </tr>
+  </tbody>
+</Table>
+  
+  </Col>
+  <Col sm={2}>
+<Typography style={{bottom:152, marginLeft:-250, marginTop:50}}  gutterBottom>
+        Disponibilità a: &nbsp;</Typography>
+        <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:-100, textAlign:'left'}}
+            disabled
+              label="Aiuto compiti"
+              name='homework'
+              id="homework"
+            />
+            <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:-100, textAlign:'left'}}
+            disabled
+              label="Cucinare"
+              name='cook'
+              id="cook"
+            />
+            <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:-100, textAlign:'left'}}
+            disabled
+              label="Guidare"
+              name='car'
+              id="car"
+            />
+            <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:-100, textAlign:'left'}}
+            disabled
+              label="Fare pulizie"
+              name='alsoColf'
+              id="alsoColf"
+            />
+            </Col>
+  
+  </Row>
  <Row>
 
  
@@ -284,7 +426,7 @@ name='typeWork'
       </div>
       
       </Row>
- </Row>
+ 
   <button class="button1 button2" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
   <Link to={"/application/" + this.state.id}><button class="button1 button2" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
      </Container>

@@ -2,12 +2,12 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-const Babysitter = require('./babysitterModel');
-const Badante = require('./badanteModel');
-const Colf = require('./colfModel');
-const Famiglia = require('./famigliaModel');
-const Announcement = require('./announcementModel');
-const Application = require('./applicationModel');
+// const Babysitter = require('./babysitterModel');
+// const Badante = require('./badanteModel');
+// const Colf = require('./colfModel');
+// const Famiglia = require('./famigliaModel');
+// const Announcement = require('./announcementModel');
+// const Application = require('./applicationModel');
 
 function isBabysitter() {
   return this.role === 'babysitter';
@@ -196,20 +196,20 @@ userSchema.pre('findOneAndUpdate', function(next) {
   next();
 });
 
-userSchema.pre('remove', async function(next) {
-  // delete specific user
-  if (this.role === 'famiglia') {
-    const ann = await Announcement.find({user_id: this._id});
-    ann.remove();
-    await Famiglia.findByIdAndDelete(this.famiglia_id);
-  } else {
-    await Application.findOneAndDelete({user_id: this._id});
-    if (this.role === 'babysitter') await Babysitter.findByIdAndDelete(this.babysitter_id);
-    if (this.role === 'badante') await Badante.findByIdAndDelete(this.badante_id);
-    if (this.role === 'colf') await Colf.findByIdAndDelete(this.colf_id);
-  }
-  next();
-});
+// userSchema.pre('remove', async function(next) {
+//   // delete specific user
+//   if (this.role === 'famiglia') {
+//     const ann = await Announcement.find({user_id: this._id});
+//     ann.remove();
+//     await Famiglia.findByIdAndDelete(this.famiglia_id);
+//   } else {
+//     await Application.findOneAndDelete({user_id: this._id});
+//     if (this.role === 'babysitter') await Babysitter.findByIdAndDelete(this.babysitter_id);
+//     if (this.role === 'badante') await Badante.findByIdAndDelete(this.badante_id);
+//     if (this.role === 'colf') await Colf.findByIdAndDelete(this.colf_id);
+//   }
+//   next();
+// });
 
 userSchema.methods.correctPassword = async function( candidatePassword, userPassword) {
   return await bcrypt.compare(candidatePassword, userPassword);
