@@ -83,6 +83,7 @@ render(){
                  onClose={this.handleClose}
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+                <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
                <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
              </Menu>
               

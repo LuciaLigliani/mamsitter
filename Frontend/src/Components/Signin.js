@@ -130,7 +130,7 @@ submitHandler = (e) => {
         <Form onSubmit={this.submitHandler}  className="formS">
         <Row> 
           <FormLabel>
-          <font face='Georgia' color='black'><h4>Compila il modulo per la registrazione</h4></font><br/>
+          <font face='Georgia' color='black' ><h4>Compila il modulo per la registrazione</h4></font><br/>
           </FormLabel> 
           <Col>
           <img src={mamsitter} className="image" alt="mamsitter" />

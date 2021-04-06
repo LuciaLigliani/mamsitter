@@ -116,8 +116,7 @@ class Announcements extends Component {
                     onClose={this.handleClose}
                   >
                   <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>Visualizza i miei annunci</MenuItem></Link> 
-                  <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Visualizza candidature</MenuItem></Link>
+                  <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
                   <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
                 </Menu>
                  

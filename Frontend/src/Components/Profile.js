@@ -498,7 +498,8 @@ class Profile extends Component{
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-            <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
+            <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca Lavoratori</MenuItem></Link>
+                  <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </Menu>
         </ul>
