@@ -126,7 +126,7 @@ class CreaAnnuncio extends Component{
         this.setState({open:true, message:'Annuncio creato'})
        setTimeout(()=> {
           window.location.assign('/search');
-        }, 10);
+        }, 50);
       }
     })
     .catch(error=>{
@@ -161,7 +161,7 @@ class CreaAnnuncio extends Component{
               onClose={this.handleClose}
             >
             <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
-            <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>Visualizza i miei annunci</MenuItem></Link>
+            <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link>
             <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Visualizza le candidature</MenuItem></Link>
             <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
             <MenuItem onClick={this.logout}>Logout</MenuItem>
