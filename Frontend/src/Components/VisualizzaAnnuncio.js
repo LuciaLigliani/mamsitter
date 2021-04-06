@@ -18,6 +18,8 @@ class VisualizzaAnnuncio extends Component{
   constructor(props){
     super(props);
     this.state= {
+      announcement:[],
+      id:'',
       title:'',
       typeAnnouncement:'',
       annCity:'',
@@ -75,6 +77,7 @@ class VisualizzaAnnuncio extends Component{
     this.setState({languages: specificData.languages});
     this.setState({startDate: specificData.startDate});
     this.setState({endDate: specificData.endDate});
+    this.setState({id: data._id});
 }
 
 componentDidMount(){
@@ -107,6 +110,27 @@ componentDidMount(){
   })
   
 }
+
+apply = () => {
+  axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications').then(response => {
+    console.log(response);
+    this.setState({open:true, message:'Candidatura inviata!'})
+        setTimeout(()=> {
+          window.location.assign('/viewallapplication');
+           }, 30); 
+  })
+  .catch((err)=> console.log(err));
+}
+/*deleteApp = () => {
+  axios.delete('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications/'+ appId).then(app=> {
+    console.log(app);
+    this.setState({open:true, message:'Candidatura eliminata'})
+      setTimeout(()=> {
+        window.location.assign('/viewallapplication');
+         }, 30); 
+  })
+  .catch((err)=> console.log(err));
+}*/
 
 handleClick = (event) => {
   this.setState({anchorEl:event.currentTarget});
@@ -142,6 +166,8 @@ handleClose = () => {
                  onClose={this.handleClose}
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+               
+                <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
                <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
              </Menu>
               
@@ -228,8 +254,12 @@ name='typeWork'
  style={{ marginLeft:-530  , width: 100,  bottom:70  }}
  fullWidth
  margin="normal"/>
+ 
  </Col>
+
  <Row>
+
+ 
  <div className="container_ann"> 
       {this.state.array.map(array=>(     
          <div className="card_annunci">
@@ -252,9 +282,11 @@ name='typeWork'
           </div>
       ))} 
       </div>
+      
       </Row>
  </Row>
- 
+  <button class="button1 button2" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
+  <Link to={"/application/" + this.state.id}><button class="button1 button2" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
      </Container>
    
    </div> 
@@ -270,3 +302,7 @@ name='typeWork'
 }
 
 export default VisualizzaAnnuncio
+
+
+/*<br/>
+  <button class="button1 button2" onClick={this.deleteApp} style={{marginLeft:20}} >Elimina Candidatura</button>*/

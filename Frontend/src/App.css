@@ -383,14 +383,14 @@ padding-left: 3%;
 padding-right: 3%;
 }
 .container_ann{
-  position: absolute;
-  display: flex;
+  position: relative;
+  display:flex; 
   flex-wrap: wrap;
-  padding-top: 10%;
+  padding-top: 3%;
 }
 .card_annunci{
   background-color:rgb(255, 255, 255);
-  margin:-10rem 0rem 5rem 5rem;
+  margin:0rem 0rem 2rem 5rem;
   padding: 1rem;
   width: 20rem;
   box-shadow: 2px 2px 10px 4px rgb(0, 0, 0);

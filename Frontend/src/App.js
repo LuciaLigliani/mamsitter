@@ -18,6 +18,8 @@ import Profile from './Components/Profile';
 import CreaAnnuncio from './Components/CreaAnnuncio';
 import VisualizzaTuttiGliAnnunci from './Components/VisualizzaTuttiGliAnnunci';
 import VisualizzaCandidature from './Components/VisualizzaCandidature';
+import Candidature from './Components/Candidature';
+
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
         <Route path="/createann" component={CreaAnnuncio} ></Route>
         <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
         <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
+
+        <Route path="/application" component={Candidature} ></Route>
 
 
         <Route path="/aboutUs" component={AboutUs}/>

@@ -43,12 +43,14 @@ class VisualizzaCandidature extends Component {
     const url='http://localhost:3000/api/v1/applications';
     axios.get(url).then(response=>{
     
+      console.log(response);
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
      console.log(error);
     })
   }
+
 
   setData(date) {
     date=new Date(date).toLocaleDateString();
@@ -90,12 +92,13 @@ render(){
                  onClose={this.handleClose}
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+                  <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
                <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
              </Menu>
               
            </ul><br/><br/><br/>
            <Box height="5%" width="40%" mb="4%" m="7%" ml="70%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Le Mie Candidature</font>
+     <font size="5" face='Georgia' color="white"> Le mie candidature</font>
     </Box>
            <div className="card_container_ann"> 
       {this.state.announcements.map(announcements=>(     
@@ -107,12 +110,14 @@ render(){
                   {'Titolo: ' + announcements.announcement_id.title} <br/> {'Tipologia: ' + announcements.announcement_id.typeAnnouncement} <br/> 
                   {'Città: ' + announcements.announcement_id.annCity} <br/> 
                   {'Distretto: ' + announcements.announcement_id.annDistrict} <br/> 
+
                  
                 </Col>
                 <Col>
                 <br/>
                 <br/>
                 <br/>
+              
                <Link to={"/announcements/" + announcements.announcement_id._id} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
                </Col>
                </Row>

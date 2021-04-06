@@ -316,6 +316,8 @@ class User extends Component {
               onClose={this.handleClose}
             >
               <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
+              <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+              <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </Menu>
         </ul>
