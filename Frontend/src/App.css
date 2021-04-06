@@ -144,7 +144,7 @@ text-align: center;
   width: 50%;
   margin-top:0%;
   margin-left:3%;
-  padding-bottom: 300%;
+  padding-bottom: 5%;
   padding-left: -3%;
   
 }
@@ -356,7 +356,7 @@ background-color: rgb(0, 0, 0);
   background-color:rgb(255, 255, 255);
   margin: -2rem 0rem 5rem 5rem;
   padding: 1rem;
-  width: 30rem;
+  width: 37rem;
   box-shadow: 2px 2px 10px 4px rgb(0, 0, 0);
   transition: transform .3s ease;
   cursor: pointer;
@@ -378,12 +378,12 @@ background-image: linear-gradient(to top right, rgb(255, 255, 255),rgb(255, 255,
 margin-top: 10%;
 width: 150%;
 box-shadow: 3px 3px 40px 5px rgb(17, 10, 16);
-padding-bottom: 70%;
+padding-bottom: 5%;
 padding-left: 3%;
 padding-right: 3%;
 }
 .container_ann{
-  position: absolute;
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   padding-top: 10%;

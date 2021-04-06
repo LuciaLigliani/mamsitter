@@ -140,12 +140,7 @@ class Announcements extends Component {
                <option value='district3'>district3</option> 
             </Form.Control><br/>
               <Form.Control style={{marginLeft:100}} name='startDate' type="date" placeHolder="Inserisci data inizio" onChange={this.changeHandler} /> <br/>
-            <Form.Control style={{marginLeft:100}} name='typeAnnouncement' as="select" defaultValue="Tipo di annuncio" onChange={this.changeHandler} > 
-               <option value='' >Tipo di annuncio</option>
-               <option value='babysitter'>Babysitter</option> 
-               <option value='colf'>Colf</option> 
-               <option value='badante'>Badante</option> 
-            </Form.Control><br/>
+            
             </Col>
             <Col>
             <Form.Group>
@@ -203,7 +198,7 @@ class Announcements extends Component {
 
     <Col>
     
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe>
+    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:900,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe>
      </Col>
 
 

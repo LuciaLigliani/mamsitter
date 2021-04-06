@@ -22,6 +22,7 @@ class VisualizzaAnnuncio extends Component{
   constructor(props){
     super(props);
     this.state= {
+      id:'',
       title:'',
       typeAnnouncement:'',
       annCity:'',
@@ -30,15 +31,9 @@ class VisualizzaAnnuncio extends Component{
       startDate:'',
       endDate:'',
       car:'',
-      available:'',
+      neededDays:'',
       languages:'',
-      regular:'',
-      occasional:'',
-      diurnal:'',
-      nocturnal:'',
-      allDay:'',
-      atHour:'',
-      senior:'',
+      senior:[],
       children:[],
       name:'',
       sex:'',
@@ -49,67 +44,166 @@ class VisualizzaAnnuncio extends Component{
     }
   }
   setData = (data, specificData) => {
-    console.log(specificData);
-    specificData.startDate= new Date(specificData.startDate).toLocaleDateString();
-    specificData.endDate= new Date(specificData.endDate).toLocaleDateString();
-    if(specificData.car === true) specificData.car = 'SI';
-    if(specificData.car === false) specificData.car = 'NO';
-    if(specificData.languages !== undefined){
-      specificData.languages = specificData.languages.toString();
-    }
-    let typeWork = '' ; 
-    if(specificData.typeWork === 'occasionale') typeWork += 'occasionale, ' ;
-    if(specificData.typeWork === 'diurno') typeWork += 'giornaliero, ' ;
-    if(specificData.typeWork === 'notturno') typeWork += 'notturno, ' ;
-    if(specificData.typeWork === '24h') typeWork += 'tutto il giorno, ' ;
-    if(specificData.typeWork === 'aOre') typeWork += 'a orario, ' ;
-    typeWork = typeWork.substring(0, typeWork.length - 2);
-    let available = '' ;
-    if(specificData.homework === true) available +='aiuto compiti, ';
-    if(specificData.cook === true) available += 'cucinare, ';
-    if(specificData.alsoColf === true) available += 'pulizie, ';
-    available=available.substring(0, available.length - 2);
+    const startDate =new Date(specificData.startDate).toLocaleDateString();
+    let endDate = '';
+    if(specificData.endDate) endDate = new Date(specificData.endDate).toLocaleDateString();
+    specificData.neededDays.map(el => {
+      let id = '';
+      if (el.partOfDay === 'morning') id = 'm';
+      else if (el.partOfDay === 'afternoon') id = 'p';
+      else if (el.partOfDay === 'evening') id = 's';
+      else if (el.partOfDay === 'night') id = 'n';
+      if(el.weekDay === 'monday') id += 'l';
+      else if(el.weekDay === 'tuesday') id += 'ma';
+      else if(el.weekDay === 'wednesday') id += 'me';
+      else if(el.weekDay === 'thursday') id += 'g';
+      else if(el.weekDay === 'friday') id += 'v';
+      else if(el.weekDay === 'saturday') id += 's';
+      else if(el.weekDay === 'sunday') id += 'd';
+      document.getElementById(id).checked = true;
+      return el;
+    })
+    document.getElementById(specificData.typeWork).checked = true;
+
+    if (specificData.homework === true) document.getElementById('homework').checked = true;
+    if (specificData.cook === true) document.getElementById('cook').checked = true;
+    if (specificData.car === true) document.getElementById('car').checked = true;
+    if (specificData.alsoColf === true) document.getElementById('alsoColf').checked = true;
+    this.setState({id: data._id});
     this.setState({title: data.title});
     this.setState({typeAnnouncement: data.typeAnnouncement});
     this.setState({annCity: data.annCity});
     this.setState({annDistrict: data.annDistrict});
-    this.setState({car: specificData.car});
     this.setState({typeWork: specificData.typeWork});
-    this.setState({available: available});
     this.setState({languages: specificData.languages});
-    this.setState({startDate: specificData.startDate});
-    this.setState({endDate: specificData.endDate});
+    this.setState({startDate: startDate});
+    this.setState({endDate: endDate});
+    this.setState({neededDays: specificData.neededDays});
+    this.setState({homework: specificData.homework});
+    this.setState({cook: specificData.cook});
+    this.setState({car: specificData.car});
+    this.setState({alsoColf: specificData.alsoColf});
+    this.setState({children: specificData.children});
+    this.setState({senior: specificData.senior});
 }
 
 componentDidMount(){
   const id= this.props.location.pathname.split('/announcements/')[1];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.get('http://localhost:3000/api/v1/announcements/' + id).then(response => {
-    console.log(response.data.data)
+    console.log(response.data.data);
     let specificData;
-    if(response.data.data.typeAnnouncement === 'babysitter') {
-      specificData = response.data.data.babysitterAnn_id;
-      this.setState({array: specificData.children})
-
-    }
-    if(response.data.data.typeAnnouncement === 'badante') {
-      response.data.data.badanteAnn_id.senior.map((senior)=>{
-        if(senior.selfSufficient) return senior.selfSufficient = 'Autosufficiente: SI';
-        else return senior.selfSufficient = 'Autosufficiente: NO';
-      
-      })
-      specificData = response.data.data.badanteAnn_id;
-      this.setState({array: specificData.senior})
-
-    }
-    if(response.data.data.typeAnnouncement === 'colf') specificData = response.data.data.colfAnn_id;
-    this.setData(response.data.data , specificData); 
+      if(response.data.data.typeAnnouncement === 'babysitter') {
+        specificData = response.data.data.babysitterAnn_id;
+        this.setState({array: specificData.children});
+      }
+      else if(response.data.data.typeAnnouncement === 'badante') {
+        specificData = response.data.data.badanteAnn_id;
+        this.setState({array: specificData.senior});
+      }
+      else if(response.data.data.typeAnnouncement === 'colf') specificData = response.data.data.colfAnn_id;
+      this.setData(response.data.data , specificData);
   })
   .catch((err)=> {
     console.log(err);
-
   })
-  
+}
+
+deleteAnn = () => {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+  axios.delete('http://localhost:3000/api/v1/announcements/' + this.state.id).then(profile => {
+    console.log(profile);
+    this.setState({open:true, message:'Annuncio eliminato'})
+      setTimeout(()=> {
+        window.location.assign('/');
+         }, 30); 
+    })
+  .catch((err)=>console.log(err));
+}
+
+logout = () => {
+  setTimeout(()=> {
+    window.location.assign('/');
+     }, 10); 
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+}
+
+canUpdate = () => {
+  document.getElementById('title').disabled = false;
+  document.getElementById('title').style.backgroundColor = '#afafaf3d';
+    document.getElementById('homework').disabled = false;
+    document.getElementById('cook').disabled = false;
+    document.getElementById('car').disabled = false;
+    document.getElementById('alsoColf').disabled = false;
+
+    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+    const arr = ['m', 'p', 's', 'n'];
+    arr.forEach(part => {
+      array.forEach(day => {
+        const id = part + day;
+        document.getElementById(id).disabled = false;
+      })
+    })
+    // document.getElementById('name').disabled = false;
+    // document.getElementById('sex').disabled = false;
+    // document.getElementById('age').disabled = false;
+  document.getElementById('salva').hidden = false;
+  document.getElementById('aggiorna').hidden = true;
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+changeHandler = (e) => {
+  if (e.target.name === 'homework') e.target.value = e.target.checked;
+  else if (e.target.name === 'cook') e.target.value = e.target.checked;
+  else if (e.target.name === 'car') e.target.value = e.target.checked;
+  else if (e.target.name === 'alsoColf') e.target.value = e.target.checked;
+  this.setState({[e.target.name]: e.target.value});
+}
+
+updateAnn = () => {
+    const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
+    const arr = ['m', 'p', 's', 'n'];
+    const neededDays = [];
+    arr.forEach(part => {
+      array.forEach(day => {
+        const id = part + day;
+        if(document.getElementById(id).checked === true) {
+          let partOfDay = '';
+          let weekDay = '';
+          if(part === 'm') partOfDay = 'morning';
+          else if(part === 'p') partOfDay = 'afternoon';
+          else if(part === 's') partOfDay = 'evening';
+          else if(part === 'n') partOfDay = 'night';
+          if(day === 'l') weekDay = 'monday';
+          else if(day === 'ma') weekDay = 'tuesday';
+          else if(day === 'me') weekDay = 'wednesday';
+          else if(day === 'g') weekDay = 'thursday';
+          else if(day === 'v') weekDay = 'friday';
+          else if(day === 's') weekDay = 'saturday';
+          else if(day === 'd') weekDay = 'sunday';
+          const value = {
+            partOfDay,
+            weekDay
+          };
+          neededDays.push(value);
+        }
+      })
+    });
+    this.state.neededDays = neededDays;
+
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+  axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
+    if(response.data.status === 'success') {
+      this.setState({open:true, message:'Profilo aggiornato correttamente'})
+      console.log(response.data.data);
+     setTimeout(()=> {
+        window.location.assign('/viewallann');
+      }, 10);
+    }
+  }).catch((err)=> {
+    console.log(err);
+  } );
 }
 
 handleClick = (event) => {
@@ -119,6 +213,23 @@ handleClose = () => {
   this.setState({anchorEl:null});
 };
 
+title = () => {
+  if(this.state.typeAnnouncement === 'babysitter') return 'Bambini: ';
+  else if(this.state.typeAnnouncement === 'badante') return 'Anziani: ';
+}
+
+buttons = () => {
+  return (
+    <div >
+  <font face='Georgia' color="white">
+   <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
+
+    <font  face='Georgia' color="white">
+   &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Annuncio</button></font>
+    <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateAnn} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
+         </div>
+  )
+}
 
   render(){
     return(
@@ -159,6 +270,7 @@ handleClose = () => {
        
        <TextField 
        name='title'
+       id='title'
  label={this.state.title}
  style={{  margin: 10, width: 180, left:0}}
  fullWidth
@@ -170,7 +282,6 @@ handleClose = () => {
   name='typeAnnouncement'
   id='typeAnnouncement'
   label={this.state.typeAnnouncement}
-  select
  style={{  margin: 10, width: 180, left:0 }}
  fullWidth
  disabled
@@ -180,6 +291,7 @@ handleClose = () => {
  <MenuItem value='badante'>Badante</MenuItem>
  <MenuItem value='colf'>Colf</MenuItem>
  </TextField>
+  <br/>
   <br/>
   </Col>
   {/* <Col>
@@ -220,8 +332,8 @@ handleClose = () => {
          </Col> */}
          <Col>
         
-<TextField label={this.state.startDate} helperText='data di inizio' onChange={this.changeHandler} name='startDate' style={{ margin: 1, width: 180, top:85, marginLeft:-300}} disabled/><br/>
-<TextField label={this.state.endDate} helperText='data di fine' onChange={this.changeHandler} name='endDate' style={{ margin: 1, width: 180, top:75, marginLeft:-300}} disabled/>
+<TextField label={this.state.startDate} helperText='data di inizio' onChange={this.changeHandler} id='startDate' name='startDate' style={{ margin: 1, width: 180, top:85, marginLeft:-300}} disabled fullWidth margin="normal"/><br/>
+<TextField label={this.state.endDate} helperText='data di fine' onChange={this.changeHandler} id='endDate' name='endDate' style={{ margin: 1, width: 180, top:75, marginLeft:-300}} disabled fullWidth margin="normal"/>
  
  </Col>
   
@@ -374,30 +486,37 @@ handleClose = () => {
   
   </Row>
  <Row>
- <div className="container_ann"> 
+   <Col sm={2}>
+   <Typography style={{ marginLeft:100, marginTop:40}}  gutterBottom>
+        {this.title()} &nbsp;</Typography>
+ <div className="container_ann" style={{marginTop:150, width:700}}> 
       {this.state.array.map(array=>(     
          <div className="card_annunci">
             <div className="card_body_ann">
                <div className="title_ann">
                <Row>
-                <Col sm={40}>
-                {'Nome: ' + array.name} 
-               <br/> {'Sesso: ' + array.sex} <br/> 
-                {'Anni: ' + array.age} <br/>
-                {array.selfSufficient}
+                <Col sm={40} style={{textAlign:'center'}}>
+                  <TextField helperText='Nome' label={array.name} id='name' name='name' style={{width:150}} disabled/>
+                  <TextField helperText='Sesso' label={array.sex} id='sex' name='sex' style={{width:150}} disabled/>
+                  <TextField helperText='Età' label={array.age} id='age' name='age' style={{width:150}} disabled/>
+                   {/* <label style={{fontWeight:'bold'}}>Autosufficiente: </label>
+                  <label>{array.selfSufficient}</label> */}
        
                 </Col>
-                <Col>
-               
-               </Col>
                </Row>
                </div> 
             </div>
           </div>
       ))} 
       </div>
+      </Col>
       </Row>
- 
+      <Row>
+        <Col>
+  {this.buttons()}
+        </Col>
+
+</Row>
      </Container>
    
    </div> 
