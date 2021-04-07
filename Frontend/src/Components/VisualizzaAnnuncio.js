@@ -131,7 +131,7 @@ deleteAnn = () => {
     console.log(profile);
     this.setState({open:true, message:'Annuncio eliminato'})
       setTimeout(()=> {
-        window.location.assign('/');
+        window.location.assign('/search');
          }, 30); 
     })
     .catch(error=>{
@@ -214,10 +214,10 @@ updateAnn = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
     if(response.data.status === 'success') {
-      this.setState({open:true, message:'Profilo aggiornato correttamente'})
+      this.setState({open:true, message:'Annuncio aggiornato correttamente'})
       console.log(response.data.data);
      setTimeout(()=> {
-        window.location.assign('/viewallann');
+        window.location.assign('/announcements/'+this.state.id);
       }, 10);
     }
   }).catch(error=>{
@@ -232,7 +232,7 @@ apply = () => {
     console.log(response);
     this.setState({open:true, message:'Candidatura inviata!'})
         setTimeout(()=> {
-          window.location.assign('/viewallapplication');
+          window.location.assign('/announcements/'+this.state.id);
            }, 30); 
   })
   .catch(error=>{
