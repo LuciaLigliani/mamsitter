@@ -277,7 +277,7 @@ class Search extends Component {
     </Col>
     <Col>
     
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:900,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe>
+    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe>
      </Col>
               
               

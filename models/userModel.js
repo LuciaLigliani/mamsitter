@@ -175,7 +175,7 @@ userSchema.pre('save', function (next) {
 //   next();
 // });
 
- userSchema.pre(/^find/, function(next) {
+ /*userSchema.pre(/^find/, function(next) {
    this.populate({
      path: 'babysitter_id'
    }).populate({
@@ -187,7 +187,7 @@ userSchema.pre('save', function (next) {
    });
   
    next();
- });
+ });*/
 
 userSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;

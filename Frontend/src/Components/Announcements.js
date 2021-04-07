@@ -125,7 +125,7 @@ class Announcements extends Component {
               <Col>
         <Form onSubmit={this.submitHandler}  className="formm"> 
         <br/>
-        <h3><font face='Georgia' color='black'>Cerca un annuncio</font> </h3>
+        <h3><font face='Georgia' color='black' >Cerca un annuncio</font> </h3>
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='annCity' as="select" defaultValue="Città" onChange={this.changeHandler} > 
@@ -144,7 +144,7 @@ class Announcements extends Component {
             <Col>
             <Form.Group>
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
-             <br/> <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
+             <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
               </Form.Label>
              <Col sm={9}>
             <input type='radio'
@@ -155,31 +155,31 @@ class Announcements extends Component {
             /><label for="occasionale">Occasionale</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:88, width: 30}}
+            style={{marginLeft:85, width: 30}}
               name='typeWork'
               id="regolare"
             /><label for="regolare">Regolare</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:74, width: 30}}
+            style={{marginLeft:70, width: 30}}
               name='typeWork'
               id="diurno"
             /><label for="diurno">Diurno</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:72, width: 30}}
+            style={{marginLeft:69, width: 30}}
               name='typeWork'
               id="aOre"
             /><label for="aOre">Ad ora</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:125, width: 30}}
+            style={{marginLeft:121, width: 30}}
               name='typeWork'
               id="24h"
             /><label for="24h">Tutto il giorno</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:90, width: 30}}
+            style={{marginLeft:87, width: 30}}
               name='typeWork'
               id="notturno"
             /><label for="notturno">Notturno</label><br/>
@@ -189,7 +189,7 @@ class Announcements extends Component {
           </Row>
           <Row>
             <Col>
-          <button type="submit" class="button1 button2" style={{marginLeft:80}} >Cerca</button>
+          <button type="submit" class="button1 button2" style={{marginLeft:80, marginTop:30}} >Cerca</button>
           </Col>
           </Row>
         </Form>
@@ -197,7 +197,7 @@ class Announcements extends Component {
 
     <Col>
     
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:900,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe>
+    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe>
      </Col>
 
 
