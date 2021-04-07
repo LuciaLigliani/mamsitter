@@ -143,7 +143,7 @@ class User extends Component {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
-          window.location.assign('/');
+          window.location.assign('/search');
            }, 30); 
       })
       .catch(error=>{

@@ -130,9 +130,17 @@ deleteAnn = () => {
   axios.delete('/api/v1/announcements/' + this.state.id).then(profile => {
     console.log(profile);
     this.setState({open:true, message:'Annuncio eliminato'})
+    if(this.state.me === 'famiglia'){
       setTimeout(()=> {
         window.location.assign('/search');
          }, 30); 
+    }
+    else if(this.state.me === 'admin'){
+      setTimeout(()=> {
+        window.location.assign('/announcement');
+         }, 30);
+    }
+      
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
