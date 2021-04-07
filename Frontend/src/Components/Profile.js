@@ -14,13 +14,16 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Container } from 'react-bootstrap';
 // import Avatar from '@material-ui/core/Avatar';
 // import avatar from '..//default.jpg';
-import photo from '..//photo.jpg';
+// import photo from '..//photo.jpg';
 import Typography from '@material-ui/core/Typography';
 import Form from 'react-bootstrap/Form'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Table from 'react-bootstrap/Table'
 import axios from 'axios';
 import util from '..//util/util';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 
 class Profile extends Component{
   constructor(props){
@@ -161,12 +164,14 @@ class Profile extends Component{
       if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
       this.setData(profile.data.data , specificData);
     })
-    .catch((err)=> {
-      console.log(err);
-    } );
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
   }
 
   deleteProfile = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
@@ -175,7 +180,10 @@ class Profile extends Component{
            }, 30); 
            axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
       })
-    .catch((err)=>console.log(err));
+      .catch(error=>{
+        this.setState({open:true, message:error.response.data.message});
+          console.log(error);
+        })
   }
 
   logout = () => {
@@ -241,6 +249,10 @@ class Profile extends Component{
     this.setState({anchorEl:null});
   };
 
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
+
   changeHandler = (e) => {
     // if (e.target.name === 'photo') {
     //   // this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
@@ -297,6 +309,7 @@ class Profile extends Component{
       this.state.availableDays = availableDays;
     }
     // this.state.photo = document.getElementById('photo').files[0];
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
@@ -305,9 +318,27 @@ class Profile extends Component{
           window.location.assign('/myProfile');
         }, 10);
       }
-    }).catch((err)=> {
-      console.log(err);
-    } );
+    }).catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
+  }
+
+  menu = () => {
+    if(this.state.role === 'famiglia')
+    return (<div>
+      <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link>
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
+      </div>)
+    // if (this.state.role === 'admin')
+    else return (<div>
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
+      <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
+      </div>)
+
   }
 
   showInformations = (role) => {
@@ -473,7 +504,22 @@ class Profile extends Component{
 
   render(){
     return(
-     
+      <div>
+      <Snackbar className="snackbar"
+anchorOrigin={{
+  vertical: 'top',
+  horizontal: 'center'
+}}
+open={this.state.open}
+autoHideDuration={3000}
+onClose={this.handleClose}
+message = {<span id="message-id">{this.state.message}</span>}
+action={
+  <IconButton onClick={this.handleClose}>
+    <CloseIcon/>
+  </IconButton>
+}
+/>
         <div className="profile">
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -498,9 +544,7 @@ class Profile extends Component{
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-            <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca Lavoratori</MenuItem></Link>
-                  <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
-            <MenuItem onClick={this.logout}>Logout</MenuItem>
+            {this.menu()}
           </Menu>
         </ul>
     </div>
@@ -653,6 +697,7 @@ onChange={this.changeHandler}
          </div>
 </Row>
      </Container>
+   </div>
    </div>
    </div>
     )

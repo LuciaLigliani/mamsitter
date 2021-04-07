@@ -175,19 +175,19 @@ userSchema.pre('save', function (next) {
 //   next();
 // });
 
- userSchema.pre(/^find/, function(next) {
-   this.populate({
-     path: 'babysitter_id'
-   }).populate({
-     path: 'badante_id'
-   }).populate({
-     path: 'colf_id'
-   }).populate({
-     path: 'famiglia_id'
-   });
+//  userSchema.pre(/^find/, function(next) {
+//    this.populate({
+//      path: 'babysitter_id'
+//    }).populate({
+//      path: 'badante_id'
+//    }).populate({
+//      path: 'colf_id'
+//    }).populate({
+//      path: 'famiglia_id'
+//    });
   
-   next();
- });
+//    next();
+//  });
 
 userSchema.pre('findOneAndUpdate', function(next) {
   this.options.runValidators = true;

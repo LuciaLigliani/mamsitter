@@ -12,7 +12,9 @@ import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import util from '..//util/util';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 
 class Announcements extends Component {
   constructor(props){
@@ -32,7 +34,10 @@ class Announcements extends Component {
       diurnal:'',
       nocturnal:'',
       allDay:'',
-      atHour:''
+      atHour:'',
+      open: false,
+      message:'',
+      me:''
     }
   }
   handleClick = (event) => {
@@ -41,6 +46,10 @@ class Announcements extends Component {
   handleClose = () => {
     this.setState({anchorEl:null});
   };
+
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
 
   setData(date) {
     date=new Date(date).toLocaleDateString();
@@ -68,11 +77,20 @@ class Announcements extends Component {
     }
   async componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      this.setState({me: profile.data.data.role});
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
      console.log(error);
     })
   }
@@ -85,13 +103,42 @@ class Announcements extends Component {
       this.setState({announcements: response.data.data});
     })
     .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
       console.log(error);
     })
+  }
+
+  menu = () => {
+    if (this.state.me === 'admin') return(<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca utenti</MenuItem></Link>
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+    else if(this.state.me === 'babysitter' || this.state.me === 'badante' || this.state.me === 'colf') return (<div>
+        <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+                  <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+                  <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+      </div>)
   }
 
 
   render(){
     return (
+      <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClos}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
       <div className="cerca">
          <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
@@ -115,9 +162,7 @@ class Announcements extends Component {
                     open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
                   >
-                  <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
-                  <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                    {this.menu()}
                 </Menu>
                  
               </ul>
@@ -232,7 +277,7 @@ class Announcements extends Component {
       
 
 </div>
-
+</div>
 
 
 

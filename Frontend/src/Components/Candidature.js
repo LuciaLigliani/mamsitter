@@ -9,7 +9,9 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import logomodi from '..//logomodi.png';
 import { Component } from 'react';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
 import util from '..//util/util'
@@ -23,7 +25,9 @@ class Candidature extends Component {
       district: '',
       ageMax:'',
       ageMin:'',
-      sex:''
+      sex:'',
+      open: false,
+      message:''
     }
   }
 
@@ -33,6 +37,10 @@ class Candidature extends Component {
   handleClose = () => {
     this.setState({anchorEl:null});
   };
+
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
 
   calculateAge(birthday) { 
     const todayYear = new Date().getFullYear();
@@ -49,22 +57,23 @@ class Candidature extends Component {
     this.setState({users: response.data.data});
   })
   .catch(error=>{
-    console.log(error);
-  })
-  }
-
-  submitHandler = (e) => {
-    e.preventDefault()
-    const url = 'http://localhost:3000/api/v1/users';
-    axios.get(url).then(response=>{
-      console.log(url);
-      this.setState({users: response.data.data});
-      
-    })
-    .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
       console.log(error);
     })
   }
+
+  // submitHandler = (e) => {
+  //   e.preventDefault()
+  //   const url = 'http://localhost:3000/api/v1/users';
+  //   axios.get(url).then(response=>{
+  //     console.log(url);
+  //     this.setState({users: response.data.data});
+      
+  //   })
+  //   .catch(error=>{
+  //     console.log(error);
+  //   })
+  // }
 
   logout = () => {
     setTimeout(()=> {
@@ -92,6 +101,22 @@ class Candidature extends Component {
 
   render(){
     return(
+      <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
       <div className="cerca">
         
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -119,6 +144,7 @@ class Candidature extends Component {
                   <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                   <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
                   <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+                  <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
                   <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
                 </Menu>
                  
@@ -141,7 +167,7 @@ class Candidature extends Component {
              </div>
              </div>
            ))}
-           
+           </div>
 
            </div>
            </div>

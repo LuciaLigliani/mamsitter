@@ -12,6 +12,9 @@ import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
 import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 //import { makeStyles } from '@material-ui/core/styles';
 // import img from '..//img.png';
 
@@ -35,7 +38,9 @@ class Cerca extends Component {
       nocturnal:'',
       allDay:'',
       atHour:'',
-      highlighted: ''
+      highlighted: '',
+      open: false,
+      message:''
     }
   }
   
@@ -46,6 +51,9 @@ class Cerca extends Component {
     this.setState({anchorEl:null});
   };
 
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
 
   calculateAge(birthday) { 
     const todayYear = new Date().getFullYear();
@@ -98,7 +106,10 @@ class Cerca extends Component {
 
     });
     this.setState({highlighted: this.grid(vetrina)});
-  })
+  }).catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
+      console.log(error);
+    })
   }
 
   submitHandler = (e) => {
@@ -111,6 +122,7 @@ class Cerca extends Component {
       
     })
     .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
       console.log(error);
     })
   }
@@ -151,6 +163,22 @@ class Cerca extends Component {
  
   render() {
     return (  
+      <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
       <div className="cerca">
         
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -309,7 +337,7 @@ class Cerca extends Component {
       
          
       
-    
+           </div>
       
      
       

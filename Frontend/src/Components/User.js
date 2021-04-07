@@ -22,6 +22,9 @@ import Typography from '@material-ui/core/Typography';
 import Form from 'react-bootstrap/Form'
 import Table from 'react-bootstrap/Table'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 
 
 class User extends Component {
@@ -44,7 +47,10 @@ class User extends Component {
       work:'',
       available:'',
       languages:'',
-      anchorEl:''
+      anchorEl:'',
+      me:'',
+      open: false,
+      message:''
     }
 }
 
@@ -99,9 +105,18 @@ class User extends Component {
 
 
   componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      this.setState({me: profile.data.data.role});
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
     const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
+      console.log(profile);
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -109,7 +124,10 @@ class User extends Component {
       if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
       this.setData(profile.data.data , specificData);
     })
-    .catch((err)=> console.log(err));
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
   }
  
   logout = () => {
@@ -119,12 +137,39 @@ class User extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
+  deleteProfile = () => {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.delete('http://localhost:3000/api/v1/users/' + this.state.id).then(profile => {
+      console.log(profile);
+      this.setState({open:true, message:'Account eliminato'})
+        setTimeout(()=> {
+          window.location.assign('/');
+           }, 30); 
+      })
+      .catch(error=>{
+        this.setState({open:true, message:error.response.data.message});
+          console.log(error);
+        })
+  }
+
   handleClick = (event) => {
     this.setState({anchorEl:event.currentTarget});
   }
   handleClose = () => {
     this.setState({anchorEl:null});
   };
+
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
+
+  buttons = () => {
+    if(this.state.me === 'admin') return (
+      <div >
+  <font face='Georgia' color="white">
+   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></div>
+    )
+  }
 
   showInformations = (role) => {
     if (role !== 'famiglia') {
@@ -288,9 +333,23 @@ class User extends Component {
 
 
   render(){
-    
     return(
       <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
   <div className="profile">
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -317,6 +376,7 @@ class User extends Component {
             >
               <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
               <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+              <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
               <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </Menu>
@@ -415,14 +475,16 @@ name='name' id='name'
       />
          </Col>
 </Row>
-<br/><br/><br/>
+<br/>
+{this.buttons()}
+<br/>
+
      </Container>
    
    </div>
     </div>
- 
+    
       </div>
-
     );
   }
 

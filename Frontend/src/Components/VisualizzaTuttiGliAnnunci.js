@@ -11,7 +11,9 @@ import axios from 'axios';
 import util from '..//util/util'
 import { Col, Row } from 'react-bootstrap';
 import { Component } from 'react';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 // import img from '..//img.png';
 
@@ -28,7 +30,9 @@ class VisualizzaTuttiGliAnnunci extends Component {
       typeWork:'',
       startDate:'',
       annCity:'',
-      annDistrict:''
+      annDistrict:'',
+      open: false,
+      message:''
     
     }
   }
@@ -39,8 +43,9 @@ class VisualizzaTuttiGliAnnunci extends Component {
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
-     console.log(error);
-    })
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
   }
 
   setData(date) {
@@ -56,9 +61,28 @@ class VisualizzaTuttiGliAnnunci extends Component {
     this.setState({anchorEl:null});
   };
   
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
 
 render(){
   return(
+    <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
     <div className="cerca">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
@@ -84,6 +108,7 @@ render(){
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                 <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
+                <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
                <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
              </Menu>
               
@@ -119,6 +144,7 @@ render(){
       
       
 
+</div>
 </div>
 
 

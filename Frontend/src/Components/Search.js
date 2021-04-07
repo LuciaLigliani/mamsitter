@@ -12,7 +12,9 @@ import util from '..//util/util'
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form'
 import { Component } from 'react';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 // import img from '..//img.png';
 
@@ -34,7 +36,10 @@ class Search extends Component {
       diurnal:'',
       nocturnal:'',
       allDay:'',
-      atHour:''
+      atHour:'',
+      open: false,
+      message:'',
+      me:''
     }
   }
   handleClick = (event) => {
@@ -44,6 +49,9 @@ class Search extends Component {
     this.setState({anchorEl:null});
   };
 
+  handleClos= (e) => {
+    this.setState({open:false})
+   }
 
   calculateAge(birthday) { 
     const todayYear = new Date().getFullYear();
@@ -86,6 +94,14 @@ class Search extends Component {
   }
   
   async componentDidMount(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      this.setState({me: profile.data.data.role});
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
     let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/users';
@@ -101,13 +117,15 @@ class Search extends Component {
     console.log(vetrina);
   })
   .catch(error=>{
-    console.log(error);
-  })
+    this.setState({open:true, message:error.response.data.message});
+      console.log(error);
+    })
   }
 
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url = 'http://localhost:3000/api/v1/users' + query;
     axios.get(url).then(response=>{
       console.log(url);
@@ -115,8 +133,9 @@ class Search extends Component {
       
     })
     .catch(error=>{
-      console.log(error);
-    })
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
   }
 
   logout = () => {
@@ -151,9 +170,39 @@ class Search extends Component {
      </div>
   );
 }
+
+menu = () => {
+  if(this.state.me === 'famiglia')
+  return (<div>
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if (this.state.me === 'admin') return(<div>
+    <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
+    <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+  </div>)
+}
  
   render() {
     return (  
+      <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
       <div className="cerca">
         
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -178,10 +227,8 @@ class Search extends Component {
                     open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
                   >
-                  <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
-                  <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
-                  <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                    {this.menu()}
+                   
                 </Menu>
                  
               </ul>
@@ -309,7 +356,7 @@ class Search extends Component {
             </div>
       
       
-    
+            </div>
       
      
       

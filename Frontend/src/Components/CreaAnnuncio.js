@@ -60,6 +60,10 @@ class CreaAnnuncio extends Component{
     this.setState({show:false});
   } 
 
+  handleClo= (e) => {
+    this.setState({open:false})
+   }
+
   handleShow = () => {
     this.setState({name:''});
     this.setState({age:''});
@@ -131,12 +135,29 @@ class CreaAnnuncio extends Component{
       }
     })
     .catch(error=>{
-      console.log(error)})
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
     }
 
   render(){
     return(
-     
+      <div>
+      <Snackbar className="snackbar"
+anchorOrigin={{
+  vertical: 'top',
+  horizontal: 'center'
+}}
+open={this.state.open}
+autoHideDuration={3000}
+onClose={this.handleClose}
+message = {<span id="message-id">{this.state.message}</span>}
+action={
+  <IconButton onClick={this.handleClose}>
+    <CloseIcon/>
+  </IconButton>
+}
+/>
         <div className="profile">
       <div className="Navbar">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
@@ -414,7 +435,7 @@ class CreaAnnuncio extends Component{
    
    </div>
    
-
+   </div>
 
 
 

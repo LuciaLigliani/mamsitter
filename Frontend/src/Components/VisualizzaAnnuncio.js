@@ -15,8 +15,11 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import util from '..//util/util'
 import Table from 'react-bootstrap/Table'
-import Modal from 'react-bootstrap/Modal'
+// import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Snackbar } from '@material-ui/core';
 
 class VisualizzaAnnuncio extends Component{
   constructor(props){
@@ -41,7 +44,10 @@ class VisualizzaAnnuncio extends Component{
       age:'',
       description:'',
       selfSufficient:'',
-      array:[]
+      array:[],
+      me:'',
+      open: false,
+      message:''
     }
   }
   setData = (data, specificData) => {
@@ -89,6 +95,14 @@ class VisualizzaAnnuncio extends Component{
 }
 
 componentDidMount(){
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      this.setState({me: profile.data.data.role});
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
   const id= this.props.location.pathname.split('/announcements/')[1];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.get('http://localhost:3000/api/v1/announcements/' + id).then(response => {
@@ -105,9 +119,10 @@ componentDidMount(){
       else if(response.data.data.typeAnnouncement === 'colf') specificData = response.data.data.colfAnn_id;
       this.setData(response.data.data , specificData);
   })
-  .catch((err)=> {
-    console.log(err);
-  })
+  .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
+      console.log(error);
+    })
 }
 
 deleteAnn = () => {
@@ -119,7 +134,10 @@ deleteAnn = () => {
         window.location.assign('/');
          }, 30); 
     })
-  .catch((err)=>console.log(err));
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+        console.log(error);
+      })
 }
 
 logout = () => {
@@ -202,12 +220,14 @@ updateAnn = () => {
         window.location.assign('/viewallann');
       }, 10);
     }
-  }).catch((err)=> {
-    console.log(err);
-  } );
+  }).catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
+      console.log(error);
+    })
 }
 
 apply = () => {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications').then(response => {
     console.log(response);
     this.setState({open:true, message:'Candidatura inviata!'})
@@ -215,7 +235,10 @@ apply = () => {
           window.location.assign('/viewallapplication');
            }, 30); 
   })
-  .catch((err)=> console.log(err));
+  .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
+      console.log(error);
+    })
 }
 /*deleteApp = () => {
   axios.delete('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications/'+ appId).then(app=> {
@@ -235,26 +258,58 @@ handleClose = () => {
   this.setState({anchorEl:null});
 };
 
+handleClos= (e) => {
+  this.setState({open:false})
+ }
+
 title = () => {
   if(this.state.typeAnnouncement === 'babysitter') return 'Bambini: ';
   else if(this.state.typeAnnouncement === 'badante') return 'Anziani: ';
 }
 
 buttons = () => {
-  return (
-    <div >
+  if(this.state.me === 'admin') return (
+<div>
+<font face='Georgia' color="white">
+   <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
+   <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
+</div>
+  )
+  else if(this.state.me === 'famiglia') return (
+<div>
   <font face='Georgia' color="white">
    <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
-
-    <font  face='Georgia' color="white">
+   <font  face='Georgia' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Annuncio</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateAnn} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
-         </div>
+    <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
+</div>
+  )
+  else return (
+<div>
+<button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
+</div>
   )
 }
 
   render(){
     return(
+      <div>
+        <Snackbar className="snackbar"
+  anchorOrigin={{
+    vertical: 'top',
+    horizontal: 'center'
+  }}
+  open={this.state.open}
+  autoHideDuration={3000}
+  onClose={this.handleClose}
+  message = {<span id="message-id">{this.state.message}</span>}
+  action={
+    <IconButton onClick={this.handleClose}>
+      <CloseIcon/>
+    </IconButton>
+  }
+  />
       <div className="cerca">
       <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
@@ -280,7 +335,6 @@ buttons = () => {
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                
-                <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
                <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
              </Menu>
               
@@ -543,15 +597,14 @@ buttons = () => {
 </Row>
       
  
-  <button class="button1 button2" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
-  <Link to={"/application/" + this.state.id}><button class="button1 button2" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
+  
      </Container>
    
    </div> 
 
    
       
-
+   </div>
 
 
            </div>
