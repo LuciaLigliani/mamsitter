@@ -82,7 +82,7 @@ class Candidature extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
-  info = (user) => {
+  /*info = (user) => {
     let specificUser = '';
     if(user.user_id.role === 'famiglia') specificUser = user.user_id.famiglia_id;
     else if(user.user_id.role === 'babysitter') specificUser = user.user_id.babysitter_id;
@@ -97,7 +97,7 @@ class Candidature extends Component {
               {specificUser.city} <br/>
           </div>
     )
-  }
+  }*/
 
   render(){
     return(
@@ -160,8 +160,8 @@ class Candidature extends Component {
             <div className="card">
                <div className="card_body">
 
-              <img src={`http://localhost:3000/api/v1/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
-              {this.info(users)}
+              <img src={`http://localhost:3000/api/v1/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img><br/><br/>
+             { /*{this.info(users)}*/}
               <Link to={"/users/" + users.user_id._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
               </div> 
              </div>

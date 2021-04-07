@@ -423,42 +423,42 @@ buttons = () => {
         Tipo di lavoro: &nbsp;</Typography>
         <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:60, width: 30}}
+            style={{marginLeft:45, width: 30}}
             disabled
               name='typeWork'
               id="occasionale"
             /><label for="occasionale">Occasionale</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:38, width: 30}}
+            style={{marginLeft:20, width: 30}}
             disabled
               name='typeWork'
               id="regolare"
             /><label for="regolare">Regolare</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:24, width: 30}}
+            style={{marginLeft:4, width: 30}}
             disabled
               name='typeWork'
               id="diurno"
             /><label for="diurno">Diurno</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:22, width: 30}}
+            style={{marginLeft:3, width: 30}}
             disabled
               name='typeWork'
               id="aOre"
             /><label for="aOre">Ad ora</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:75, width: 30}}
+            style={{marginLeft:55, width: 30}}
             disabled
               name='typeWork'
               id="24h"
             /><label for="24h">Tutto il giorno</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
-            style={{marginLeft:40, width: 30}}
+            style={{marginLeft:20, width: 30}}
             disabled
               name='typeWork'
               id="notturno"
@@ -467,7 +467,7 @@ buttons = () => {
   <Col >
   <Typography style={{bottom:152, marginRight:300, marginTop:50}}  gutterBottom>
         Giorni disponibili: &nbsp;</Typography>
-  <Table striped bordered hover size="sm" style={{width:90, marginLeft:50}} >
+  <Table striped bordered hover size="sm" style={{width:90, marginLeft:1}} >
   <thead>
     <tr>
       <th></th>
@@ -530,7 +530,7 @@ buttons = () => {
         Disponibilità a: &nbsp;</Typography>
         <Form.Check
             onChange={this.changeHandler}
-            style={{marginLeft:-100, textAlign:'left'}}
+            style={{marginLeft:-115, textAlign:'left'}}
             disabled
               label="Aiuto compiti"
               name='homework'
@@ -538,7 +538,7 @@ buttons = () => {
             />
             <Form.Check
             onChange={this.changeHandler}
-            style={{marginLeft:-100, textAlign:'left'}}
+            style={{marginLeft:-115, textAlign:'left'}}
             disabled
               label="Cucinare"
               name='cook'
@@ -546,7 +546,7 @@ buttons = () => {
             />
             <Form.Check
             onChange={this.changeHandler}
-            style={{marginLeft:-100, textAlign:'left'}}
+            style={{marginLeft:-115, textAlign:'left'}}
             disabled
               label="Guidare"
               name='car'
@@ -554,7 +554,7 @@ buttons = () => {
             />
             <Form.Check
             onChange={this.changeHandler}
-            style={{marginLeft:-100, textAlign:'left'}}
+            style={{marginLeft:-115, textAlign:'left'}}
             disabled
               label="Fare pulizie"
               name='alsoColf'
@@ -567,7 +567,7 @@ buttons = () => {
    <Col sm={2}>
    <Typography style={{ marginLeft:100, marginTop:40}}  gutterBottom>
         {this.title()} &nbsp;</Typography>
- <div className="container_ann" style={{marginTop:150, width:700}}> 
+ <div className="container_ann" style={{ width:700, marginLeft:30}}> 
       {this.state.array.map(array=>(     
          <div className="card_annunci">
             <div className="card_body_ann">
