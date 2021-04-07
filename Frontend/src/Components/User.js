@@ -106,7 +106,7 @@ class User extends Component {
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
     })
     .catch(error=>{
@@ -115,7 +115,7 @@ class User extends Component {
       })
     const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
+    axios.get('/api/v1/users/' + id).then(profile => {
       console.log(profile);
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
@@ -139,7 +139,7 @@ class User extends Component {
 
   deleteProfile = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.delete('http://localhost:3000/api/v1/users/' + this.state.id).then(profile => {
+    axios.delete('/api/v1/users/' + this.state.id).then(profile => {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
@@ -388,7 +388,7 @@ class User extends Component {
        <Row>
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
-         <img src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+         <img src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: 0,
       width:150,
