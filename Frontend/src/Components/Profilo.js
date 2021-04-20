@@ -119,7 +119,7 @@ class Profilo extends Component {
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -142,7 +142,7 @@ class Profilo extends Component {
   
 
   deleteProfile = () => {
-    axios.delete('/api/v1/users/myProfile').then(profile => {
+    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/');
@@ -166,7 +166,7 @@ class Profilo extends Component {
 
   updateProfile = () => {
     console.log(this.state.car);
-    axios.patch('/api/v1/users/myProfile', this.state).then(profile=>{
+    axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(profile=>{
      /* if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggirornat'})
        setTimeout(()=> {
@@ -253,7 +253,7 @@ class Profilo extends Component {
        <Row>
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
-<Avatar  alt="Remy Sharp" src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+<Avatar  alt="Remy Sharp" src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: -55,
       top:16, 

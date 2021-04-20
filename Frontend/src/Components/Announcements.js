@@ -77,7 +77,7 @@ class Announcements extends Component {
     }
   async componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
     })
     .catch(error=>{
@@ -85,7 +85,7 @@ class Announcements extends Component {
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/announcements';
+    const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })
@@ -98,7 +98,7 @@ class Announcements extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     const query = this.createQuery();
-    const url = '/api/v1/announcements' + query;
+    const url = 'http://localhost:3000/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
     })
