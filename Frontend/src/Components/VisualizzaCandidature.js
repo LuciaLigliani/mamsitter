@@ -44,7 +44,7 @@ class VisualizzaCandidature extends Component {
   }
   async componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/applications';
+    const url='/api/v1/applications';
     axios.get(url).then(response=>{
     
       console.log(response);
