@@ -253,7 +253,7 @@ class Profilo extends Component {
        <Row>
          <Col sm={1}>
          <Box  m="4rem" ml="3rem" mt="100px" >
-<Avatar  alt="Remy Sharp" src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+<Avatar  alt="Remy Sharp" src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: -55,
       top:16, 
