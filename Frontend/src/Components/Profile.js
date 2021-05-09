@@ -174,7 +174,7 @@ class Profile extends Component{
 
   deleteProfile = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.delete('/api/v1/users/myProfile').then(profile => {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
@@ -312,7 +312,7 @@ class Profile extends Component{
     }
     // this.state.photo = document.getElementById('photo').files[0];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
+    axios.patch('/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
         console.log(response.data.data);
@@ -573,7 +573,7 @@ action={
          <Box  m="4rem" ml="3rem" mt="100px" >
 <div class="rounded-box">
 <div class="outer">
-<img src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+<img src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: 0,
       width:150,

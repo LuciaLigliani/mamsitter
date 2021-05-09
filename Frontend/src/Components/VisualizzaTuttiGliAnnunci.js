@@ -38,7 +38,7 @@ class VisualizzaTuttiGliAnnunci extends Component {
   }
   async componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/announcements';
+    const url='/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })

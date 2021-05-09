@@ -126,7 +126,7 @@ class CreaAnnuncio extends Component{
     console.log(this.state);
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.post('http://localhost:3000/api/v1/announcements', this.state).then(response=>{
+    axios.post('/api/v1/announcements', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Annuncio creato'})
        setTimeout(()=> {

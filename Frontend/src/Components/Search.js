@@ -107,7 +107,7 @@ class Search extends Component {
       })
     let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/users';
+    const url='/api/v1/users';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -128,7 +128,7 @@ class Search extends Component {
     e.preventDefault()
     const query = this.createQuery();
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url = 'http://localhost:3000/api/v1/users' + query;
+    const url = '/api/v1/users' + query;
     axios.get(url).then(response=>{
       console.log(url);
       this.setState({users: response.data.data});
@@ -160,7 +160,7 @@ class Search extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       <Link to={"/users/" + user.generalUser._id} >  <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> </Link>
+       <Link to={"/users/" + user.generalUser._id} >  <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> </Link>
          {user.specificUser.name} {user.specificUser.surname} 
          </div>
          </div> 
@@ -357,7 +357,7 @@ menu = () => {
              <div className="card">
                 <div className="card_body">
 
-               <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
+               <img src={`/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
                <div className="card_title">
                {users.specificUser.name} {users.specificUser.surname} 
                </div> 
