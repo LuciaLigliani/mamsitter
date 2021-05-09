@@ -47,7 +47,8 @@ class VisualizzaAnnuncio extends Component{
       array:[],
       me:'',
       open: false,
-      message:''
+      message:'',
+      can:''
     }
   }
   setData = (data, specificData) => {
@@ -97,6 +98,7 @@ class VisualizzaAnnuncio extends Component{
 componentDidMount(){
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      this.setState({can: profile.data.data.can});
       this.setState({me: profile.data.data.role});
     })
     .catch(error=>{
@@ -233,7 +235,7 @@ apply = () => {
     this.setState({open:true, message:'Candidatura inviata!'})
         setTimeout(()=> {
           window.location.assign('/viewallapplication');
-           }, 30); 
+           }, 100); 
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -268,6 +270,18 @@ title = () => {
 }
 
 buttons = () => {
+  if(this.state.can === false)
+  return (
+    <div>
+     <Link to="/notapply"> <button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Candidati!</button></Link>
+    </div>
+  )
+  else if (this.state.can === true)
+  return (
+    <div>
+  <button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
+    </div>
+  )
   if(this.state.me === 'admin') return (
 <div>
 <font face='Georgia' color="white">
@@ -290,6 +304,7 @@ buttons = () => {
 <button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
 </div>
   )
+
 }
 
   render(){
