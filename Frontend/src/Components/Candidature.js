@@ -51,7 +51,7 @@ class Candidature extends Component {
   async componentDidMount(){
     const id= this.props.location.pathname.split('/application/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/announcements/' +id+ '/applications';
+    const url='http://localhost:3000/api/v1/announcements/' +id+ '/applications';
     axios.get(url).then(response=>{
       console.log(response.data.data)
     this.setState({users: response.data.data});
@@ -160,7 +160,7 @@ class Candidature extends Component {
             <div className="card">
                <div className="card_body">
 
-              <img src={`/api/v1/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img><br/><br/>
+              <img src={`http://localhost:3000/api/v1/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img><br/><br/>
              { /*{this.info(users)}*/}
               <Link to={"/users/" + users.user_id._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
               </div> 

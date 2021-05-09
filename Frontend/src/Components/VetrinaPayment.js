@@ -15,7 +15,7 @@ class VetrinaPayment extends React.Component {
       },
       createSubscription: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.get('/api/v1/users/myProfile').then((data => {
+        return axios.get('http://localhost:3000/api/v1/users/myProfile').then((data => {
           console.log(data.data.data.role);
           return actions.subscription.create({
             'plan_id': 'P-0BA48243K7280713TMBF6VSY'
@@ -27,7 +27,7 @@ class VetrinaPayment extends React.Component {
       },
       onApprove: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.post('/api/v1/payments/highlight', ).then((data => {
+        return axios.post('http://localhost:3000/api/v1/payments/highlight', ).then((data => {
           console.log(data.data.data);
           console.log(data);
         })).catch(err => {

@@ -156,7 +156,7 @@ class Profile extends Component{
 
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -172,7 +172,7 @@ class Profile extends Component{
 
   deleteProfile = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.delete('/api/v1/users/myProfile').then(profile => {
+    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
@@ -310,7 +310,7 @@ class Profile extends Component{
     }
     // this.state.photo = document.getElementById('photo').files[0];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.patch('/api/v1/users/myProfile', this.state).then(response=>{
+    axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
         console.log(response.data.data);
@@ -560,7 +560,7 @@ action={
          <Box  m="4rem" ml="3rem" mt="100px" >
 <div class="rounded-box">
 <div class="outer">
-<img src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+<img src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: 0,
       width:150,
