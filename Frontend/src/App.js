@@ -19,6 +19,9 @@ import CreaAnnuncio from './Components/CreaAnnuncio';
 import VisualizzaTuttiGliAnnunci from './Components/VisualizzaTuttiGliAnnunci';
 import VisualizzaCandidature from './Components/VisualizzaCandidature';
 import Candidature from './Components/Candidature';
+import ErrorAnn from './Components/ErrorAnn';
+import ErrorApply from './Components/ErrorApply';
+import ErrorHigh from './Components/ErrorHigh';
 
 
 function App() {
@@ -40,7 +43,11 @@ function App() {
         <Route path="/createann" component={CreaAnnuncio} ></Route>
         <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
         <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
+        <Route path="/notcreate" component={ErrorAnn} ></Route>
 
+        <Route path="/nohigh" component={ErrorHigh} ></Route>
+
+        <Route path="/notapply" component={ErrorApply} ></Route>
         <Route path="/application" component={Candidature} ></Route>
 
 

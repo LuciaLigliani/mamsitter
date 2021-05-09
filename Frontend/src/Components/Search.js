@@ -39,7 +39,8 @@ class Search extends Component {
       atHour:'',
       open: false,
       message:'',
-      me:''
+      me:'',
+      can:''
     }
   }
   handleClick = (event) => {
@@ -97,6 +98,7 @@ class Search extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
+      
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
@@ -114,7 +116,6 @@ class Search extends Component {
 
     });
     this.setState({highlighted: this.grid(vetrina)});
-    console.log(vetrina);
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -172,6 +173,24 @@ class Search extends Component {
 }
 
 menu = () => {
+  if(this.state.can === true) 
+  return (
+    <div>
+       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>
+  )
+  else if(this.state.can === false)
+  return(
+    <div>
+       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/notcreate"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>
+  )
   if(this.state.me === 'famiglia')
   return (<div>
       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 

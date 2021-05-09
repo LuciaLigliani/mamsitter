@@ -47,7 +47,8 @@ class VisualizzaAnnuncio extends Component{
       array:[],
       me:'',
       open: false,
-      message:''
+      message:'',
+      can:''
     }
   }
   setData = (data, specificData) => {
@@ -217,7 +218,7 @@ updateAnn = () => {
         }
       })
     });
-    this.state.neededDays = neededDays;
+    this.setState({neededDays: neededDays});
 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
@@ -240,8 +241,8 @@ apply = () => {
     console.log(response);
     this.setState({open:true, message:'Candidatura inviata!'})
         setTimeout(()=> {
-          window.location.assign('/announcements/'+this.state.id);
-           }, 30); 
+          window.location.assign('/viewallapplication');
+           }, 100); 
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -276,6 +277,18 @@ title = () => {
 }
 
 buttons = () => {
+  if(this.state.can === false)
+  return (
+    <div>
+     <Link to="/notapply"> <button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Candidati!</button></Link>
+    </div>
+  )
+  else if (this.state.can === true)
+  return (
+    <div>
+  <button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
+    </div>
+  )
   if(this.state.me === 'admin') return (
 <div>
 <font face='Georgia' color="white">
@@ -298,6 +311,7 @@ buttons = () => {
 <button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
 </div>
   )
+
 }
 
   render(){

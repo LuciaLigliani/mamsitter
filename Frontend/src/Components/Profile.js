@@ -155,6 +155,7 @@ class Profile extends Component{
 }
 
   componentDidMount(){
+    
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
@@ -306,7 +307,7 @@ class Profile extends Component{
           }
         })
       });
-      this.state.availableDays = availableDays;
+      this.setState({availableDays: availableDays});
     }
     // this.state.photo = document.getElementById('photo').files[0];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
@@ -339,6 +340,17 @@ class Profile extends Component{
       <MenuItem onClick={this.logout}>Logout</MenuItem>
       </div>)
 
+  }
+
+  high = () => {
+    if(this.state.highlighted === false && this.state.role !== 'famiglia' )
+    return (
+      <div>
+        Se vuoi che il tuo profilo vada in vetrina, per avere maggiore visibilità, allora <Link to="/nohigh">
+        <font face='Georgia' color='black'><u> clicca qui </u> </font>
+        </Link> per abbonarti!
+      </div>
+    )
   }
 
   showInformations = (role) => {
@@ -668,6 +680,7 @@ onChange={this.changeHandler}
  <br/><br/>
  {this.showInformations(this.state.role)}
  
+ 
   <Row>
 <Col>
          <br/><br/>
@@ -695,6 +708,7 @@ onChange={this.changeHandler}
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
          </div>
+         <br/> {this.high()}
 </Row>
      </Container>
    </div>
