@@ -17,7 +17,7 @@ class ErrorHigh extends Component{
   constructor(props){
     super(props);
     this.state={
-
+      anchorEl:''
     }
   }
   handleClick = (event) => {
@@ -28,13 +28,28 @@ class ErrorHigh extends Component{
   };
 
   componentDidMount() {
-    console.log(window.paypal);
+    document.querySelector('#login').hidden = true;
+    document.querySelector('#unsubscribe').hidden = true;
     window.paypal.Buttons({
       style: {
           shape: 'rect',
           color: 'gold',
           layout: 'vertical',
           label: 'subscribe'
+      },
+      onInit: function(data, actions)  {
+        actions.disable();
+        return axios.get('http://localhost:3000/api/v1/users/myProfile').then((response => {
+          actions.enable();
+          console.log('bottoni abilitati');
+          document.querySelector('#unsubscribe').hidden = false;
+        })).catch(err => {
+          actions.disable();
+          document.querySelector('#paypal-button-container').hidden = true;
+          document.querySelector('#login').hidden = false;
+          document.querySelector('#unsubscribe').hidden = false;
+          console.log('bottoni disabilitati');
+        })
       },
       createSubscription: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
@@ -102,18 +117,23 @@ class ErrorHigh extends Component{
 
   <Accordion >
   <Card style={{top:'120px', width:'50rem', left:'130px', bottom:'-3px' }}>
-    <Card.Header bg='primary'>ATTENZIONE! </Card.Header><br/>
-    <Card.Title bg='light'>VETRINA</Card.Title>
+    <Card.Header bg='primary'>VAI IN VETRINA! </Card.Header><br/>
+    {/* <Card.Title bg='light'>VETRINA</Card.Title> */}
     <Card.Text>
-       Abbonati per avere la possibilità di dare una maggiore visibilità al tuo profilo!<br/>
-       Avrai la possibilità di andare in vetrina, così che le famiglie potranno vedere prima il tuo profilo e avranno una maggiore sicurezza. <br/>
+      Sei un lavoratore e vuoi aumentare la visibilità del tuo profilo? <br/>
+      Effettua l'abbonamento e il tuo profilo sarà esposto in vetrina!<br/>
+      Verrai messo in evidenza e la famiglia vedrà il tuo profilo prima di quello degli altri lavoratori.
        </Card.Text>
       <Accordion.Toggle class="button1 button2"  eventKey="0">
         Clicca qui per abbonarti!
       </Accordion.Toggle>
    
     <Accordion.Collapse  eventKey="0">
-      <Card.Body> <div id="paypal-button-container"></div></Card.Body>
+      <Card.Body> 
+        <div id="paypal-button-container"></div>
+        <div id="login"><h6>Effettua il <Link to="/login">login</Link> per poter completare l'abbonamento!</h6></div>
+        <div id="unsubscribe"><p style={{fontSize: '10px'}}>E' possibile annullare l'abbonamento in qualsiasi momento collegandosi al proprio account Paypal e scegliendo di disattivarlo.</p></div>
+      </Card.Body>
     </Accordion.Collapse>
   </Card>
 </Accordion>

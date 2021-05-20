@@ -50,13 +50,19 @@ submitHandler = (e) => {
       let jwt =  response.data.token;
       util.setCookie("user_jwt",jwt,7);
       this.setState({open:true, message:'Registrazione effettuata'})
+      setTimeout(()=> {
+        this.setState({open:false});
+           }, 2000);
      setTimeout(()=> {
         window.location.assign('/login');
-      }, 10);
+      }, 1000);
     }
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
         console.log(error);
   //   if(error.response.data.message === 'User validation failed: passwordConfirm: Passwords are not the same')
   //     this.setState({open:true, message:'Le due password non corrispondono'});
@@ -152,7 +158,7 @@ submitHandler = (e) => {
           </Form.Control>
           <br/> <br/><Form.Control required as="select" name='city'onChange={this.changeHandler}  >
            <option value hidden="hidden">Città</option>
-           <option>Milano</option>
+           <option value='Milano'>Milano</option>
            </Form.Control>
            <br/> <br/> <Form.Control placeholder="Descrizione" name='description' onChange={this.changeHandler}/>
 

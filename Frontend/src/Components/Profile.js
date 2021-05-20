@@ -167,6 +167,9 @@ class Profile extends Component{
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
@@ -176,21 +179,27 @@ class Profile extends Component{
     axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
-        setTimeout(()=> {
-          window.location.assign('/');
-           }, 30); 
-           axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+      //   setTimeout(()=> {
+      //     window.location.assign('/');
+      //      }, 1000); 
+      //      axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
       })
       .catch(error=>{
         this.setState({open:true, message:error.response.data.message});
+        setTimeout(()=> {
+          this.setState({open:false})
+             }, 2000);
           console.log(error);
         })
   }
 
   logout = () => {
-    setTimeout(()=> {
-      window.location.assign('/');
-       }, 10); 
+    this.setState({open:true, message:'Logout effettuato'})
+        setTimeout(()=> {
+          this.setState({open:false})
+          window.location.assign('/');
+           }, 1000);
+    
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 

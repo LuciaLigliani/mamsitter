@@ -108,6 +108,9 @@ class Cerca extends Component {
     this.setState({highlighted: this.grid(vetrina)});
   }).catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
   }
@@ -119,10 +122,17 @@ class Cerca extends Component {
     axios.get(url).then(response=>{
       console.log(url);
       this.setState({users: response.data.data});
+      this.setState({open:true, message:'Ricerca effettuata correttamente'})
+      setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       
     })
     .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
   }
@@ -210,7 +220,7 @@ class Cerca extends Component {
               </ul>
       
       <Col>
-        <Form onSubmit={this.submitHandler}  className="formm"> 
+        <Form   className="formm"> 
         <br/>
         <h3><font face='Georgia' color='black'>Cerca il lavoratore più adatto alle tue esigenze!</font> </h3>
           <Row>
@@ -294,7 +304,7 @@ class Cerca extends Component {
           </Row>
           <Row>
             <Col>
-          <button type="submit" class="button1 button2" style={{marginLeft:80}} >Cerca</button>
+          <button type="submit" class="button1 button2" style={{marginLeft:80}} onClick={this.submitHandler}>Cerca</button>
           </Col>
           </Row>
         </Form>

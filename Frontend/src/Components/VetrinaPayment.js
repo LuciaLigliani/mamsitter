@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react';
 import util from '..//util/util'
-// import scriptLoader from "react-async-script-loader";
 
 class VetrinaPayment extends React.Component {
   componentDidMount() {

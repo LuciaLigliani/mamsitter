@@ -17,7 +17,7 @@ class ErrorApply extends Component {
   constructor(props){
     super(props);
     this.state = {
-
+      anchorEl:''
     }
   }
   handleClick = (event) => {

@@ -42,24 +42,30 @@ submitHandler = (e) => {
     let jwt =  response.data.token;
     util.setCookie("user_jwt",jwt,7);
     this.setState({open:true, message:'Login effettuato'})
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
     
     if(response.data.data.role === 'famiglia') 
     setTimeout(()=> {
       window.location.assign('/search');
-       }, 10);
+       }, 1000);
     else if(response.data.data.role === 'admin') 
     setTimeout(()=> {
       window.location.assign('/search');
-       }, 10);
+       }, 1000);
     else {
       setTimeout(()=> {
         window.location.assign('/announcement');
-         }, 10);
+         }, 1000);
         }
   }
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
     console.log(error);
   // if(error.response && error.response.data.message === 'Incorrect email or password')
   //   this.setState({open:true, message:'Email o password incorretti'});

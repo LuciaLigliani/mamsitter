@@ -39,22 +39,20 @@ function App() {
         <Route path="/announcement" component ={Announcements}></Route>
         <Route path="/announcements" component ={VisualizzaAnnuncio}></Route>
         <Route path="/error" component={ErrorPage} ></Route>
-        <Route path="/prova" component={Profile} ></Route>
+        {/* <Route path="/prova" component={Profile} ></Route> */}
         <Route path="/createann" component={CreaAnnuncio} ></Route>
         <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
         <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
+
         <Route path="/notcreate" component={ErrorAnn} ></Route>
-
         <Route path="/nohigh" component={ErrorHigh} ></Route>
-
         <Route path="/notapply" component={ErrorApply} ></Route>
-        <Route path="/application" component={Candidature} ></Route>
-
-
-        <Route path="/aboutUs" component={AboutUs}/>
+        
         <Route path ="/payments" component={Payments}/>
         <Route path ="/vetrina" component={VetrinaPayment}/>
-        
+
+        <Route path="/application" component={Candidature} ></Route>
+        <Route path="/aboutUs" component={AboutUs}/>
         <Route path="/login" component={Login}/>
         <Route path="/" component={Cerca}/>
         
