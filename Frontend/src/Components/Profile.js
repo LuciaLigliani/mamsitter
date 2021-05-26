@@ -211,7 +211,7 @@ class Profile extends Component{
          }, 2000);
         setTimeout(()=> {
           window.location.assign('/');
-           }, 1000);
+           }, 2000);
     
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }

@@ -153,9 +153,11 @@ class Profilo extends Component {
   }
 
   logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
+      this.setState({open:false})
       window.location.assign('/');
-       }, 10); 
+       }, 2000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 

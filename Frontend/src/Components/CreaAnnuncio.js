@@ -79,11 +79,14 @@ class CreaAnnuncio extends Component{
   }
 
   logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
+      this.setState({open:false})
       window.location.assign('/');
-       }, 10); 
+       }, 2000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
+ 
 
   changeHandler = (e) => {
     if(e.target.name === 'typeWork' && e.target.value === 'on') e.target.value = e.target.id;
@@ -128,14 +131,17 @@ class CreaAnnuncio extends Component{
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.post('http://localhost:3000/api/v1/announcements', this.state).then(response=>{
       if(response.data.status === 'success') {
-        this.setState({open:true, message:'Annuncio creato'})
+        this.setState({open:true, message:'Annuncio creato correttamente'})
        setTimeout(()=> {
           window.location.assign('/search');
-        }, 50);
+        }, 2000);
       }
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
     }

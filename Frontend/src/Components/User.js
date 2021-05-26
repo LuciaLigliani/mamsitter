@@ -131,9 +131,11 @@ class User extends Component {
   }
  
   logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
+      this.setState({open:false})
       window.location.assign('/');
-       }, 10); 
+       }, 2000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
@@ -144,7 +146,7 @@ class User extends Component {
       this.setState({open:true, message:'Account eliminato'})
         setTimeout(()=> {
           window.location.assign('/search');
-           }, 30); 
+           }, 2000); 
       })
       .catch(error=>{
         this.setState({open:true, message:error.response.data.message});

@@ -166,9 +166,11 @@ class Search extends Component {
   }
 
   logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
+      this.setState({open:false})
       window.location.assign('/');
-       }, 10); 
+       }, 2000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
@@ -222,7 +224,7 @@ menu = () => {
   else if (this.state.me === 'admin') 
   return(<div>
     <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
-    <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
   </div>)
 }
  
