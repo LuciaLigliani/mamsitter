@@ -43,11 +43,22 @@ class VisualizzaTuttiGliAnnunci extends Component {
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
-      this.setState({open:true, message:error.response.data.message});
+      this.setState({open:true, 
+        message:error.response.data.message});
         console.log(error);
       })
   }
 
+  logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
+        setTimeout(()=> {
+          this.setState({open:false})
+          window.location.assign('/');
+           }, 2000);
+    
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+  }
+  
   setData(date) {
     date=new Date(date).toLocaleDateString();
     if(date==='Invalid Date')
@@ -109,7 +120,7 @@ render(){
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                 <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
                 <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
-               <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                <MenuItem onClick={this.logout}>Logout</MenuItem>
              </Menu>
               
            </ul><br/><br/><br/>

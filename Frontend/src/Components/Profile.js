@@ -198,7 +198,7 @@ class Profile extends Component{
         setTimeout(()=> {
           this.setState({open:false})
           window.location.assign('/');
-           }, 1000);
+           }, 2000);
     
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
@@ -326,7 +326,7 @@ class Profile extends Component{
         console.log(response.data.data);
        setTimeout(()=> {
           window.location.assign('/myProfile');
-        }, 10);
+        }, 3000);
       }
     }).catch(error=>{
       this.setState({open:true, message:error.response.data.message});

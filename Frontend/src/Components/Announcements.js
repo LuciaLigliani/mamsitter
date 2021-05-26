@@ -65,6 +65,15 @@ class Announcements extends Component {
     else this.setState({[e.target.name]:e.target.value})
   }
 
+  logout = () => {
+    this.setState({open:true, message:'Logout effettuato'})
+        setTimeout(()=> {
+          this.setState({open:false})
+          window.location.assign('/');
+           }, 2000);
+    
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+  }
     createQuery () {
       let filter = '';
         if(this.state.startDate) 
@@ -101,6 +110,10 @@ class Announcements extends Component {
     const url = 'http://localhost:3000/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
+      this.setState({open:true, message:'Ricerca effettuata correttamente'})
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
     })
     .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -111,12 +124,12 @@ class Announcements extends Component {
   menu = () => {
     if (this.state.me === 'admin') return(<div>
       <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca utenti</MenuItem></Link>
-      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+       <MenuItem onClick={this.logout}>Logout</MenuItem>
     </div>)
     else if(this.state.me === 'babysitter' || this.state.me === 'badante' || this.state.me === 'colf') return (<div>
         <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                   <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
-                  <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                   <MenuItem onClick={this.logout}>Logout</MenuItem>
       </div>)
   }
 

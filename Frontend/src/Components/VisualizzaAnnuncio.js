@@ -130,29 +130,34 @@ deleteAnn = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.delete('http://localhost:3000/api/v1/announcements/' + this.state.id).then(profile => {
     console.log(profile);
-    this.setState({open:true, message:'Annuncio eliminato'})
+    this.setState({open:true, message:'Annuncio eliminato correttamente'})
     if(this.state.me === 'famiglia'){
       setTimeout(()=> {
         window.location.assign('/search');
-         }, 30); 
+         }, 2000); 
     }
     else if(this.state.me === 'admin'){
       setTimeout(()=> {
         window.location.assign('/announcement');
-         }, 30);
+         }, 2000);
     }
       
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);  
         console.log(error);
       })
 }
 
 logout = () => {
+  this.setState({open:true, message:'Logout effettuato'})
   setTimeout(()=> {
+    this.setState({open:false})
     window.location.assign('/');
-     }, 10); 
+     }, 2000); 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
 }
 
@@ -218,7 +223,7 @@ updateAnn = () => {
         }
       })
     });
-    this.setState({neededDays: neededDays});
+    this.state.neededDays = neededDays;
 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
@@ -227,10 +232,13 @@ updateAnn = () => {
       console.log(response.data.data);
      setTimeout(()=> {
         window.location.assign('/announcements/'+this.state.id);
-      }, 10);
+      }, 2000);
     }
   }).catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
 }
@@ -242,7 +250,7 @@ apply = () => {
     this.setState({open:true, message:'Candidatura inviata!'})
         setTimeout(()=> {
           window.location.assign('/viewallapplication');
-           }, 100); 
+           }, 2000); 
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -357,7 +365,7 @@ buttons = () => {
                >
                <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
                
-               <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+                <MenuItem onClick={this.logout}>Logout</MenuItem>
              </Menu>
               
            </ul>
