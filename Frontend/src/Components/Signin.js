@@ -64,60 +64,14 @@ submitHandler = (e) => {
       this.setState({open:false})
          }, 2000);
         console.log(error);
-  //   if(error.response.data.message === 'User validation failed: passwordConfirm: Passwords are not the same')
-  //     this.setState({open:true, message:'Le due password non corrispondono'});
-    
-  //  if(error.response.data.message === 'User validation failed: email: Incorrect email or password')
-  //     this.setState({open:true, message:'Email o password incorretti'});
-     
-  //   if(error.response.data.message === 'User validation failed: role: Please provide a role')
-  //     this.setState({open:true, message:'Per favore, inserisci un ruolo'});
-
-  //   if(error.response.data.message === 'User validation failed: email: Please provide your email')
-  //     this.setState({open:true, message:'Per favore, inserisci la tua email'});
-
-  //   if(error.response.data.message === 'User validation failed: password: Password must be at least 8 character')
-  //     this.setState({open:true, message:'La password deve avere più di 8 caratteri!'});
-
-  //   if(error.response.data.message === 'Please provide a password')
-  //     this.setState({open:true, message:'Per favore, inserisci una password'});
-
-  //   if(error.response.data.message === 'Please confirm your password')
-  //     this.setState({open:true, message:'Per favore, conferma la password'});
-    
-  //   if (error.response.data.message.includes('Please provide your birth date.'))
-  //     this.setState({open:true, message:'Per favore, inserisci una data di nascita'});
-   
-    // if (error.response.data.message.includes('You have to be more then 18 years old'))
-    //   this.setState({open:true, message:'Devi avere più di 18 anni!'});
-
-    // if(error.response.data.message.includes('You can\'t be more then 100 years old'))
-    //   this.setState({open:true, message:'Non puoi avere più di 100 anni!'});
-
-    // if(error.response.data.message.includes('Please provide a name'))
-    //   this.setState({open:true, message:'Per favore inserisci un nome'});
-      
-    // if(error.response.data.message.includes('Please provide a surname'))
-    //   this.setState({open:true, message:'Per favore inserisci un cognome'});
-
-    // if(error.response.data.message.includes('Please provide the sex'))
-    //   this.setState({open:true, message:'Per favore inserisci il sesso'});
-
-    // if(error.response.data.message.includes('Please provide a city'))
-    //   this.setState({open:true, message:'Per favore inserisci una città'});
-     
-    // if(error.response.data.message.includes('Please provide a correct district'))
-    //   this.setState({open:true, message:'Per favore inserisci un distretto corretto'});
-
-    // if(error.response.data.message.includes('Please provide a valid phone number.'))
-    //   this.setState({open:true, message:'Per favore inserisci un numero di telefono valido'});
   })
 }
 
   render(){
   return (
     
-    <div className="pagSignin"><Navbar></Navbar>
+    <div className="pagSignin">
+      <Navbar/>
      <Snackbar 
   anchorOrigin={{
     vertical: 'top',

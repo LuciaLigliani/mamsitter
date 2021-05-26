@@ -2,7 +2,7 @@ import React from 'react'
 import  Navbar  from '..//Components/Navbar';
 import '../App.css';
 import {Link} from 'react-router-dom';
-function ErrorPage() {
+function NotAuthenticated() {
 
   return(
     <div className="error">
@@ -22,4 +22,4 @@ function ErrorPage() {
 }
 
 
-export default ErrorPage;
+export default NotAuthenticated;

@@ -165,6 +165,7 @@ exports.deleteAllUsers = catchAsync (async (req, res, next) => {
 exports.getAllUsers = catchAsync (async (req, res, next) => {
   // if(req.user.role !== 'admin' && req.query.role === 'famiglia') req.query.role = undefined
   // if(req.user.role === 'famiglia') req.query.role = ''
+  if(req.user.profile !== 'premium') req.query.profile = 'base'
   const users = await userService.getAllUsers(req);
 
   res.status(200).json({

@@ -71,7 +71,7 @@ class ErrorAnn extends Component{
     return(
       <div  >
         <br/>
-<Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+<Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
                 <Link to="/mamsitter">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>

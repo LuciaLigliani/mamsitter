@@ -216,7 +216,7 @@ class Profilo extends Component {
       <div>
   <div className="profile">
       <div className="Navbar">
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -372,9 +372,9 @@ name='work'
    </div>
     </div>
     <div className="bottoni">
-  <Link to="/home"><font face='Georgia' color="white">
+  <font face='Georgia' color="white">
    
-   <button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></Link>
+   <button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
     <font  face='Georgia' color="white">
     &nbsp;&nbsp; <button onClick={this.canUpdate} type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button onClick={this.updateProfile} className="buttonp buttonpp" >Salva</button></font>

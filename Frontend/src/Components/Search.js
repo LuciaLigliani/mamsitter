@@ -16,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import mamsitter from '..//hands1.png';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 // import img from '..//img.png';
 
 
@@ -40,7 +42,8 @@ class Search extends Component {
       open: false,
       message:'',
       me:'',
-      can:''
+      can:'',
+      profile:''
     }
   }
   handleClick = (event) => {
@@ -95,13 +98,22 @@ class Search extends Component {
   }
   
   async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
-      
+      this.setState({can: profile.data.data.can});
+      this.setState({profile: profile.data.data.profile});
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
     let vetrina =[];
@@ -118,7 +130,15 @@ class Search extends Component {
     this.setState({highlighted: this.grid(vetrina)});
   })
   .catch(error=>{
+    if(error.response && error.response.data.message === 'You do not have permission to perform this action') {
+      setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+    }
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
   }
@@ -129,12 +149,18 @@ class Search extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url = 'http://localhost:3000/api/v1/users' + query;
     axios.get(url).then(response=>{
-      console.log(url);
       this.setState({users: response.data.data});
+      this.setState({open:true, message:'Ricerca effettuata correttamente'})
+      setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
@@ -159,7 +185,12 @@ class Search extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       <Link to={"/users/" + user.generalUser._id} >  <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> </Link>
+       {this.state.profile === 'semplice' ? ( <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''/> ) : (<Link to={"/users/" + user.generalUser._id} >  
+        <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt='' class="imageProva" /> 
+        </Link>)
+        
+       }
+       
          {user.specificUser.name} {user.specificUser.surname} 
          </div>
          </div> 
@@ -173,32 +204,23 @@ class Search extends Component {
 }
 
 menu = () => {
-  if(this.state.can === true) 
-  return (
-    <div>
-       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
-      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
-      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
-    </div>
-  )
-  else if(this.state.can === false)
-  return(
-    <div>
-       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-      <Link to="/notcreate"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
-      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
-      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
-    </div>
-  )
-  if(this.state.me === 'famiglia')
+  if(this.state.me === 'famiglia' && this.state.can === true)
   return (<div>
       <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
       <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
       <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
-  else if (this.state.me === 'admin') return(<div>
+  else if(this.state.me === 'famiglia' && this.state.can === false)
+  return (<div>
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if (this.state.me === 'admin') 
+  return(<div>
     <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
     <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
   </div>)
@@ -224,7 +246,7 @@ menu = () => {
   />
       <div className="cerca">
         
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
                 <Link to="/mamsitter">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -277,6 +299,7 @@ menu = () => {
             </Form.Control><br/>
             <Form.Control style={{marginLeft:100}} name='role' as="select" defaultValue="Ruolo" onChange={this.changeHandler} > 
                <option value='' >Ruolo</option>
+               {this.state.me === 'admin' ? (<option value='famiglia'>Famiglia</option>) : (<div/>)}
                <option value='babysitter'>Babysitter</option> 
                <option value='colf'>Colf</option> 
                <option value='badante'>Badante</option> 
@@ -342,37 +365,45 @@ menu = () => {
         </Form>
     </Col>
     <Col>
-    
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe>
+    <img src={mamsitter} className="im" alt="mamsitter" style={{marginLeft:500,  width:900, marginTop:-450, marginBottom:40}}/>
+    {/* <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe> */}
      </Col>
               
               
      {this.state.highlighted}
-      
+     
           <div className="card_container">
            
             {this.state.users.map(users=>(
+            <div class="containerProva">
               <div key={users.generalUser.id}>
              <div className="card">
                 <div className="card_body">
 
-               <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
+
+               <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt='' class="imageProva"></img>
+               
+  
+  
                <div className="card_title">
                {users.specificUser.name} {users.specificUser.surname} 
+               {users.generalUser.role !== 'famiglia' && users.generalUser.profile === 'premium' ? (<VerifiedUserIcon style={{color:'green', fontSize:30}}/>) : (<div/>)}
                </div> 
               
               
                {this.calculateAge(users.specificUser.birthDate)} <br/>
                {users.specificUser.city} <br/>
                {users.specificUser.role}<br/>
-              <Link to={"/users/" + users.generalUser._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
-               </div> 
+              {this.state.profile === 'semplice' ? ( <div class="overlayProva"><div class="textProva"><p>Passa al <b>profilo base</b><br/> per poter vedere le informazioni complete di questo utente!</p><Link to='/payments'><button class="button1 button2" > Profilo Base</button></Link></div>
+  </div>) :
+                (<Link to={"/users/" + users.generalUser._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>)
+              }
               </div>
-              </div>
+              </div></div></div>
             ))}
-            
+</div>
 
-            </div>
+            
       
       
             </div>

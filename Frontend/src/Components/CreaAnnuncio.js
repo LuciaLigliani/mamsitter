@@ -160,7 +160,7 @@ action={
 />
         <div className="profile">
       <div className="Navbar">
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -420,9 +420,9 @@ action={
   <Row>
     
   <div >
-  <Link to="/home"><font face='Georgia' color="white">
+  <font face='Georgia' color="white">
    
-   <button type="submit" style={{marginRight:10, marginTop:60}} onClick={this.submitHandler} className="buttonp buttonpp" >Crea Annuncio</button></font></Link>
+   <button type="submit" style={{marginRight:10, marginTop:60}} onClick={this.submitHandler} className="buttonp buttonpp" >Crea Annuncio</button></font>
          </div>
 </Row>
 

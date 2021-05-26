@@ -107,7 +107,7 @@ componentDidMount(){
   const id= this.props.location.pathname.split('/announcements/')[1];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.get('http://localhost:3000/api/v1/announcements/' + id).then(response => {
-    console.log(response.data.data);
+    // console.log(response.data.data);
     let specificData;
       if(response.data.data.typeAnnouncement === 'babysitter') {
         specificData = response.data.data.babysitterAnn_id;
@@ -129,7 +129,7 @@ componentDidMount(){
 deleteAnn = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.delete('http://localhost:3000/api/v1/announcements/' + this.state.id).then(profile => {
-    console.log(profile);
+    // console.log(profile);
     this.setState({open:true, message:'Annuncio eliminato'})
     if(this.state.me === 'famiglia'){
       setTimeout(()=> {
@@ -218,16 +218,17 @@ updateAnn = () => {
         }
       })
     });
-    this.setState({neededDays: neededDays});
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.state.neededDays = neededDays;
 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
     if(response.data.status === 'success') {
       this.setState({open:true, message:'Annuncio aggiornato correttamente'})
-      console.log(response.data.data);
-     setTimeout(()=> {
-        window.location.assign('/announcements/'+this.state.id);
-      }, 10);
+      // console.log(response.data.data);
+    //  setTimeout(()=> {
+    //     window.location.assign('/announcements/'+this.state.id);
+    //   }, 10);
     }
   }).catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -238,7 +239,7 @@ updateAnn = () => {
 apply = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications').then(response => {
-    console.log(response);
+    // console.log(response);
     this.setState({open:true, message:'Candidatura inviata!'})
         setTimeout(()=> {
           window.location.assign('/viewallapplication');
@@ -333,7 +334,7 @@ buttons = () => {
   }
   />
       <div className="cerca">
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
              <Link to="/mamsitter">
                <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>

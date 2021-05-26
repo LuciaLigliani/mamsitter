@@ -11,7 +11,8 @@ import User from './Components/User'
 
 import Blog from './Components/Blog';
 import Search from './Components/Search';
-import ErrorPage from './Components/ErrorPage';
+import NotAuthenticated from './Components/NotAuthenticated';
+import Unauthorized from './Components/Unauthorized';
 import Announcements from './Components/Announcements';
 import VisualizzaAnnuncio from './Components/VisualizzaAnnuncio';
 import Profile from './Components/Profile';
@@ -31,18 +32,12 @@ function App() {
     
      
       <Switch>
-        <Route path="/signup" component={Signin}/>
         <Route path="/blog" component={Blog}/>
-        <Route path="/myProfile" component={Profile}/>
-        <Route path="/search" component={Search}/>
-        <Route path="/users" component={User} ></Route>
-        <Route path="/announcement" component ={Announcements}></Route>
-        <Route path="/announcements" component ={VisualizzaAnnuncio}></Route>
-        <Route path="/error" component={ErrorPage} ></Route>
+        <Route path="/aboutUs" component={AboutUs}/>
+
+        <Route path="/notAuthenticated" component={NotAuthenticated} ></Route>
+        <Route path="/unauthorized" component={Unauthorized} ></Route>
         {/* <Route path="/prova" component={Profile} ></Route> */}
-        <Route path="/createann" component={CreaAnnuncio} ></Route>
-        <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
-        <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
 
         <Route path="/notcreate" component={ErrorAnn} ></Route>
         <Route path="/nohigh" component={ErrorHigh} ></Route>
@@ -51,9 +46,30 @@ function App() {
         <Route path ="/payments" component={Payments}/>
         <Route path ="/vetrina" component={VetrinaPayment}/>
 
-        <Route path="/application" component={Candidature} ></Route>
-        <Route path="/aboutUs" component={AboutUs}/>
+        
+        {/* registrazione */}
+        <Route path="/signup" component={Signin}/>
+        {/* login */}
         <Route path="/login" component={Login}/>
+        {/* cerca lavoratore */}
+        <Route path="/search" component={Search}/>
+        {/* cerca annunci */}
+        <Route path="/announcement" component ={Announcements}></Route>
+        {/* visualizzo profilo personale */}
+        <Route path="/myProfile" component={Profile}/>
+        {/* crea annuncio */}
+        <Route path="/createann" component={CreaAnnuncio} ></Route>
+        {/* visualizza candidature */}
+        <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
+        {/* visualizza annunci */}
+        <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
+        {/* visualizza annuncio */}
+        <Route path="/announcements" component ={VisualizzaAnnuncio}></Route>
+        {/* visualizza lavoratore */}
+        <Route path="/users" component={User} ></Route>
+        {/* visualizza candidature di un annuncio */}
+        <Route path="/application" component={Candidature} ></Route>
+        {/* home */}
         <Route path="/" component={Cerca}/>
         
       </Switch>

@@ -15,6 +15,7 @@ import util from '..//util/util';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Snackbar } from '@material-ui/core';
+import mamsitter from '..//hands1.png';
 
 class Announcements extends Component {
   constructor(props){
@@ -76,12 +77,23 @@ class Announcements extends Component {
       return filter;
     }
   async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role === 'famiglia') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
       this.setState({me: profile.data.data.role});
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
@@ -90,7 +102,15 @@ class Announcements extends Component {
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
+      if(error.response && error.response.data.message === 'You do not have permission to perform this action') {
+        setTimeout(()=> {
+          window.location.assign('/unauthorized');
+             }, 0);
+      }
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
      console.log(error);
     })
   }
@@ -101,9 +121,16 @@ class Announcements extends Component {
     const url = 'http://localhost:3000/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
+      this.setState({open:true, message:'Ricerca effettuata correttamente'})
+      setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
     })
     .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
   }
@@ -140,7 +167,7 @@ class Announcements extends Component {
   }
   />
       <div className="cerca">
-         <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+         <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
                 <Link to="/mamsitter">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -241,8 +268,8 @@ class Announcements extends Component {
     </Col>
 
     <Col>
-    
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe>
+    <img src={mamsitter} className="im" alt="mamsitter" style={{marginLeft:500,  width:900, marginTop:-320}}/>
+    {/* <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:650,  width:450, height:380, marginTop:-300, marginBottom:40}} loading="lazy" ></iframe> */}
      </Col>
 
 

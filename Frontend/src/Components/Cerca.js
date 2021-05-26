@@ -14,7 +14,8 @@ import { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Snackbar } from '@material-ui/core';
+import {Snackbar } from '@material-ui/core';
+import mamsitter from '..//hands1.png';
 //import { makeStyles } from '@material-ui/core/styles';
 // import img from '..//img.png';
 
@@ -120,7 +121,6 @@ class Cerca extends Component {
     const query = this.createQuery();
     const url = 'http://localhost:3000/api/v1/users/search' + query;
     axios.get(url).then(response=>{
-      console.log(url);
       this.setState({users: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
       setTimeout(()=> {
@@ -191,7 +191,7 @@ class Cerca extends Component {
   />
       <div className="cerca">
         
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
                 <Link to="/mamsitter">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -311,8 +311,8 @@ class Cerca extends Component {
     </Col>
 
     <Col>
-    
-    <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:700,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe>
+    <img src={mamsitter} className="im" alt="mamsitter" style={{marginLeft:500,  width:900, marginTop:-450, marginBottom:40}}/>
+    {/* <iframe title="mamsitter" src="https://www.google.com/maps/d/u/0/embed?mid=1ETRb4lxy5gvfF2m--GB1cOAJNCdmSRfs"  style={{marginLeft:700,  width:450, height:380, marginTop:-1000, marginBottom:40}} loading="lazy" ></iframe> */}
      </Col>
               
               {this.state.highlighted}
@@ -321,11 +321,16 @@ class Cerca extends Component {
               <div className="card_container">
            
            {this.state.users.map(users=>(
+             <div class="containerProva">
              <div key={users.generalUser.id}>
             <div className="card"> 
             <div className="card_body">
-             <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img>
+             <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''class="imageProva"></img>
              
+             <div class="overlayProva">
+    <div class="textProva"><p><b>Effettua l'accesso</b><br/> per poter vedere le informazioni complete di questo utente!</p><Link to='/login'><button class="button1 button2" > Accedi</button></Link></div>
+  </div>
+
               <div className="card_title">
               {users.specificUser.name} {users.specificUser.surname} 
               </div> 
@@ -334,6 +339,7 @@ class Cerca extends Component {
               {users.specificUser.city} <br/>
               {users.specificUser.role}<br/>
               </div> 
+             </div>
              </div>
              </div>
            ))}

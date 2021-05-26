@@ -16,6 +16,7 @@ import { Container } from 'react-bootstrap';
 // import avatar from '..//default.jpg';
 // import photo from '..//photo.jpg';
 import Typography from '@material-ui/core/Typography';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Form from 'react-bootstrap/Form'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Table from 'react-bootstrap/Table'
@@ -155,15 +156,23 @@ class Profile extends Component{
 }
 
   componentDidMount(){
-    
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
+      if (profile.data.data.role === 'admin') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
       if(profile.data.data.role === 'badante') specificData = profile.data.data.badante_id;
       if(profile.data.data.role === 'colf') specificData = profile.data.data.colf_id;
       this.setData(profile.data.data , specificData);
+      
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
@@ -177,12 +186,14 @@ class Profile extends Component{
   deleteProfile = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
-      console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
-      //   setTimeout(()=> {
-      //     window.location.assign('/');
-      //      }, 1000); 
-      //      axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
+        setTimeout(()=> {
+          window.location.assign('/');
+           }, 1000); 
+           axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
       })
       .catch(error=>{
         this.setState({open:true, message:error.response.data.message});
@@ -195,8 +206,10 @@ class Profile extends Component{
 
   logout = () => {
     this.setState({open:true, message:'Logout effettuato'})
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
         setTimeout(()=> {
-          this.setState({open:false})
           window.location.assign('/');
            }, 1000);
     
@@ -219,6 +232,8 @@ class Profile extends Component{
     document.getElementById('F').disabled = false;
     document.getElementById('birthDate').disabled = false;
     document.getElementById('birthDate').style.backgroundColor = '#afafaf3d';
+    document.getElementById('abbonamenti').hidden = true;
+    document.getElementById('elimina').hidden = true;
     if (this.state.role !== 'famiglia') {
       document.getElementById('occasional').disabled = false;
       document.getElementById('regular').disabled = false;
@@ -316,50 +331,60 @@ class Profile extends Component{
           }
         })
       });
-      this.setState({availableDays: availableDays});
+      // this.setState({availableDays: availableDays});
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.state.availableDays = availableDays;
     }
     // this.state.photo = document.getElementById('photo').files[0];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.patch('http://localhost:3000/api/v1/users/myProfile', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
-        console.log(response.data.data);
+        setTimeout(()=> {
+          this.setState({open:false})
+             }, 2000);
        setTimeout(()=> {
           window.location.assign('/myProfile');
-        }, 10);
+        }, 1000);
       }
     }).catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
 
   menu = () => {
-    if(this.state.role === 'famiglia')
-    return (<div>
-      <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
+    if(this.state.me === 'famiglia' && this.state.can === true)
+  return (<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
-      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link>
-      <MenuItem onClick={this.logout}>Logout</MenuItem>
-      </div>)
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if(this.state.me === 'famiglia' && this.state.can === false)
+  return (<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
     // if (this.state.role === 'admin')
-    else return (<div>
-      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
+    if(this.state.me !== 'famiglia' && this.state.can === true)
+  return (<div>
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
-      <MenuItem onClick={this.logout}>Logout</MenuItem>
-      </div>)
-
-  }
-
-  high = () => {
-    if(this.state.highlighted === false && this.state.role !== 'famiglia' )
-    return (
-      <div>
-        Se vuoi che il tuo profilo vada in vetrina, per avere maggiore visibilità, allora <Link to="/nohigh">
-        <font face='Georgia' color='black'><u> clicca qui </u> </font>
-        </Link> per abbonarti!
-      </div>
-    )
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if(this.state.me !== 'famiglia' && this.state.can === false)
+  return (<div>
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
   }
 
   showInformations = (role) => {
@@ -543,7 +568,7 @@ action={
 />
         <div className="profile">
       <div className="Navbar">
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -607,21 +632,22 @@ action={
  style={{  margin: 1, width: 200, bottom: 40, marginLeft: 50  }}
  fullWidth
  margin="normal"/>  <br/>
+ {this.state.seeData.role !== 'famiglia' && this.state.seeData.profile === 'premium' ? (<VerifiedUserIcon style={{color:'green', fontSize:30, marginTop: -50, marginRight:-30}}/>) : (<div/>)}
  <TextField name='profile'
  label={this.state.seeData.profile}
  disabled
  style={{ margin: 1, width: 200, bottom: 40, marginLeft: 50  }}
  fullWidth
  margin="normal"/>  <br/>
-<TextField name='highlighted'
+{this.state.seeData.role !== 'famiglia' ? (<div><TextField name='highlighted'
  id='highlighted'
  label={this.state.seeData.highlighted}
  disabled
  style={{  margin: 1, width: 240, bottom: 40, marginLeft: 50   }}
  fullWidth
  margin="normal"/>
- <br/>
- <TextField name='can'
+ <br/></div>) : (<div/>)}
+<TextField name='can'
  label={this.state.seeData.can}
  disabled
  style={{  margin: 1, width: 270, bottom: 40, marginLeft: 50   }}
@@ -635,9 +661,10 @@ action={
  style={{ margin: 1, width: 200, bottom: 40, marginLeft: 50   }}
  fullWidth
  margin="normal"/><br/>
+ <Link to='/payments' id='abbonamenti'><button class='button1 button2'>Vai agli abbonamenti</button></Link>
          </Col>
          <Col>
-         <br/> 
+         <br/> <br/><br/>
 <TextField 
 name='name' id='name'
 onChange={this.changeHandler}
@@ -711,13 +738,13 @@ onChange={this.changeHandler}
   <Row>
   <div >
   <font face='Georgia' color="white">
-   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
+   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</button></font>
 
     <font  face='Georgia' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
          </div>
-         <br/> {this.high()}
+         <br/> 
 </Row>
      </Container>
    </div>

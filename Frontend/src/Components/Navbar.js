@@ -20,7 +20,7 @@ function Navbar() {
 
   return(
     <div className="Navbar">
-      <Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+      <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
           <Link to="/mamsitter">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>

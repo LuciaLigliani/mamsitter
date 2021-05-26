@@ -1,18 +1,15 @@
 import React from 'react';
-import { Component } from 'react';
 import '..//App.css';
 import {Link} from 'react-router-dom';
 import logomodi from '..//logomodi.png';
 import Card from 'react-bootstrap/Card'
-import axios from 'axios';
-import util from '..//util/util'
 import { Col, Row } from 'react-bootstrap';
 import Accordion from 'react-bootstrap/Accordion'
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import AccountCircle from '@material-ui/icons/AccountCircle'
+// import Button from '@material-ui/core/Button';
+// import Menu from '@material-ui/core/Menu';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+// import AccountCircle from '@material-ui/icons/AccountCircle'
 
 class Payments extends React.Component {
   constructor(props){
@@ -31,7 +28,7 @@ class Payments extends React.Component {
     return(
       <div  >
         <br/>
-<Link to="/home"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+<Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
                 <Link to="/mamsitter">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
@@ -43,7 +40,7 @@ class Payments extends React.Component {
                 <Link to="/aboutUs">
                   <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
                 </Link>
-                <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
+                {/* <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
                <ArrowDropDownIcon></ArrowDropDownIcon>
            </Button>
              <Menu
@@ -54,7 +51,7 @@ class Payments extends React.Component {
                  onClose={this.handleClose}
                >
               <Link to="/announcement"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
-             </Menu>
+             </Menu> */}
               
                  
               </ul>
