@@ -38,7 +38,8 @@ class Announcements extends Component {
       atHour:'',
       open: false,
       message:'',
-      me:''
+      me:'',
+      can:''
     }
   }
   handleClick = (event) => {
@@ -68,11 +69,12 @@ class Announcements extends Component {
 
   logout = () => {
     this.setState({open:true, message:'Logout effettuato'})
-        setTimeout(()=> {
-          this.setState({open:false})
-          window.location.assign('/');
-           }, 2000);
-    
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);  
+    setTimeout(()=> {
+      window.location.assign('/');
+       }, 1000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
     createQuery () {
@@ -97,6 +99,8 @@ class Announcements extends Component {
         window.location.assign('/unauthorized');
            }, 0);
       this.setState({me: profile.data.data.role});
+      this.setState({can: profile.data.data.can});
+
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
@@ -149,11 +153,16 @@ class Announcements extends Component {
       <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca utenti</MenuItem></Link>
        <MenuItem onClick={this.logout}>Logout</MenuItem>
     </div>)
-    else if(this.state.me === 'babysitter' || this.state.me === 'badante' || this.state.me === 'colf') return (<div>
+    else if (this.state.can === true) return (<div>
         <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
-                   <MenuItem onClick={this.logout}>Logout</MenuItem>
+        <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+        <MenuItem onClick={this.logout}>Logout</MenuItem>
       </div>)
+    else return (<div>
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
+    </div>)
   }
 
 
@@ -178,10 +187,10 @@ class Announcements extends Component {
       <div className="cerca">
          <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
-                <Link to="/mamsitter">
+                <Link to="/">
                   <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
                 </Link>
-                <Link to="/mamsitter">
+                <Link to="/">
                   <li><font face='Georgia' color='black'>BLOG</font></li>
                 </Link>
                 
@@ -284,7 +293,7 @@ class Announcements extends Component {
 
 
 
-    <div className="card_container_ann"> 
+    <div className="card_container_ann" style={{marginTop:-50}}> 
       {this.state.announcements.map(announcements=>(     
          <div className="card_ann">
             <div className="card_body_ann">

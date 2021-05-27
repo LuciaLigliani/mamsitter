@@ -357,7 +357,7 @@ class Profile extends Component{
   }
 
   menu = () => {
-    if(this.state.me === 'famiglia' && this.state.can === true)
+    if(this.state.role === 'famiglia' && this.state.can === true)
   return (<div>
       <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
@@ -365,7 +365,7 @@ class Profile extends Component{
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
-  else if(this.state.me === 'famiglia' && this.state.can === false)
+  else if(this.state.role === 'famiglia' && this.state.can === false)
   return (<div>
       <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
@@ -373,13 +373,13 @@ class Profile extends Component{
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
     // if (this.state.role === 'admin')
-    if(this.state.me !== 'famiglia' && this.state.can === true)
+    if(this.state.role !== 'famiglia' && this.state.can === true)
   return (<div>
       <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
-  else if(this.state.me !== 'famiglia' && this.state.can === false)
+  else if(this.state.role !== 'famiglia' && this.state.can === false)
   return (<div>
       <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
@@ -570,10 +570,10 @@ action={
       <div className="Navbar">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
           </Link>
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black'>BLOG</font></li>
           </Link>
           

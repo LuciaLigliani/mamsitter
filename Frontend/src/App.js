@@ -44,7 +44,7 @@ function App() {
         <Route path="/notapply" component={ErrorApply} ></Route>
         
         <Route path ="/payments" component={Payments}/>
-        <Route path ="/vetrina" component={VetrinaPayment}/>
+        {/* <Route path ="/vetrina" component={VetrinaPayment}/> */}
 
         
         {/* registrazione */}
@@ -55,13 +55,13 @@ function App() {
         <Route path="/search" component={Search}/>
         {/* cerca annunci */}
         <Route path="/announcement" component ={Announcements}></Route>
-        {/* visualizzo profilo personale */}
+        {/* visualizza profilo personale */}
         <Route path="/myProfile" component={Profile}/>
         {/* crea annuncio */}
         <Route path="/createann" component={CreaAnnuncio} ></Route>
-        {/* visualizza candidature */}
+        {/* visualizza candidature inviate */}
         <Route path="/viewallapplication" component={VisualizzaCandidature} ></Route>
-        {/* visualizza annunci */}
+        {/* visualizza annunci creati */}
         <Route path="/viewallann" component={VisualizzaTuttiGliAnnunci} ></Route>
         {/* visualizza annuncio */}
         <Route path="/announcements" component ={VisualizzaAnnuncio}></Route>

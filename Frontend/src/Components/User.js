@@ -15,6 +15,7 @@ import { Container } from 'react-bootstrap';
 // import Avatar from '@material-ui/core/Avatar';
 // import avatar from '..//default.jpg';
 //import { makeStyles } from '@material-ui/core/styles';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import axios from 'axios';
 import util from '..//util/util'
 import { Component } from 'react';
@@ -34,6 +35,7 @@ class User extends Component {
       id:'',
       email:'',
       role:'',
+      profile:'',
       photo:'',
       name:'',
       surname:'',
@@ -89,6 +91,7 @@ class User extends Component {
     this.setState({id: data._id});
     this.setState({email: data.email});
     this.setState({role: data.role});
+    this.setState({profile: data.profile});
     this.setState({photo: data.photo})
     this.setState({name: specificData.name});
     this.setState({surname: specificData.surname});
@@ -105,18 +108,30 @@ class User extends Component {
 
 
   componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role === 'babysitter' || profile.data.data.role === 'badante' || profile.data.data.role === 'colf') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
       this.setState({me: profile.data.data.role});
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
     const id= this.props.location.pathname.split('/users/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/' + id).then(profile => {
-      console.log(profile);
       let specificData;
       if(profile.data.data.role === 'famiglia') specificData = profile.data.data.famiglia_id;
       if(profile.data.data.role === 'babysitter') specificData = profile.data.data.babysitter_id;
@@ -125,7 +140,15 @@ class User extends Component {
       this.setData(profile.data.data , specificData);
     })
     .catch(error=>{
+      if(error.response && error.response.data.message === 'You do not have permission to perform this action') {
+        setTimeout(()=> {
+          window.location.assign('/unauthorized');
+             }, 0);
+      }
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
@@ -134,22 +157,29 @@ class User extends Component {
     this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
       this.setState({open:false})
+         }, 2000);
+    setTimeout(()=> {
       window.location.assign('/');
-       }, 2000); 
+       }, 1000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
 
   deleteProfile = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.delete('http://localhost:3000/api/v1/users/' + this.state.id).then(profile => {
-      console.log(profile);
       this.setState({open:true, message:'Account eliminato'})
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         setTimeout(()=> {
           window.location.assign('/search');
-           }, 2000); 
+           }, 1000); 
       })
       .catch(error=>{
         this.setState({open:true, message:error.response.data.message});
+        setTimeout(()=> {
+          this.setState({open:false})
+             }, 2000);
           console.log(error);
         })
   }
@@ -333,6 +363,31 @@ class User extends Component {
     }
   }
 
+menu = () => {
+  if(this.state.me === 'famiglia' && this.state.can === true)
+  return (<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if(this.state.me === 'famiglia' && this.state.can === false)
+  return (<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if (this.state.me === 'admin') 
+  return(<div>
+    <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
+    <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca utenti</MenuItem></Link> 
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
+  </div>)
+}
 
   render(){
     return(
@@ -356,10 +411,10 @@ class User extends Component {
       <div className="Navbar">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
           </Link>
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black'>BLOG</font></li>
           </Link>
           
@@ -376,11 +431,8 @@ class User extends Component {
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-              <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
-              <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-              <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
-              <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
-            <MenuItem onClick={this.logout}>Logout</MenuItem>
+              {this.menu()}
+              
           </Menu>
         </ul>
     </div>
@@ -407,6 +459,7 @@ name='name' id='name'
  fullWidth
  margin="normal"/> 
  <br/>
+ {this.state.role !== 'famiglia' && this.state.profile === 'premium' ? (<VerifiedUserIcon style={{color:'green', fontSize:30, marginTop: -50, marginRight:-30}}/>) : (<div/>)}
   <TextField name='surname' id='surname'
  label={this.state.surname}
  disabled

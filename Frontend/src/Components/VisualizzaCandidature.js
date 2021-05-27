@@ -38,20 +38,46 @@ class VisualizzaCandidature extends Component {
       allDay:'',
       atHour:'',
       open: false,
-      message:''
-
+      message:'',
+      me:''
     }
   }
   async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role === 'admin' || profile.data.data.role === 'famiglia') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+      else if (profile.data.data.can === false) setTimeout(()=> {
+            window.location.assign('/unauthorized');
+               }, 0);
+      this.setState({me: profile.data.data.role});
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
+        console.log(error);
+      })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/applications';
     axios.get(url).then(response=>{
-    
-      console.log(response);
+      
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
@@ -96,10 +122,10 @@ render(){
     <div className="cerca">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
              </Link>
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black'>BLOG</font></li>
              </Link>
              
@@ -116,16 +142,16 @@ render(){
                  open={Boolean(this.state.anchorEl)}
                  onClose={this.handleClose}
                >
-               <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                  <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
-               <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link> 
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
              </Menu>
               
            </ul><br/><br/><br/>
            <Box height="5%" width="40%" mb="4%" m="7%" ml="70%"  bgcolor="text.primary" >
      <font size="5" face='Georgia' color="white"> Le mie candidature</font>
     </Box>
-           <div className="card_container_ann"> 
+           <div className="card_container_ann" style={{marginTop:50}}> 
       {this.state.announcements.map(announcements=>(     
          <div className="card_ann">
             <div className="card_body_ann">
@@ -143,7 +169,7 @@ render(){
                 <br/>
                 <br/>
               
-               <Link to={"/announcements/" + announcements.announcement_id._id} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
+               <Link to={"/announcements/" + announcements.announcement_id._id + "/application"} > <button class="button1 button2" style={{marginLeft:20}} >Visualizza Annuncio</button></Link>
                </Col>
                </Row>
                </div> 

@@ -37,24 +37,52 @@ class VisualizzaTuttiGliAnnunci extends Component {
     }
   }
   async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role === 'famiglia' && profile.data.data.can === false) setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+      else if (profile.data.data.role === 'admin') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+      else if (profile.data.data.role !== 'famiglia') setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
+        console.log(error);
+      })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })
     .catch(error=>{
-      this.setState({open:true, 
-        message:error.response.data.message});
+      this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
   }
 
   logout = () => {
     this.setState({open:true, message:'Logout effettuato'})
-        setTimeout(()=> {
-          this.setState({open:false})
-          window.location.assign('/');
-           }, 2000);
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);  
+    setTimeout(()=> {
+      window.location.assign('/');
+       }, 1000); 
     
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
@@ -97,10 +125,10 @@ render(){
     <div className="cerca">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
              </Link>
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black'>BLOG</font></li>
              </Link>
              
@@ -117,17 +145,18 @@ render(){
                  open={Boolean(this.state.anchorEl)}
                  onClose={this.handleClose}
                >
-               <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-                <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link>
-                <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
-                <MenuItem onClick={this.logout}>Logout</MenuItem>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
              </Menu>
               
            </ul><br/><br/><br/>
            <Box height="5%" width="30%" mb="4%" m="7%" ml="80%"  bgcolor="text.primary" >
      <font size="5" face='Georgia' color="white"> I Miei Annunci</font>
     </Box>
-           <div className="card_container_ann"> 
+           <div className="card_container_ann" style= {{marginTop:50}}> 
       {this.state.announcements.map(announcements=>(     
          <div className="card_ann">
             <div className="card_body_ann">

@@ -46,7 +46,8 @@ class CreaAnnuncio extends Component{
       open: false,
       message:'',
       anchorEl:'',
-      show:''
+      show:'',
+      can:''
     }
   }
   handleClick = (event) => {
@@ -78,12 +79,37 @@ class CreaAnnuncio extends Component{
     this.setState({show:false});
   }
 
+  async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      setTimeout(()=> {
+        window.location.assign('/notAuthenticated');
+           }, 0);
+    }
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role !== 'famiglia' || profile.data.data.can === false) setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+      this.setState({can: profile.data.data.can});
+
+    })
+    .catch(error=>{
+      this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
+        console.log(error);
+      })
+  }
+
   logout = () => {
     this.setState({open:true, message:'Logout effettuato'})
     setTimeout(()=> {
       this.setState({open:false})
+         }, 2000);  
+    setTimeout(()=> {
       window.location.assign('/');
-       }, 2000); 
+       }, 1000); 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
   }
  
@@ -126,15 +152,17 @@ class CreaAnnuncio extends Component{
         })
       });
       this.state.neededDays = neededDays;
-    console.log(this.state);
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.post('http://localhost:3000/api/v1/announcements', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Annuncio creato correttamente'})
+        setTimeout(()=> {
+          this.setState({open:false})
+             }, 2000);
        setTimeout(()=> {
-          window.location.assign('/search');
-        }, 2000);
+          window.location.assign('/viewallann');
+        }, 1000);
       }
     })
     .catch(error=>{
@@ -168,10 +196,10 @@ action={
       <div className="Navbar">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
           </Link>
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black'>BLOG</font></li>
           </Link>
           
@@ -188,10 +216,11 @@ action={
               open={Boolean(this.state.anchorEl)}
               onClose={this.handleClose}
             >
-            <Link to="/search"> <MenuItem onClick={this.handleClose}>Cerca</MenuItem></Link>
-            <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link>
-            <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-            <MenuItem onClick={this.logout}>Logout</MenuItem>
+          <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+          <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+          <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+          <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+          <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
 
           </Menu>
         </ul>

@@ -96,18 +96,30 @@ class VisualizzaAnnuncio extends Component{
 }
 
 componentDidMount(){
+  if(!util.getCookie('user_jwt')) {
+    setTimeout(()=> {
+      window.location.assign('/notAuthenticated');
+         }, 0);
+  }
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
     axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+      if (profile.data.data.role === 'famiglia' && profile.data.data.can === false) setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
       this.setState({me: profile.data.data.role});
+      this.setState({can: profile.data.data.can});
+
     })
     .catch(error=>{
       this.setState({open:true, message:error.response.data.message});
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
         console.log(error);
       })
-  const id= this.props.location.pathname.split('/announcements/')[1];
+  const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.get('http://localhost:3000/api/v1/announcements/' + id).then(response => {
-    // console.log(response.data.data);
     let specificData;
       if(response.data.data.typeAnnouncement === 'babysitter') {
         specificData = response.data.data.babysitterAnn_id;
@@ -121,7 +133,15 @@ componentDidMount(){
       this.setData(response.data.data , specificData);
   })
   .catch(error=>{
+    if(error.response && error.response.data.message === 'You do not have permission to perform this action') {
+      setTimeout(()=> {
+        window.location.assign('/unauthorized');
+           }, 0);
+    }
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
 }
@@ -129,13 +149,11 @@ componentDidMount(){
 deleteAnn = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
   axios.delete('http://localhost:3000/api/v1/announcements/' + this.state.id).then(profile => {
-<<<<<<< HEAD
-    // console.log(profile);
-    this.setState({open:true, message:'Annuncio eliminato'})
-=======
-    console.log(profile);
     this.setState({open:true, message:'Annuncio eliminato correttamente'})
->>>>>>> 91c520974c86fdd09afdb14cc7d6b8cd609bdfd8
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
+
     if(this.state.me === 'famiglia'){
       setTimeout(()=> {
         window.location.assign('/search');
@@ -161,8 +179,10 @@ logout = () => {
   this.setState({open:true, message:'Logout effettuato'})
   setTimeout(()=> {
     this.setState({open:false})
+       }, 2000);  
+  setTimeout(()=> {
     window.location.assign('/');
-     }, 2000); 
+     }, 1000); 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.eraseCookie('user_jwt');
 }
 
@@ -173,6 +193,8 @@ canUpdate = () => {
     document.getElementById('cook').disabled = false;
     document.getElementById('car').disabled = false;
     document.getElementById('alsoColf').disabled = false;
+    document.getElementById('elimina').hidden = true;
+    document.getElementById('candidati').hidden = true;
 
     const array = ['l', 'ma', 'me', 'g', 'v', 's', 'd'];
     const arr = ['m', 'p', 's', 'n'];
@@ -235,10 +257,12 @@ updateAnn = () => {
   axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
     if(response.data.status === 'success') {
       this.setState({open:true, message:'Annuncio aggiornato correttamente'})
-      console.log(response.data.data);
+      setTimeout(()=> {
+        this.setState({open:false})
+           }, 2000);
      setTimeout(()=> {
         window.location.assign('/announcements/'+this.state.id);
-      }, 2000);
+      }, 1000);
     }
   }).catch(error=>{
     this.setState({open:true, message:error.response.data.message});
@@ -249,17 +273,43 @@ updateAnn = () => {
     })
 }
 
-apply = () => {
+deleteApply = () => {
+  // FIXME:
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/applications').then(response => {
-    // console.log(response);
-    this.setState({open:true, message:'Candidatura inviata!'})
+  axios.delete('http://localhost:3000/api/v1/applications/' +this.state.id).then(response => {
+    this.setState({open:true, message:'Candidatura eliminata!'})
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
         setTimeout(()=> {
           window.location.assign('/viewallapplication');
-           }, 2000); 
+           }, 1000); 
   })
   .catch(error=>{
     this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
+      console.log(error);
+    })
+}
+
+apply = () => {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+  axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/application').then(response => {
+    this.setState({open:true, message:'Candidatura inviata!'})
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
+        setTimeout(()=> {
+          window.location.assign('/viewallapplication');
+           }, 1000); 
+  })
+  .catch(error=>{
+    this.setState({open:true, message:error.response.data.message});
+    setTimeout(()=> {
+      this.setState({open:false})
+         }, 2000);
       console.log(error);
     })
 }
@@ -291,40 +341,76 @@ title = () => {
 }
 
 buttons = () => {
-  if(this.state.can === false)
+  const isApp= this.props.location.pathname.split('/')[3];
+  console.log(!isApp)
+  if(this.state.me === 'admin') return (
+    <div>
+    <font face='Georgia' color="white">
+       <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
+       <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
+    </div>
+      )
+  else if(this.state.me !== 'famiglia' && this.state.can === false && !isApp)
   return (
     <div>
-     <Link to="/notapply"> <button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Candidati!</button></Link>
+     <Link to="/payments"> <button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Candidati!</button></Link>
     </div>
   )
-  else if (this.state.can === true)
+  else if (this.state.me !== 'famiglia' && this.state.can === true && !isApp)
   return (
     <div>
   <button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
     </div>
   )
-  if(this.state.me === 'admin') return (
-<div>
-<font face='Georgia' color="white">
-   <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
-   <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
-</div>
-  )
-  else if(this.state.me === 'famiglia') return (
-<div>
-  <font face='Georgia' color="white">
-   <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
-   <font  face='Georgia' color="white">
-   &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Annuncio</button></font>
-    <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateAnn} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
-    <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
-</div>
+  else if(this.state.me !== 'famiglia' && isApp)
+  return (
+    <div>
+  <button class="buttonp buttonpp" onClick={this.deleteApply} style={{marginLeft:30, marginTop:-80}} >Elimina candidatura!</button>
+    </div>
   )
   else return (
 <div>
-<button class="buttonp buttonpp" onClick={this.apply} style={{marginLeft:30, marginTop:-80}} >Candidati!</button>
+  <font face='Georgia' color="white">
+   <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} id="elimina" className="buttonp buttonpp" >Elimina Annuncio</button></font>
+   <font  face='Georgia' color="white">
+   &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Annuncio</button></font>
+    <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateAnn} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
+    <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" id="candidati" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
 </div>
   )
+
+}
+
+menu = () => {
+  if(this.state.me === 'famiglia')
+  return (<div>
+      <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
+      <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if (this.state.me === 'admin') 
+  return(<div>
+    <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca Annunci</MenuItem></Link>
+    <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca utenti</MenuItem></Link> 
+      <MenuItem onClick={this.logout}>Logout</MenuItem>
+  </div>)
+  else if(this.state.can === true)
+  return (<div>
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
+  else if(this.state.can === false)
+  return (<div>
+      <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
+      <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
+      <Link to="/payments"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
+    </div>)
 
 }
 
@@ -349,10 +435,10 @@ buttons = () => {
       <div className="cerca">
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
              </Link>
-             <Link to="/mamsitter">
+             <Link to="/">
                <li><font face='Georgia' color='black'>BLOG</font></li>
              </Link>
              
@@ -369,9 +455,7 @@ buttons = () => {
                  open={Boolean(this.state.anchorEl)}
                  onClose={this.handleClose}
                >
-               <Link to="/myProfile"><MenuItem  onClick={this.handleClose}>Visualizza Profilo</MenuItem></Link> 
-               
-                <MenuItem onClick={this.logout}>Logout</MenuItem>
+                 {this.menu()}
              </Menu>
               
            </ul>

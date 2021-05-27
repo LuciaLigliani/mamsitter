@@ -73,10 +73,10 @@ render(){
   <br/>
 <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
       <ul className="linksNav">
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
           </Link>
-          <Link to="/mamsitter">
+          <Link to="/">
             <li><font face='Georgia' color='black'>BLOG</font></li>
           </Link>
           

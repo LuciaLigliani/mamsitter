@@ -4,9 +4,34 @@ import '../App.css';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import util from '..//util/util';
+import { Component } from 'react';
 
-function ErrorPage() {
-
+class Unauthorized extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      link:''
+    }
+  }
+  async componentDidMount(){
+    if(!util.getCookie('user_jwt')) {
+      this.setState({link: '/'});
+    }
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
+      axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+        if (profile.data.data.role === 'admin') this.setState({link: '/search'});
+        if (profile.data.data.role === 'famiglia') this.setState({link: '/search'});
+        else this.setState({link: '/announcement'});
+      }
+      ).catch(error=>{
+        this.setState({open:true, message:error.response.data.message});
+        setTimeout(()=> {
+          this.setState({open:false})
+             }, 2000);
+          console.log(error);
+        })
+  }
+render(){
   return(
     <div className="error">
       <Navbar/>
@@ -16,34 +41,12 @@ function ErrorPage() {
     <br/>
     <br/>
     
-      <h6>Clicca <Link to ={() => {
-      let link;
-      if(!util.getCookie('user_jwt')) link = '/';
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-      axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
-        console.log(profile.data.data.role)
-        if (profile.data.data.role === 'admin') link = '/search';
-        if (profile.data.data.role === 'famiglia') link = '/search';
-        else link = '/announcement';
-        console.log(link);
-
-        return link;
-      }).catch(error=>{
-        this.setState({open:true, message:error.response.data.message});
-        setTimeout(()=> {
-          this.setState({open:false})
-             }, 2000);
-          console.log(error);
-        })
-      return link;
-    }}> <font face='Georgia' color='black'><u>qui</u> </font></Link> per tornare alla home</h6>
+      <h6>Clicca <Link to ={this.state.link}> <font face='Georgia' color='black'><u>qui</u> </font></Link> per tornare alla home</h6>
     </div>
 
 
 
-  )
+  )}
 
 }
-
-
-export default ErrorPage;
+export default Unauthorized;
