@@ -44,7 +44,9 @@ router
 router 
   .route('/:appId')
   .get(applicationController.getApplication)//DONE
-  .delete(authController.restrictTo('babysitter', 'badante', 'colf'), applicationController.deleteApplication);//DONE
+  // .delete(authController.restrictTo('babysitter', 'badante', 'colf'), applicationController.deleteApplication);//DONE
+
+router.delete('/', authController.restrictTo('babysitter', 'badante', 'colf'), applicationController.deleteApplication);//DONE
 
 router.patch('/:appId/:answer', authController.restrictTo('famiglia'), applicationController.answer);//DONE
 

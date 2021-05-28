@@ -275,8 +275,9 @@ updateAnn = () => {
 
 deleteApply = () => {
   // FIXME:
+  const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.delete('http://localhost:3000/api/v1/applications/' +this.state.id).then(response => {
+  axios.delete('http://localhost:3000/api/v1/announcements/'+id+'/applications/').then(response => {
     this.setState({open:true, message:'Candidatura eliminata!'})
     setTimeout(()=> {
       this.setState({open:false})
@@ -295,8 +296,9 @@ deleteApply = () => {
 }
 
 apply = () => {
+  const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.post('http://localhost:3000/api/v1/announcements/' +this.state.id+ '/application').then(response => {
+  axios.post('http://localhost:3000/api/v1/announcements/' +id+ '/applications').then(response => {
     this.setState({open:true, message:'Candidatura inviata!'})
     setTimeout(()=> {
       this.setState({open:false})

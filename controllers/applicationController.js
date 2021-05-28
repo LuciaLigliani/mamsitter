@@ -68,7 +68,7 @@ exports.getApplication = catchAsync (async (req, res, next) => {
 });
 
 exports.deleteApplication = catchAsync (async (req, res, next) => {
-  await Application.findByIdAndDelete(req.params.appId);
+  await Application.findOneAndDelete({user_id: req.user.id, announcement_id: req.params.id});
 
   res.status(204).json({
     status: 'success',
