@@ -252,15 +252,15 @@ menu = () => {
         
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
-                <Link to="/">
-                  <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
+            <Link to="/aboutUs">
+                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
-                <Link to="/">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                <Link to="/payments">
+                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
-                <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
+                <Link to="/blog">
+                  <li><font face='Georgia' color='black'>BLOG</font></li>
                 </Link>
               <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
                   <ArrowDropDownIcon></ArrowDropDownIcon>

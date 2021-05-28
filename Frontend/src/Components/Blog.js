@@ -1,22 +1,24 @@
-/*import React from 'react';
-import '..//App.css';
-import {Link} from 'react-router-dom';
-import logomodi from '..//logomodi.png';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import React from 'react'
+import  Navbar  from '..//Components/Navbar';
+import '../App.css';
+import barra from '..//barra.png';
 
-import axios from 'axios';
-import util from '..//util/util'*/
+function Blog() {
 
-const Blog = () => {
-
-  
-
-
+  return(
+    <div className="error">
+      <Navbar/>
+     
+      <b><h1><font face='Georgia'><br/>
+      Pagina in costruzione..</font></h1></b>
     
-  }
+    </div>
+
+
+
+  )
+
+}
+
 
 export default Blog;
