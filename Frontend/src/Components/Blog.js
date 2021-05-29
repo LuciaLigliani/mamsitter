@@ -1,7 +1,6 @@
 import React from 'react'
 import  Navbar  from '..//Components/Navbar';
 import '../App.css';
-import barra from '..//barra.png';
 
 function Blog() {
 
