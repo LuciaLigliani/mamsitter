@@ -2,6 +2,7 @@ import React from 'react'
 import  Navbar  from '..//Components/Navbar';
 import '../App.css';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
 function Blog() {
 
   return(
@@ -9,7 +10,10 @@ function Blog() {
       <Navbar/>
      
       <b><h1><font face='Georgia'><br/>
-      Pagina in costruzione..</font></h1></b>
+      Pagina in costruzione
+      <br/>
+      <CircularProgress color="white" />
+      </font></h1></b>
     
     </div>
 
