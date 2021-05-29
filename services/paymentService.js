@@ -2,13 +2,11 @@ const Payment = require("../models/payment");
 const User = require("../models/userModel");
 
 exports.createPayment = async (pay) => {
-  console.log(pay);
   const payment = await Payment.create(pay);
-
   let options;
   if(payment.kind === 'highlight') options = { highlighted: true };
   else if(payment.kind === 'createAnn') options = { can: true };
-  else if(payment.kind === 'apply') options = { can: true };
+  else if(payment.kind === 'canApply') options = { can: true };
   else if(payment.kind === 'base') options = { profile: "base" };
   else if(payment.kind === 'premium') options = { profile: "premium" };
 
