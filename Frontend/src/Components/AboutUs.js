@@ -34,7 +34,7 @@ constructor(props){
       <Timeline align="alternate">
         <TimelineItem>
           <TimelineOppositeContent>
-            <Typography color="textSecondary">2017</Typography>
+            <Typography color="textPrimary">2017</Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
             <TimelineDot color="primary" />
@@ -42,37 +42,46 @@ constructor(props){
           </TimelineSeparator>
           <TimelineContent>
             <Typography>
+            <br/>
+<br/>
               <h9>
                 Decido di trasferirmi in Abruzzo, in una città piccola e raccolta rispetto a Roma.
-                Aspettavo il mio secondo genito, Lorenzo Jacopo!  
-                Ma quella nuova vita era tutta da ricostruire!
+                Aspettavo il mio secondo genito, Lorenzo Jacopo! <br/> 
+                Ma quella nuova vita era tutta da ricostruire!<br/>
                 Non avevo un lavoro, nè amicizie, nè luoghi a me familiari.
 
 </h9>
+<br/>
+<br/>
             </Typography>
           </TimelineContent>
         </TimelineItem>
         <TimelineItem>
           <TimelineOppositeContent>
-            <Typography color="textSecondary">MamSharing</Typography>
+            <Typography color="textPrimary">MamSharing</Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot color="primary" />
+            <TimelineDot color="secondary" />
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <Typography>
+            <br/>
+<br/>
               <h9>
-                Da questa idea è nato il progetto MamSitter.
-                Di seguito ho aperto la pagina Facebook. E pian piano, un passetto alla volta, la community è cresciuta.
+                MamSharing significa letteralmente condivisione di una mamma e da questa idea è nato il progetto MamSitter.
+                Di seguito ho aperto la pagina Facebook e pian piano, un passetto alla volta, la community è cresciuta.
+                <br/>
 Ho capito che eravamo in tante, ed ho cominciato ad organizzare le presentazioni del progetto di Mamsharing in diversi quartieri della Capitale, per poi approdare a Milano.
               </h9>
+              <br/>
+<br/>
             </Typography>
           </TimelineContent>
         </TimelineItem>
         <TimelineItem>
           <TimelineOppositeContent>
-            <Typography color="textSecondary">2021</Typography>
+            <Typography color="textPrimary">2021</Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
             <TimelineDot color="primary" />
@@ -80,40 +89,49 @@ Ho capito che eravamo in tante, ed ho cominciato ad organizzare le presentazioni
           </TimelineSeparator>
           <TimelineContent>
             <Typography>
+            <br/>
+
+<br/>
               <h9>
-              Mamsitter Italia è una realtà che opera a livello nazionale. Siamo partner dell’Università Ca’ Foscari per il progetto Family Share, e collaboriamo con importanti aziende che investono sul welfare aziendale.
-
-Siamo una realtà in forte espansione, e siamo tutte donne!
-
-Personalmente mi occupo del contatto con i clienti, e della fase finale delle selezioni delle nostre Baby Sitter e Colf, Mamsitter’s notturne, Tate o badanti Live in. Abbiamo addirittura un sos mamma: Tata Last minute, un servizio che si occupa di trovarti una tata in 3 ore per le emergenze!
+              Mamsitter Italia è una realtà che opera a livello nazionale.
+              <br/> Siamo partner dell’Università Ca’ Foscari per il progetto Family Share, e collaboriamo con importanti aziende che investono sul welfare aziendale.<br/>
+              Siamo una realtà in forte espansione, e siamo tutte donne!
+              
+              Personalmente mi occupo del contatto con i clienti, e della fase finale delle selezioni delle nostre Baby Sitter e Colf, Mamsitter’s notturne, Tate o badanti Live in. Abbiamo addirittura un sos mamma: Tata Last minute, un servizio che si occupa di trovarti una tata in 3 ore per le emergenze!
 
 
               </h9>
+              <br/>
+<br/>
             </Typography>
           </TimelineContent>
         </TimelineItem>
         <TimelineItem>
           <TimelineOppositeContent>
-            <Typography color="textSecondary">Contatti</Typography>
+            <Typography color="textPrimary">Contatti</Typography>
           </TimelineOppositeContent>
           <TimelineSeparator>
-            <TimelineDot color="primary"/>
+            <TimelineDot color="secondary"/>
             <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
             <Typography>
+            <br/>
+<br/>
               <h9>
-              Sono a disposizione sulla pagina Facebook Mamsitter Italia.
-              E su Instagram come @Lastanzaincima!
+              Sono a disposizione sulla pagina Facebook <a href="https://www.facebook.com/MamsitterItalia">Mamsitter Italia.</a>
+              <br/>
+              E su Instagram come <a href="https://www.instagram.com/lastanzaincima/">@Lastanzaincima</a>!
               
               </h9>
-              <h5>
-                Ti aspetto!
-              </h5>
+             
             </Typography>
           </TimelineContent>
         </TimelineItem>
       </Timeline>
+      <h3>
+                Ti aspetto!
+              </h3>
       </React.Fragment>
             </Container>
         </div>
