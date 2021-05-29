@@ -35,11 +35,12 @@ class Payments extends React.Component {
       document.getElementById('login3').hidden = true;
       document.getElementById('login4').hidden = true;
       document.getElementById('login5').hidden = true;
-      document.getElementById('paypal-button-container-vetrina').hidden = true;
-      document.getElementById('paypal-button-container-candidati').hidden = true;
-      document.getElementById('paypal-button-container-annunci').hidden = true;
-      document.getElementById('paypal-button-container-base').hidden = true;
-      document.getElementById('paypal-button-container-premium').hidden = true;
+      document.getElementById('paypal-button-container-vetrina').hidden = false;
+      document.getElementById('paypal-button-container-candidati').hidden = false;
+      document.getElementById('paypal-button-container-annunci').hidden = false;
+      document.getElementById('paypal-button-container-base').hidden = false;
+      document.getElementById('paypal-button-container-premium').hidden = false;
+      // document.getElementById('cancella3').hidden = true;
 
     if(!util.getCookie('user_jwt')) {
       document.getElementById('login1').hidden = false;
@@ -62,6 +63,8 @@ class Payments extends React.Component {
         if(profile.data.data.can === true){
           document.getElementById('annunci').textContent = 'Sei già abbonato';
           document.getElementById('annunci').disabled = true;
+          // document.getElementById('annunci').textContent = 'Cancella abbonamento';
+          // document.getElementById('cancella3').hidden = false;
         }
         if(profile.data.data.profile === 'base'){
           document.getElementById('base').textContent = 'Sei già abbonato';
@@ -135,9 +138,9 @@ class Payments extends React.Component {
     // setTimeout(()=> {
     //   this.setState({open:false})
     //      }, 2000);
-    // setTimeout(()=> {
-    //       window.location.assign('/payments');
-    //          }, 1000);
+    setTimeout(()=> {
+          window.location.assign('/payments');
+             }, 1000);
       }
   }).render('#paypal-button-container-vetrina');
 
@@ -177,9 +180,9 @@ class Payments extends React.Component {
     // setTimeout(()=> {
     //   this.setState({open:false})
     //      }, 2000);
-    // setTimeout(()=> {
-    //       window.location.assign('/payments');
-    //          }, 1000);
+    setTimeout(()=> {
+          window.location.assign('/payments');
+             }, 1000);
     }
 }).render('#paypal-button-container-candidati');
 
@@ -219,9 +222,9 @@ window.paypal.Buttons({
     // setTimeout(()=> {
     //   this.setState({open:false})
     //      }, 2000);
-    // setTimeout(()=> {
-    //       window.location.assign('/payments');
-    //          }, 1000);
+    setTimeout(()=> {
+          window.location.assign('/payments');
+             }, 1000);
   }
 }).render('#paypal-button-container-annunci');
 
@@ -263,9 +266,9 @@ window.paypal.Buttons({
     // setTimeout(()=> {
     //   this.setState({open:false})
     //      }, 2000);
-    // setTimeout(()=> {
-    //       window.location.assign('/payments');
-    //          }, 1000);
+    setTimeout(()=> {
+          window.location.assign('/payments');
+             }, 1000);
   }
 }).render('#paypal-button-container-base');
 
@@ -306,12 +309,16 @@ window.paypal.Buttons({
     // setTimeout(()=> {
     //   this.setState({open:false})
     //      }, 2000);
-    // setTimeout(()=> {
-    //       window.location.assign('/payments');
-    //          }, 1000);
+    setTimeout(()=> {
+          window.location.assign('/payments');
+             }, 1000);
   }
 }).render('#paypal-button-container-premium');
   }
+
+  // cancel = ()=>{
+  //   axios.post('https://api-m.sandbox.paypal.com/v1/billing/subscriptions/P-3C772619M03970249MCYXBOQ/cancel', {reason:'Not satisfied'})
+  // }
 
   render(){
     return(
@@ -420,6 +427,7 @@ action={
     <Accordion.Collapse  eventKey="0">
       <Card.Body> 
         <div id="paypal-button-container-annunci"></div>
+        {/* <div id="cancella3"><button class="button1 button2" onClick={this.cancel()}>Cancella</button></div> */}
         <div id="login3"><h6>Effettua il <Link to="/login">login</Link> per poter completare l'abbonamento!</h6></div>
         <div id="unsubscribe"><p style={{fontSize: '10px'}}>E' possibile annullare l'abbonamento in qualsiasi momento collegandosi al proprio account Paypal e scegliendo di disattivarlo.</p></div>
       </Card.Body>

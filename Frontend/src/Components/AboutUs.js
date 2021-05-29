@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
-import PaypalButtons from '..//Components/PaypalButtons'
 import '..//App.css';
-import  Navbar from '..//Components/Navbar';
+import {Link} from 'react-router-dom';
+import logomodi from '..//logomodi.png';
 import Container from 'react-bootstrap/Container'
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -23,7 +23,24 @@ constructor(props){
   render() {
       return (
         <div className="aboutus">
-          <Navbar/>
+<div  >
+        <br/>
+<Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+            <ul className="linksNav">
+            <Link to="/aboutUs">
+                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                </Link>
+                <Link to="/payments">
+                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                </Link>
+                
+                <Link to="/blog">
+                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                </Link>
+
+              
+                 
+              </ul>
 
             <Container className="us">
             <h5>
@@ -117,7 +134,7 @@ Personalmente mi occupo del contatto con i clienti, e della fase finale delle se
       </React.Fragment>
             </Container>
         </div>
-       
+        </div>
       );
     
   }

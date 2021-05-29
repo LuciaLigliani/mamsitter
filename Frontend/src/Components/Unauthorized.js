@@ -1,7 +1,7 @@
 import React from 'react'
-import  Navbar  from '..//Components/Navbar';
 import '../App.css';
 import {Link} from 'react-router-dom';
+import logomodi from '..//logomodi.png';
 import axios from 'axios';
 import util from '..//util/util';
 import { Component } from 'react';
@@ -34,7 +34,24 @@ class Unauthorized extends Component {
 render(){
   return(
     <div className="error">
-      <Navbar/>
+      <div  >
+        <br/>
+<Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+            <ul className="linksNav">
+            <Link to="/aboutUs">
+                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                </Link>
+                <Link to="/payments">
+                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                </Link>
+                
+                <Link to="/blog">
+                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                </Link>
+
+              
+                 
+              </ul>
      
       <b><h1><font face='Georgia'><br/>
       Non si è autorizzati a visualizzare questa pagina!</font></h1></b>
@@ -44,7 +61,7 @@ render(){
       <h6>Clicca <Link to ={this.state.link}> <font face='Georgia' color='black'><u>qui</u> </font></Link> per tornare alla home</h6>
     </div>
 
-
+    </div>
 
   )}
 

@@ -1,13 +1,31 @@
 import React from 'react'
-import  Navbar  from '..//Components/Navbar';
 import '../App.css';
+import {Link} from 'react-router-dom';
+import logomodi from '..//logomodi.png';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 function Blog() {
 
   return(
     <div className="error">
-      <Navbar/>
+      <div  >
+        <br/>
+<Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
+            <ul className="linksNav">
+            <Link to="/aboutUs">
+                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                </Link>
+                <Link to="/payments">
+                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                </Link>
+                
+                <Link to="/blog">
+                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                </Link>
+
+              
+                 
+              </ul>
      
       <b><h1><font face='Georgia'><br/>
       Pagina in costruzione
@@ -16,7 +34,7 @@ function Blog() {
       </font></h1></b>
     
     </div>
-
+    </div>
 
 
   )
