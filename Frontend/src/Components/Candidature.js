@@ -58,7 +58,7 @@ class Candidature extends Component {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/users/myProfile').then(profile => {
       if (profile.data.data.role !== 'admin' && profile.data.data.role !== 'famiglia') setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -76,7 +76,7 @@ class Candidature extends Component {
       })
     const id= this.props.location.pathname.split('/application/')[1];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/announcements/' +id+ '/applications';
+    const url='http://localhost:3000/announcements/' +id+ '/applications';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
   })
@@ -91,7 +91,7 @@ class Candidature extends Component {
 
   // submitHandler = (e) => {
   //   e.preventDefault()
-  //   const url = '/api/v1/users';
+  //   const url = 'http://localhost:3000/users';
   //   axios.get(url).then(response=>{
   //     console.log(url);
   //     this.setState({users: response.data.data});
@@ -210,7 +210,7 @@ class Candidature extends Component {
             <div className="card">
                <div className="card_body">
 
-              <img src={`/api/v1/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img><br/><br/>
+              <img src={`http://localhost:3000/users/${users.user_id._id}/file/${users.user_id.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''></img><br/><br/>
              { /*{this.info(users)}*/}
               <Link to={"/users/" + users.user_id._id} > <button class="button1 button2" >Visualizza Profilo</button></Link>
               </div> 
