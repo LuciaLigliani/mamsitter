@@ -102,7 +102,7 @@ componentDidMount(){
          }, 0);
   }
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role === 'famiglia' && profile.data.data.can === false) setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -119,7 +119,7 @@ componentDidMount(){
       })
   const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.get('http://localhost:3000/api/v1/announcements/' + id).then(response => {
+  axios.get('/api/v1/announcements/' + id).then(response => {
     let specificData;
       if(response.data.data.typeAnnouncement === 'babysitter') {
         specificData = response.data.data.babysitterAnn_id;
@@ -148,7 +148,7 @@ componentDidMount(){
 
 deleteAnn = () => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.delete('http://localhost:3000/api/v1/announcements/' + this.state.id).then(profile => {
+  axios.delete('/api/v1/announcements/' + this.state.id).then(profile => {
     this.setState({open:true, message:'Annuncio eliminato correttamente'})
     setTimeout(()=> {
       this.setState({open:false})
@@ -254,7 +254,7 @@ updateAnn = () => {
     this.state.neededDays = neededDays;
 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.patch('http://localhost:3000/api/v1/announcements/' + this.state.id, this.state).then(response=>{
+  axios.patch('/api/v1/announcements/' + this.state.id, this.state).then(response=>{
     if(response.data.status === 'success') {
       this.setState({open:true, message:'Annuncio aggiornato correttamente'})
       setTimeout(()=> {
@@ -276,7 +276,7 @@ updateAnn = () => {
 deleteApply = () => {
   const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.delete('http://localhost:3000/api/v1/announcements/'+id+'/applications/').then(response => {
+  axios.delete('/api/v1/announcements/'+id+'/applications/').then(response => {
     this.setState({open:true, message:'Candidatura eliminata!'})
     setTimeout(()=> {
       this.setState({open:false})
@@ -297,7 +297,7 @@ deleteApply = () => {
 apply = () => {
   const id= this.props.location.pathname.split('/')[2];
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-  axios.post('http://localhost:3000/api/v1/announcements/' +id+ '/applications').then(response => {
+  axios.post('/api/v1/announcements/' +id+ '/applications').then(response => {
     this.setState({open:true, message:'Candidatura inviata!'})
     setTimeout(()=> {
       this.setState({open:false})

@@ -51,7 +51,7 @@ class Payments extends React.Component {
     }
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       if(profile.data.data.role === 'admin') setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -115,7 +115,7 @@ class Payments extends React.Component {
       },
       onApprove: function(data, actions) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-        return axios.post('http://localhost:3000/api/v1/payments/highlight', data.subscriptionID).then((response => {
+        return axios.post('/api/v1/payments/highlight', data.subscriptionID).then((response => {
           this.setState({open:true, message:'Abbonamento effettuato!'})
           setTimeout(()=> {
             this.setState({open:false})
@@ -158,7 +158,7 @@ class Payments extends React.Component {
     },
     onApprove: function(data, actions) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-      return axios.post('http://localhost:3000/api/v1/payments/canApply', data.subscriptionID).then((response => {
+      return axios.post('/api/v1/payments/canApply', data.subscriptionID).then((response => {
         setTimeout(()=> {
           this.setState({open:false})
              }, 2000);
@@ -200,7 +200,7 @@ window.paypal.Buttons({
   },
   onApprove: function(data, actions) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    return axios.post('http://localhost:3000/api/v1/payments/createAnn', data.subscriptionID).then((response => {
+    return axios.post('/api/v1/payments/createAnn', data.subscriptionID).then((response => {
       setTimeout(()=> {
         this.setState({open:false})
            }, 2000);
@@ -243,7 +243,7 @@ window.paypal.Buttons({
   },
   onApprove: function(data, actions) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    return axios.post('http://localhost:3000/api/v1/payments/base', data.subscriptionID).then((response => {
+    return axios.post('/api/v1/payments/base', data.subscriptionID).then((response => {
       this.setState({open:true, message:'Abbonamento effettuato!'})
       setTimeout(()=> {
         this.setState({open:false})
@@ -286,7 +286,7 @@ window.paypal.Buttons({
   },
   onApprove: function(data, actions) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    return axios.post('http://localhost:3000/api/v1/payments/premium', data.subscriptionID).then((response => {
+    return axios.post('/api/v1/payments/premium', data.subscriptionID).then((response => {
       this.setState({open:true, message:'Abbonamento effettuato!'})
       setTimeout(()=> {
         this.setState({open:false})

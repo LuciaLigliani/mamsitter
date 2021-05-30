@@ -98,7 +98,7 @@ class Cerca extends Component {
   
   async componentDidMount(){
     let vetrina = [];
-    const url='http://localhost:3000/api/v1/users/search';
+    const url='/api/v1/users/search';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -119,7 +119,7 @@ class Cerca extends Component {
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
-    const url = 'http://localhost:3000/api/v1/users/search' + query;
+    const url = '/api/v1/users/search' + query;
     axios.get(url).then(response=>{
       this.setState({users: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -152,7 +152,7 @@ class Cerca extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
+       <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
 
         
 
@@ -325,7 +325,7 @@ class Cerca extends Component {
              <div key={users.generalUser.id}>
             <div className="card"> 
             <div className="card_body">
-             <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''class="imageProva"></img>
+             <img src={`/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''class="imageProva"></img>
              
              <div class="overlayProva">
     <div class="textProva"><p><b>Effettua l'accesso</b><br/> per poter vedere le informazioni complete di questo utente!</p><Link to='/login'><button class="button1 button2" > Accedi</button></Link></div>

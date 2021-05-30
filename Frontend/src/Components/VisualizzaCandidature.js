@@ -51,7 +51,7 @@ class VisualizzaCandidature extends Component {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role === 'admin' || profile.data.data.role === 'famiglia') setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -68,7 +68,7 @@ class VisualizzaCandidature extends Component {
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/api/v1/applications';
+    const url='/api/v1/applications';
     axios.get(url).then(response=>{
       
     this.setState({announcements: response.data.data});
