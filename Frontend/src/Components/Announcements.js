@@ -94,7 +94,7 @@ class Announcements extends Component {
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role === 'famiglia') setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -110,7 +110,7 @@ class Announcements extends Component {
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/announcements';
+    const url='/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })
@@ -131,7 +131,7 @@ class Announcements extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     const query = this.createQuery();
-    const url = 'http://localhost:3000/announcements' + query;
+    const url = '/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -294,7 +294,7 @@ class Announcements extends Component {
 
 
     <div className="card_container_ann" style={{marginTop:-50}}> 
-      {this.state.announcements.map(announcements=>(     
+      {this.state.announcements.length === 0 ? (<h5>Non ci sono annunci</h5>) : this.state.announcements.map(announcements=>(     
          <div className="card_ann">
             <div className="card_body_ann">
                <div className="card_title_ann">

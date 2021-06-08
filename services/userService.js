@@ -11,6 +11,7 @@ const BabysitterAnn = require("../models/babysitterAnnModel");
 const BadanteAnn = require("../models/badanteAnnModel");
 const ColfAnn = require("../models/colfAnnModel");
 const Application = require("../models/applicationModel");
+const Payment = require("../models/payment");
 const announcementService = require("./announcementService");
 
 exports.createUser = async(user) => {
@@ -138,9 +139,11 @@ exports.deleteUser = async (id) => {
   const type = user.role;
   if (type === 'famiglia') {
     await announcementService.deleteAnnouncements({user_id: user._id});
+    await Payment.deleteMany({user_id:user._id});
     await Famiglia.findByIdAndDelete(user.famiglia_id);
   } else {
     await Application.deleteMany({user_id: user._id});
+    await Payment.deleteMany({user_id:user._id});
     if (type === 'babysitter') await Babysitter.findByIdAndDelete(user.babysitter_id);
     if (type === 'badante') await Badante.findByIdAndDelete(user.badante_id);
     if (type === 'colf') await Colf.findByIdAndDelete(user.colf_id);

@@ -108,13 +108,11 @@ exports.updateMyProfile = catchAsync (async (req, res, next) => {
 });
 
 exports.deleteAccount = catchAsync (async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await userService.deleteUser(req.user.id);
 
   if (user === undefined) {
     return next(new AppError('No user found', 404));
   }
-
-  user.remove();
 
   res.status(204).json({
     status: 'success',

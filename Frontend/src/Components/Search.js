@@ -104,7 +104,7 @@ class Search extends Component {
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
       this.setState({can: profile.data.data.can});
       this.setState({profile: profile.data.data.profile});
@@ -118,7 +118,7 @@ class Search extends Component {
       })
     let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='http://localhost:3000/users';
+    const url='/api/v1/users';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -147,7 +147,7 @@ class Search extends Component {
     e.preventDefault()
     const query = this.createQuery();
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url = 'http://localhost:3000/users' + query;
+    const url = '/api/v1/users' + query;
     axios.get(url).then(response=>{
       this.setState({users: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -189,8 +189,8 @@ class Search extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       {this.state.profile === 'semplice' ? ( <img src={`http://localhost:3000/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''/> ) : (<Link to={"/users/" + user.generalUser._id} >  
-        <img src={`http://localhost:3000/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt='' class="imageProva" /> 
+       {this.state.profile === 'semplice' ? ( <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''/> ) : (<Link to={"/users/" + user.generalUser._id} >  
+        <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt='' class="imageProva" /> 
         </Link>)
         
        }
@@ -378,14 +378,14 @@ menu = () => {
      
           <div className="card_container">
            
-            {this.state.users.map(users=>(
+            {this.state.users.length === 0 ? (<h5>Non ci sono utenti</h5>) : this.state.users.map(users=>(
             <div class="containerProva">
               <div key={users.generalUser.id}>
              <div className="card">
                 <div className="card_body">
 
 
-               <img src={`http://localhost:3000/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt='' class="imageProva"></img>
+               <img src={`/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt='' class="imageProva"></img>
                
   
   

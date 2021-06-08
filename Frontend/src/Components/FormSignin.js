@@ -59,7 +59,7 @@ changeHandler = (e) => {
 submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
-  axios.post('http://localhost:3000/auth/signup', this.state).then(response=>{
+  axios.post('/api/v1/auth/signup', this.state).then(response=>{
       console.log(response)
     })
     .catch(error=>{

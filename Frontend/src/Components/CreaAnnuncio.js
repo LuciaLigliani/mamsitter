@@ -86,7 +86,7 @@ class CreaAnnuncio extends Component{
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role !== 'famiglia' || profile.data.data.can === false) setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -154,7 +154,7 @@ class CreaAnnuncio extends Component{
       this.state.neededDays = neededDays;
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.post('http://localhost:3000/announcements', this.state).then(response=>{
+    axios.post('/api/v1/announcements', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Annuncio creato correttamente'})
         setTimeout(()=> {
@@ -171,6 +171,7 @@ class CreaAnnuncio extends Component{
         this.setState({open:false})
            }, 2000);
         console.log(error);
+        this.setState({children:''})
       })
     }
 
@@ -274,7 +275,7 @@ action={
   </Col>
   <Col>
   <br/>
-  <TextField label= {this.state.children.map(child => child.name + "  ")} style={{ margin: 1, width: 260, left:-230, bottom: -55 }} disabled/>
+  <TextField label= {this.state.children === '' ? '' : this.state.children.map(child => child.name + "  ")} style={{ margin: 1, width: 260, left:-230, bottom: -55 }} disabled/>
  <Button  onClick={this.handleShow} style={{  margin: 1, left:-250, bottom: -100 }}>Bambino+</Button>
       <Modal show={this.state.show} onHide={this.handleClos}>
        
@@ -286,7 +287,7 @@ action={
  margin="normal"
  onChange={this.changeHandler}/>  <br/>
 <TextField name='sex'
- label='Sesso'
+ label='M o F'
  style={{  margin: 1, width: 200, left:80, bottom: 10  }}
  fullWidth
  margin="normal"

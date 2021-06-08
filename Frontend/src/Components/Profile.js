@@ -14,7 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Container } from 'react-bootstrap';
 // import Avatar from '@material-ui/core/Avatar';
 // import avatar from '..//default.jpg';
-// import photo from '..//photo.jpg';
+import photo from '..//photo.jpg';
 import Typography from '@material-ui/core/Typography';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Form from 'react-bootstrap/Form'
@@ -162,7 +162,7 @@ class Profile extends Component{
            }, 0);
     }
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('http://localhost:3000/users/myProfile').then(profile => {
+    axios.get('/api/v1/users/myProfile').then(profile => {
       let specificData;
       if (profile.data.data.role === 'admin') setTimeout(()=> {
         window.location.assign('/unauthorized');
@@ -185,7 +185,7 @@ class Profile extends Component{
 
   deleteProfile = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.delete('http://localhost:3000/users/myProfile').then(profile => {
+    axios.delete('/api/v1/users/myProfile').then(profile => {
       this.setState({open:true, message:'Account eliminato'})
       setTimeout(()=> {
         this.setState({open:false})
@@ -218,10 +218,10 @@ class Profile extends Component{
 
   canUpdate = () => {
     // update photo
-    // const image = <div class="inner">
-    // <input class="inputfile" type="file"  accept="image/*" name='photo' onChange={this.changeHandler}/>
-    // <label><img src={photo} width="35" alt=''></img></label>
-    // </div>;
+    const image = <div class="inner">
+    <form><input class="inputfile" type="file"  accept="image/*" id='photo' onChange={this.changeHandler}/></form>
+    <label><img src={photo} width="35" alt=''></img></label>
+    </div>;
     document.getElementById('phoneNumber').disabled = false;
     document.getElementById('phoneNumber').style.backgroundColor = '#afafaf3d';
     document.getElementById('name').disabled = false;
@@ -261,10 +261,10 @@ class Profile extends Component{
     document.getElementById('description').style.backgroundColor = '#afafaf3d';
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    // const update = {
-    //   photo: image
-    // }
-    // this.setState({update: update});
+    const update = {
+      photo: image
+    }
+    this.setState({update: update});
   }
 
   handleClick = (event) => {
@@ -279,12 +279,11 @@ class Profile extends Component{
    }
 
   changeHandler = (e) => {
-    // if (e.target.name === 'photo') {
-    //   // this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
-    //   // console.log(e.target.value.split('\\')[2].split('.')[0]);
-      // this.setState({'photo': e.target.files[0]});
-    //   console.log(e.target.files);
-    // }
+    if (e.target.id === 'photo') {
+      // this.setState({[e.target.name]:e.target.value.split('\\')[2].split('.')[0]});
+      // console.log(e.target.value.split('\\')[2].split('.')[0]);
+      this.setState({'photo': e.target.files[0]});
+    }
 
      if (e.target.id === 'M' && e.target.value === 'on') e.target.value = 'M';
     else if (e.target.id === 'F' && e.target.value === 'on') e.target.value = 'F';
@@ -335,9 +334,11 @@ class Profile extends Component{
       // eslint-disable-next-line react/no-direct-mutation-state
       this.state.availableDays = availableDays;
     }
-    // this.state.photo = document.getElementById('photo').files[0];
+    this.state.photo = document.getElementById('photo').files[0];
+    // if(this.state.photo) axios.defaults.headers.common['Content-Type'] = this.state.photo.type;
+    let data = new FormData(document.querySelector('form'));
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.patch('http://localhost:3000/users/myProfile', this.state).then(response=>{
+    axios.patch('/api/v1/users/myProfile', data).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
         setTimeout(()=> {
@@ -606,13 +607,13 @@ action={
          <Box  m="4rem" ml="3rem" mt="100px" >
 <div class="rounded-box">
 <div class="outer">
-<img src={`http://localhost:3000/users/${this.state.id}/file/${this.state.photo}`} style={{
+<img src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: 0,
       width:150,
       height:150}} alt=''></img>
   
-    {/* {this.state.update.photo} */}
+    {this.state.update.photo}
   </div>
 </div>
 </Box>

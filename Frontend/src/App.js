@@ -6,7 +6,6 @@ import Cerca from './Components/Cerca';
 import Login from './Components/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Payments from './Components/Payments';
-import VetrinaPayment from './Components/VetrinaPayment';
 import User from './Components/User'
 
 import Blog from './Components/Blog';
