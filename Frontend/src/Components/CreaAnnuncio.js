@@ -86,7 +86,7 @@ class CreaAnnuncio extends Component{
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role !== 'famiglia' || profile.data.data.can === false) setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -154,7 +154,7 @@ class CreaAnnuncio extends Component{
       this.state.neededDays = neededDays;
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.post('/api/v1/announcements', this.state).then(response=>{
+    axios.post('http://localhost:3000/api/v1/announcements', this.state).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Annuncio creato correttamente'})
         setTimeout(()=> {

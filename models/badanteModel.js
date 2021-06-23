@@ -51,11 +51,18 @@ const badanteSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    occasional: Boolean,
-    diurnal: Boolean,
-    nocturnal: Boolean,
-    allDay: Boolean,
-    atHour: Boolean,
+    parttimePom: Boolean,
+    parttimeMat: Boolean,
+    fulltime: Boolean,
+    convivenza: Boolean,
+    aChiamata: Boolean,
+    notturno: Boolean,
+    weekend: Boolean,
+    // occasional: Boolean,
+    // diurnal: Boolean,
+    // nocturnal: Boolean,
+    // allDay: Boolean,
+    // atHour: Boolean,
     // TODO: togliere l'id
     availableDays: {
       type: [{

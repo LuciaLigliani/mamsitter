@@ -162,7 +162,7 @@ class Profile extends Component{
            }, 0);
     }
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       let specificData;
       if (profile.data.data.role === 'admin') setTimeout(()=> {
         window.location.assign('/unauthorized');
@@ -185,7 +185,7 @@ class Profile extends Component{
 
   deleteProfile = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.delete('/api/v1/users/myProfile').then(profile => {
+    axios.delete('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({open:true, message:'Account eliminato'})
       setTimeout(()=> {
         this.setState({open:false})
@@ -338,7 +338,7 @@ class Profile extends Component{
     // if(this.state.photo) axios.defaults.headers.common['Content-Type'] = this.state.photo.type;
     let data = new FormData(document.querySelector('form'));
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.patch('/api/v1/users/myProfile', data).then(response=>{
+    axios.patch('http://localhost:3000/api/v1/users/myProfile', data).then(response=>{
       if(response.data.status === 'success') {
         this.setState({open:true, message:'Profilo aggiornato correttamente'})
         setTimeout(()=> {
@@ -607,7 +607,7 @@ action={
          <Box  m="4rem" ml="3rem" mt="100px" >
 <div class="rounded-box">
 <div class="outer">
-<img src={`/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
+<img src={`http://localhost:3000/api/v1/users/${this.state.id}/file/${this.state.photo}`} style={{
       bottom:40,
       margin: 0,
       width:150,

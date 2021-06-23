@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-function isRegular() {
-  const result = this.typeWork === 'regolare' || this.typeWork === undefined;
-  return result;
-};
+// function isRegular() {
+//   const result = this.typeWork === 'regolare' || this.typeWork === undefined;
+//   return result;
+// };
 
 const colfAnnSchema = new mongoose.Schema(
   {
     typeWork: {
       type: String,
       enum: {
-        values: ['occasionale', 'regolare'],
-        message: 'Type of work must be occasionale or regolare'
+        values: ['parttimePom', 'parttimeMat', 'fulltime', 'convivenza', 'aChiamata', 'notturno', 'weekend'],
+        message: 'Type of work must be parttimePom, parttimeMat, fulltime, convivenza, aChiamata, notturno or weekend'
       },
       required: [true, 'You have to provide the type work']
     },
@@ -25,7 +25,7 @@ const colfAnnSchema = new mongoose.Schema(
       min: [function() {
         return this.startDate;
       }, 'End date must be after start date'],
-      required: [isRegular, 'You have to provide the end date']
+      // required: [isRegular, 'You have to provide the end date']
     },
     // TODO: togliere l'id
     neededDays: {
@@ -62,13 +62,13 @@ colfAnnSchema.virtual('announcementType').get(function() {
   return type;
 });
 
-colfAnnSchema.pre('validate', function(next) {
-  if(this.typeWork === 'occasionale'){
-    this.endDate = undefined;
-  }
+// colfAnnSchema.pre('validate', function(next) {
+//   if(this.typeWork === 'occasionale'){
+//     this.endDate = undefined;
+//   }
   
-  next();
-});
+//   next();
+// });
 
 colfAnnSchema.pre('validate', function(next) {
   // trasformo gli array vuoti in undefined per far funzionare il required

@@ -94,7 +94,7 @@ class Announcements extends Component {
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role === 'famiglia') setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -110,7 +110,7 @@ class Announcements extends Component {
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/announcements';
+    const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })
@@ -131,7 +131,7 @@ class Announcements extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     const query = this.createQuery();
-    const url = '/api/v1/announcements' + query;
+    const url = 'http://localhost:3000/api/v1/announcements' + query;
     axios.get(url).then(response=>{
       this.setState({announcements: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -222,8 +222,8 @@ class Announcements extends Component {
                <option value='' >Città</option>
                <option>Milano</option> 
             </Form.Control><br/>
-            <Form.Control style={{marginLeft:100}} name='annDistrict' as="select" defaultValue="Distretto" onChange={this.changeHandler} > 
-               <option value =''>Distretto</option>
+            <Form.Control style={{marginLeft:100}} name='annDistrict' as="select" defaultValue="Zona" onChange={this.changeHandler} > 
+               <option value =''>Zona</option>
                <option value='district1'>district1</option> 
                <option value='district2'>district2</option> 
                <option value='district3'>district3</option> 
@@ -234,45 +234,51 @@ class Announcements extends Component {
             <Col>
             <Form.Group>
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
-             <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
+             <font face='Georgia' color="black"><h5>  Orario richiesto</h5></font>  
               </Form.Label>
              <Col sm={9}>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:110, width: 30}}
               name='typeWork'
-              id="occasionale"
-            /><label for="occasionale">Occasionale</label><br/>
+              id="parttimePom"
+            /><label for="parttimePom">Part time pomeridiano</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:85, width: 30}}
               name='typeWork'
-              id="regolare"
-            /><label for="regolare">Regolare</label><br/>
+              id="parttimeMat"
+            /><label for="parttimeMat">Part time mattutino</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:70, width: 30}}
               name='typeWork'
-              id="diurno"
-            /><label for="diurno">Diurno</label><br/>
+              id="fulltime"
+            /><label for="fulltime">Full time</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:69, width: 30}}
               name='typeWork'
-              id="aOre"
-            /><label for="aOre">Ad ora</label><br/>
+              id="convivenza"
+            /><label for="convivenza">Convivenza</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:121, width: 30}}
               name='typeWork'
-              id="24h"
-            /><label for="24h">Tutto il giorno</label><br/>
+              id="aChiamata"
+            /><label for="aChiamata">A chiamata</label><br/>
             <input type='radio'
             onChange={this.changeHandler}
             style={{marginLeft:87, width: 30}}
               name='typeWork'
               id="notturno"
             /><label for="notturno">Notturno</label><br/>
+            <input type='radio'
+            onChange={this.changeHandler}
+            style={{marginLeft:87, width: 30}}
+              name='typeWork'
+              id="weekend"
+            /><label for="weekend">Weekend</label><br/>
           </Col>
           </Form.Group>
             </Col>

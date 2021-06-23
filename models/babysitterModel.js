@@ -51,8 +51,15 @@ const babysitterSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    occasional: Boolean,
-    regular: Boolean,
+    parttimePom: Boolean,
+    parttimeMat: Boolean,
+    fulltime: Boolean,
+    convivenza: Boolean,
+    aChiamata: Boolean,
+    notturno: Boolean,
+    weekend: Boolean,
+    // occasional: Boolean,
+    // regular: Boolean,
     // TODO: togliere l'id
     availableDays: {
       type: [{

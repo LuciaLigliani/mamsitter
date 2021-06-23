@@ -18,7 +18,7 @@ class Unauthorized extends Component {
       this.setState({link: '/'});
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-      axios.get('/api/v1/users/myProfile').then(profile => {
+      axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
         if (profile.data.data.role === 'admin') this.setState({link: '/search'});
         if (profile.data.data.role === 'famiglia') this.setState({link: '/search'});
         else this.setState({link: '/announcement'});

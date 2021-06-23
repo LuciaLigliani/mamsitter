@@ -33,12 +33,13 @@ class Cerca extends Component {
       ageMin:'',
       sex:'',
       role:'',
-      regular:'',
-      occasional:'',
-      diurnal:'',
-      nocturnal:'',
-      allDay:'',
-      atHour:'',
+      fulltime:'',
+      parttimePom:'',
+      parttimeMat:'',
+      convivenza:'',
+      weekend:'',
+      notturno:'',
+      aChiamata:'',
       highlighted: '',
       open: false,
       message:''
@@ -64,7 +65,7 @@ class Cerca extends Component {
   }
 
   changeHandler = (e) => {
-  if(['regular', 'occasional', 'diurnal', 'nocturnal', 'atHour', 'allDay'].includes(e.target.name))
+  if(['fulltime', 'parttimePom', 'parttimeMat', 'convivenza', 'weekend', 'aChiamata', 'notturno'].includes(e.target.name))
   this.setState({[e.target.name]:e.target.checked});
   else this.setState({[e.target.name]:e.target.value})
   }
@@ -85,20 +86,21 @@ class Cerca extends Component {
       }
       if(this.state.sex) filter = (filter || '?') + 'sex='+this.state.sex+'&';
       if(this.state.role) filter = (filter || '?') + 'role='+this.state.role+'&';
-      if(this.state.regular) filter = (filter || '?') + 'regular='+this.state.regular+'&';
-      if(this.state.occasional) filter = (filter || '?') + 'occasional='+this.state.occasional+'&';
+      if(this.state.fulltime) filter = (filter || '?') + 'fulltime='+this.state.fulltime+'&';
+      if(this.state.parttimePom) filter = (filter || '?') + 'parttimePom='+this.state.parttimePom+'&';
+      if(this.state.parttimeMat) filter = (filter || '?') + 'parttimeMat='+this.state.parttimeMat+'&';
       if(this.state.district) filter = (filter || '?') + 'district='+this.state.district+'&';
-      if(this.state.diurnal) filter = (filter || '?') + 'diurnal='+this.state.diurnal+'&';
-      if(this.state.nocturnal) filter = (filter || '?') + 'nocturnal='+this.state.nocturnal+'&';
-      if(this.state.allDay) filter = (filter || '?') + 'allDay='+this.state.allDay+'&';
-      if(this.state.atHour) filter = (filter || '?') + 'atHour='+this.state.atHour+'&';
+      if(this.state.convivenza) filter = (filter || '?') + 'convivenza='+this.state.convivenza+'&';
+      if(this.state.weekend) filter = (filter || '?') + 'weekend='+this.state.weekend+'&';
+      if(this.state.notturno) filter = (filter || '?') + 'notturno='+this.state.notturno+'&';
+      if(this.state.aChiamata) filter = (filter || '?') + 'aChiamata='+this.state.aChiamata+'&';
 
       return filter;
   }
   
   async componentDidMount(){
     let vetrina = [];
-    const url='/api/v1/users/search';
+    const url='http://localhost:3000/api/v1/users/search';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -119,7 +121,7 @@ class Cerca extends Component {
   submitHandler = (e) => {
     e.preventDefault()
     const query = this.createQuery();
-    const url = '/api/v1/users/search' + query;
+    const url = 'http://localhost:3000/api/v1/users/search' + query;
     axios.get(url).then(response=>{
       this.setState({users: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -152,7 +154,7 @@ class Cerca extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
+       <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''  /> 
 
         
 
@@ -222,15 +224,15 @@ class Cerca extends Component {
       <Col>
         <Form   className="formm"> 
         <br/>
-        <h3><font face='Georgia' color='black'>Cerca il lavoratore più adatto alle tue esigenze!</font> </h3>
+        <h3><font face='Georgia' color='black'>Cerca assistente familiare più adatto alle tue esigenze!</font> </h3>
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='city' as="select" defaultValue="Città" onChange={this.changeHandler} > 
                <option value='' >Città</option>
                <option>Milano</option> 
             </Form.Control><br/>
-            <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Distretto" onChange={this.changeHandler} > 
-            <option value='' >Distretto</option>
+            <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Zona" onChange={this.changeHandler} > 
+            <option value='' >Zona</option>
                <option value='district1'>district1</option> 
                <option value='district2'>district2</option> 
                <option value='district3'>district3</option>  
@@ -253,49 +255,56 @@ class Cerca extends Component {
             <Col>
             <Form.Group>
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
-             <br/> <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
+             <br/> <font face='Georgia' color="black"><h5>  Orario richiesto</h5></font>  
               </Form.Label>
              <Col sm={11}>
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Occasionale"
-              name='occasional'
+              label="Part time pomeridiano"
+              name='parttimePom'
               id="formHorizontalRadios1"
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Regolare"
-              name='regular'
+              label="Part time mattutino"
+              name='parttimeMat'
+              id="formHorizontalRadios1"
+            />
+            <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:160}}
+              label="Full time"
+              name='fulltime'
               id="formHorizontalRadios2"
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Giornaliero"
-              name='diurnal'
+              label="Convivenza"
+              name='convivenza'
               id="formHorizontalRadios3"
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
-              label="Ad orario"
-              name='atHour'
-              id="formHorizontalRadios3"
-            />
-            <Form.Check
-            onChange={this.changeHandler}
-            style={{marginLeft:160}}
-              label="Tutto il giorno"
-              name='allDay'
+              label="A chiamata"
+              name='aChiamata'
               id="formHorizontalRadios3"
             />
             <Form.Check
             onChange={this.changeHandler}
             style={{marginLeft:160}}
               label="Notturno"
-              name='nocturnal'
+              name='notturno'
+              id="formHorizontalRadios3"
+            />
+            <Form.Check
+            onChange={this.changeHandler}
+            style={{marginLeft:160}}
+              label="Weekend"
+              name='weekend'
               id="formHorizontalRadios3"
             />
           </Col>
@@ -325,7 +334,7 @@ class Cerca extends Component {
              <div key={users.generalUser.id}>
             <div className="card"> 
             <div className="card_body">
-             <img src={`/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''class="imageProva"></img>
+             <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt=''class="imageProva"></img>
              
              <div class="overlayProva">
     <div class="textProva"><p><b>Effettua l'accesso</b><br/> per poter vedere le informazioni complete di questo utente!</p><Link to='/login'><button class="button1 button2" > Accedi</button></Link></div>

@@ -104,7 +104,7 @@ class Search extends Component {
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       this.setState({me: profile.data.data.role});
       this.setState({can: profile.data.data.can});
       this.setState({profile: profile.data.data.profile});
@@ -118,7 +118,7 @@ class Search extends Component {
       })
     let vetrina =[];
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/users';
+    const url='http://localhost:3000/api/v1/users';
     axios.get(url).then(response=>{
     this.setState({users: response.data.data});
     response.data.data.map((user) => {
@@ -147,7 +147,7 @@ class Search extends Component {
     e.preventDefault()
     const query = this.createQuery();
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url = '/api/v1/users' + query;
+    const url = 'http://localhost:3000/api/v1/users' + query;
     axios.get(url).then(response=>{
       this.setState({users: response.data.data});
       this.setState({open:true, message:'Ricerca effettuata correttamente'})
@@ -189,8 +189,8 @@ class Search extends Component {
         <div key={user.generalUser.photo}>
        <div className="cardv" > 
        <div className="card_bodyv" >
-       {this.state.profile === 'semplice' ? ( <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''/> ) : (<Link to={"/users/" + user.generalUser._id} >  
-        <img src={`/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt='' class="imageProva" /> 
+       {this.state.profile === 'semplice' ? ( <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt=''/> ) : (<Link to={"/users/" + user.generalUser._id} >  
+        <img src={`http://localhost:3000/api/v1/users/${user.generalUser._id}/file/${user.generalUser.photo}`} style={{ paddingBottom:0, height:100, width:100}} alt='' class="imageProva" /> 
         </Link>)
         
        }
@@ -281,15 +281,15 @@ menu = () => {
       <Col>
         <Form onSubmit={this.submitHandler}  className="formm"> 
         <br/>
-        <h3><font face='Georgia' color='black'>Cerca il lavoratore più adatto alle tue esigenze!</font> </h3>
+        <h3><font face='Georgia' color='black'>Cerca assistente familiare più adatto alle tue esigenze!</font> </h3>
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='city' as="select" defaultValue="Città" onChange={this.changeHandler} > 
                <option value='' >Città</option>
                <option>Milano</option> 
             </Form.Control><br/>
-            <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Distretto" onChange={this.changeHandler} > 
-               <option value =''>Distretto</option>
+            <Form.Control style={{marginLeft:100}} name='district' as="select" defaultValue="Zona" onChange={this.changeHandler} > 
+               <option value =''>Zona</option>
                <option value='district1'>district1</option> 
                <option value='district2'>district2</option> 
                <option value='district3'>district3</option> 
@@ -312,7 +312,7 @@ menu = () => {
             <Col>
             <Form.Group>
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
-             <br/> <font face='Georgia' color="black"><h5>  Tipologia di lavoro</h5></font>  
+             <br/> <font face='Georgia' color="black"><h5>  Orario richiesto</h5></font>  
               </Form.Label>
              <Col sm={9}>
             <Form.Check
@@ -385,7 +385,7 @@ menu = () => {
                 <div className="card_body">
 
 
-               <img src={`/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt='' class="imageProva"></img>
+               <img src={`http://localhost:3000/api/v1/users/${users.generalUser._id}/file/${users.generalUser.photo}`} style={{marginLeft:2, width:100, height:100}} alt='' class="imageProva"></img>
                
   
   

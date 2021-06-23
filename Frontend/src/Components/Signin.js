@@ -45,7 +45,7 @@ class Signin extends Component{
   }
 submitHandler = (e) => {
   e.preventDefault()
-  axios.post('/api/v1/auth/signup', this.state).then(response=>{
+  axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
     if(response.data.status === 'success') {
       let jwt =  response.data.token;
       util.setCookie("user_jwt",jwt,7);
@@ -131,8 +131,8 @@ submitHandler = (e) => {
           <br/><br/> <Form.Control required placeholder="Cognome" name='surname' onChange={this.changeHandler}/>
         <br/> Data di nascita <Form.Control required type="date" name='birthDate' date-format="YYYY/MM/DD" onChange={this.changeHandler} ></Form.Control>
         <br/><br/><Form.Control  as="select" name='district' onChange={this.changeHandler} >
-         <option value disabled="disabled"  hidden="hidden">Distretto</option>
-         <option value='district'>distretto</option>
+         <option value disabled="disabled"  hidden="hidden">Zona</option>
+         <option value='district'>Zona</option>
          <option value='district1'>district1</option>
         <option value='district2'>district2</option>
         <option valure='district3'>district3</option>

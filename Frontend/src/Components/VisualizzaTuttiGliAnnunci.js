@@ -43,7 +43,7 @@ class VisualizzaTuttiGliAnnunci extends Component {
            }, 0);
     }
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    axios.get('/api/v1/users/myProfile').then(profile => {
+    axios.get('http://localhost:3000/api/v1/users/myProfile').then(profile => {
       if (profile.data.data.role === 'famiglia' && profile.data.data.can === false) setTimeout(()=> {
         window.location.assign('/unauthorized');
            }, 0);
@@ -62,7 +62,7 @@ class VisualizzaTuttiGliAnnunci extends Component {
         console.log(error);
       })
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + util.getCookie('user_jwt');
-    const url='/api/v1/announcements';
+    const url='http://localhost:3000/api/v1/announcements';
     axios.get(url).then(response=>{
     this.setState({announcements: response.data.data});
     })

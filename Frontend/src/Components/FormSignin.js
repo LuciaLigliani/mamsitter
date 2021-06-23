@@ -59,7 +59,7 @@ changeHandler = (e) => {
 submitHandler = (e) => {
   e.preventDefault()
   console.log(this.state)
-  axios.post('/api/v1/auth/signup', this.state).then(response=>{
+  axios.post('http://localhost:3000/api/v1/auth/signup', this.state).then(response=>{
       console.log(response)
     })
     .catch(error=>{
@@ -115,7 +115,7 @@ render(){
                             Cognome
                             <Form.Control name='surname' placeholder="Cognome"/>
                             <br/><Form.Control name='district' as="select">
-                              <option value disabled="disabled" hidden="hidden">Distretto</option>
+                              <option value disabled="disabled" hidden="hidden">Zona</option>
                               <option>district1</option>
                               <option>district2</option>
                               <option>district3</option>
