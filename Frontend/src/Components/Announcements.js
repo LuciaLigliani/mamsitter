@@ -188,14 +188,14 @@ class Announcements extends Component {
          <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
             <ul className="linksNav">
             <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
               <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
                   <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -215,7 +215,7 @@ class Announcements extends Component {
               <Col>
         <Form onSubmit={this.submitHandler}  className="formm"> 
         <br/>
-        <h3><font face='Georgia' color='black' >Cerca un annuncio</font> </h3>
+        <h3><font face='ABeeZee!important' color='black' >Cerca un annuncio</font> </h3>
           <Row>
             <Col sm={5}> 
             <br/><Form.Control style={{marginLeft:100}} name='annCity' as="select" defaultValue="Città" onChange={this.changeHandler} > 
@@ -234,7 +234,7 @@ class Announcements extends Component {
             <Col>
             <Form.Group>
               <Form.Label style={{marginLeft:90}} as="legend" column sm={9}>
-             <font face='Georgia' color="black"><h5>  Orario richiesto</h5></font>  
+             <font face='ABeeZee!important' color="black"><h5>  Orario richiesto</h5></font>  
               </Form.Label>
              <Col sm={9}>
             <input type='radio'

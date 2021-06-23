@@ -198,14 +198,14 @@ action={
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
         <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
         <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -243,7 +243,7 @@ action={
   />
     <br/><br/><br/>
     <Box height="5%" width="30%" mb="10%" m="2%" ml="34%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Inserisci Annuncio</font>
+     <font size="5" face='ABeeZee!important' color="white"> Inserisci Annuncio</font>
     </Box>
    <div className="myprofile">
      <Container >
@@ -361,7 +361,7 @@ action={
             </Col>
   <Col >
   <Typography style={{bottom:152, marginRight:300, marginTop:50}}  gutterBottom>
-        Giorni disponibili: &nbsp;</Typography>
+        Richiesta disponibilità oraria: &nbsp;</Typography>
   <Table striped bordered hover size="sm" style={{width:90, marginLeft:50}} >
   <thead>
     <tr>
@@ -456,7 +456,7 @@ action={
   <Row>
     
   <div >
-  <font face='Georgia' color="white">
+  <font face='ABeeZee!important' color="white">
    
    <button type="submit" style={{marginRight:10, marginTop:60}} onClick={this.submitHandler} className="buttonp buttonpp" >Crea Annuncio</button></font>
          </div>

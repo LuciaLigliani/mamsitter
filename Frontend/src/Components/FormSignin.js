@@ -74,7 +74,7 @@ render(){
   return(
     
     <Form onSubmit={this.submitHandler} className="dialog">
-    <font face='Georgia'><h4>Compila il modulo per la registrazione</h4></font><br/>
+    <font face='ABeeZee!important'><h4>Compila il modulo per la registrazione</h4></font><br/>
       <Row>
         <Col>
           <Form.Control required placeholder="Email"  name='email' value={email} onChange={this.changeHandler}/><br/>

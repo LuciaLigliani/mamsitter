@@ -364,6 +364,7 @@ class Profile extends Component{
       <Link to="/createann"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link> 
       <Link to="/viewallann"><MenuItem  onClick={this.handleClose}>I miei annunci</MenuItem></Link> 
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/">  <MenuItem onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</MenuItem></Link>
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
   else if(this.state.role === 'famiglia' && this.state.can === false)
@@ -371,6 +372,7 @@ class Profile extends Component{
       <Link to="/search"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Crea annuncio</MenuItem></Link>
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Cambia tipo di profilo</MenuItem></Link> 
+      <Link to="/"> <MenuItem onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</MenuItem></Link>
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
     // if (this.state.role === 'admin')
@@ -378,12 +380,14 @@ class Profile extends Component{
   return (<div>
       <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/viewallapplication"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <Link to="/">  <MenuItem onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</MenuItem></Link>
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
   else if(this.state.role !== 'famiglia' && this.state.can === false)
   return (<div>
       <Link to="/announcement"><MenuItem  onClick={this.handleClose}>Cerca</MenuItem></Link> 
       <Link to="/payments"><MenuItem  onClick={this.handleClose}>Le mie candidature</MenuItem></Link>
+      <Link to="/"> <MenuItem onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</MenuItem></Link>
       <Link to="/">  <MenuItem onClick={this.logout}>Logout</MenuItem></Link>
     </div>)
   }
@@ -572,14 +576,14 @@ action={
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
         <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
         <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -598,7 +602,7 @@ action={
 
     <br/><br/><br/>
     <Box height="5%" width="30%" mb="10%" m="2%" ml="34%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Il Mio Profilo</font>
+     <font size="5" face='ABeeZee!important' color="white"> Il Mio Profilo</font>
     </Box>
    <div className="myprofile">
      <Container >
@@ -611,7 +615,9 @@ action={
       bottom:40,
       margin: 0,
       width:150,
-      height:150}} alt=''></img>
+      height:150,
+      boxShadow: "1px 1px 20px 3px black"
+      }} alt=''></img>
   
     {this.state.update.photo}
   </div>
@@ -623,7 +629,7 @@ action={
 <TextField name='email'
  label={this.state.seeData.email}
  disabled
- style={{  margin: 1, width: 200,  bottom:40, marginLeft: 50 }}
+ style={{  margin: 1, width: 200,  bottom:40, marginLeft: 50}}
  fullWidth
  margin="normal"/>  <br/>
   <TextField 
@@ -738,10 +744,9 @@ onChange={this.changeHandler}
 
   <Row>
   <div >
-  <font face='Georgia' color="white">
-   <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" id= 'elimina'>Elimina Profilo</button></font>
+ 
 
-    <font  face='Georgia' color="white">
+    <font  face='ABeeZee!important' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateProfile} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
          </div>

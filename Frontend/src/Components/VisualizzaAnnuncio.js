@@ -346,7 +346,7 @@ buttons = () => {
   console.log(!isApp)
   if(this.state.me === 'admin') return (
     <div>
-    <font face='Georgia' color="white">
+    <font face='ABeeZee!important' color="white">
        <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} className="buttonp buttonpp" >Elimina Annuncio</button></font>
        <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
     </div>
@@ -371,9 +371,9 @@ buttons = () => {
   )
   else return (
 <div>
-  <font face='Georgia' color="white">
+  <font face='ABeeZee!important' color="white">
    <button style={{marginRight:10, marginBottom:60}} onClick={this.deleteAnn} id="elimina" className="buttonp buttonpp" >Elimina Annuncio</button></font>
-   <font  face='Georgia' color="white">
+   <font  face='ABeeZee!important' color="white">
    &nbsp; <button style={{marginRight:10, marginTop:60}} onClick={this.canUpdate} id="aggiorna" className="buttonp buttonpp"  >Aggiorna Annuncio</button></font>
     <font> <button style={{marginRight:10, marginTop:60}} onClick={this.updateAnn} id="salva" className="buttonp buttonpp" hidden>Salva</button></font>
     <Link to={"/application/" + this.state.id}><button class="buttonp buttonpp" id="candidati" style={{marginLeft:30, marginTop:-80}} >Visualizza Candidati</button></Link>
@@ -437,14 +437,14 @@ menu = () => {
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
          <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
            <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
                <ArrowDropDownIcon></ArrowDropDownIcon>

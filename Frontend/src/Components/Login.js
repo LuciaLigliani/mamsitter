@@ -105,19 +105,19 @@ render(){
         <Col>
         <Form onSubmit={this.submitHandler}  className="form">
         
-        <br/> <Form.Label><font face='Georgia'><h3>ACCEDI A MAMSITTER </h3></font></Form.Label><br/><br/><br/>
+        <br/> <Form.Label><font face='ABeeZee!important'><h3>ACCEDI A MAMSITTER </h3></font></Form.Label><br/><br/><br/>
          <Form.Group controlId="formBasicEmail">   
-         <font face='Georgia'><h5> Inserisci la tua e-mail</h5></font>
+         <font face='ABeeZee!important'><h5> Inserisci la tua e-mail</h5></font>
              <Form.Control required name='email'  type="email" placeholder="Email" onChange={this.changeHandler} /><br/>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
-        <br/>  <br/> <font face='Georgia'><h5>Inserisci la tua password </h5></font> 
+        <br/>  <br/> <font face='ABeeZee!important'><h5>Inserisci la tua password </h5></font> 
           <Form.Control required name='password'  type="password" placeholder="Password" onChange={this.changeHandler} />
         </Form.Group>
         <br/><br/><br/>
          <button onClick={()=>this.state.open} class="button1 button2"  >Login</button><br/><br/>
         <br/>
-       <h6>Clicca <Link to ="/signup"> <font face='Georgia' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
+       <h6>Clicca <Link to ="/signup"> <font face='ABeeZee!important' color='black'><u>qui</u> </font></Link> per registrarti</h6></Form>
       </Col>
       </Row>
      

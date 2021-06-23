@@ -223,14 +223,14 @@ class Profilo extends Component {
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
           <Link to="/">
-            <li><font face='Georgia' color='black' >I NOSTRI SERVIZI</font></li>
+            <li><font face='ABeeZee!important' color='black' >I NOSTRI SERVIZI</font></li>
           </Link>
           <Link to="/">
-            <li><font face='Georgia' color='black'>BLOG</font></li>
+            <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
           </Link>
           
           <Link to="/aboutUs">
-            <li><font face='Georgia' color='black'>LA NOSTRA STORIA</font></li>
+            <li><font face='ABeeZee!important' color='black'>LA NOSTRA STORIA</font></li>
           </Link>
         <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -250,7 +250,7 @@ class Profilo extends Component {
     
     <br/><br/><br/>
     <Box height="5%" width="30%" mb="10%" m="2%" ml="34%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Il Mio Profilo</font>
+     <font size="5" face='ABeeZee!important' color="white"> Il Mio Profilo</font>
     </Box>
    <div className="mprofile">
      <Container >
@@ -376,10 +376,10 @@ name='work'
    </div>
     </div>
     <div className="bottoni">
-  <font face='Georgia' color="white">
+  <font face='ABeeZee!important' color="white">
    
    <button onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font>
-    <font  face='Georgia' color="white">
+    <font  face='ABeeZee!important' color="white">
     &nbsp;&nbsp; <button onClick={this.canUpdate} type="submit" className="buttonp buttonpp"  >Aggiorna Profilo</button></font>
     <font> <button onClick={this.updateProfile} className="buttonp buttonpp" >Salva</button></font>
          </div>

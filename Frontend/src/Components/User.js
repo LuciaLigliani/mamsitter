@@ -198,7 +198,7 @@ class User extends Component {
   buttons = () => {
     if(this.state.me === 'admin') return (
       <div >
-  <font face='Georgia' color="white">
+  <font face='ABeeZee!important' color="white">
    <button style={{marginRight:10, marginTop:60}} onClick={this.deleteProfile} className="buttonp buttonpp" >Elimina Profilo</button></font></div>
     )
   }
@@ -412,14 +412,14 @@ menu = () => {
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
         <ul className="linksNav">
         <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
         <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}> <AccountCircle fontSize='large'/>
             <ArrowDropDownIcon></ArrowDropDownIcon>

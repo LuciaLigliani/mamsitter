@@ -123,14 +123,14 @@ render(){
       <Link to="/"><img src={logomodi} className="navbarLogo" alt="logo"/></Link>
          <ul className="linksNav">
          <Link to="/aboutUs">
-                  <li><font face='Georgia' color='black' >LA NOSTRA STORIA</font></li>
+                  <li><font face='ABeeZee!important' color='black' >LA NOSTRA STORIA</font></li>
                 </Link>
                 <Link to="/payments">
-                  <li><font face='Georgia' color='black'>ABBONAMENTI</font></li>
+                  <li><font face='ABeeZee!important' color='black'>ABBONAMENTI</font></li>
                 </Link>
                 
                 <Link to="/blog">
-                  <li><font face='Georgia' color='black'>BLOG</font></li>
+                  <li><font face='ABeeZee!important' color='black'>BLOG</font></li>
                 </Link>
            <Button className="buttonNav" aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}  > <AccountCircle fontSize='large'/>
                <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -149,7 +149,7 @@ render(){
               
            </ul><br/><br/><br/>
            <Box height="5%" width="40%" mb="4%" m="7%" ml="70%"  bgcolor="text.primary" >
-     <font size="5" face='Georgia' color="white"> Le mie candidature</font>
+     <font size="5" face='ABeeZee!important' color="white"> Le mie candidature</font>
     </Box>
            <div className="card_container_ann" style={{marginTop:50}}> 
       {this.state.announcements.map(announcements=>(     
